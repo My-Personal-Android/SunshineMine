@@ -2,10 +2,12 @@ package com.sunshinemine;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.JsonReader;
 import android.util.Log;
 
@@ -32,6 +34,7 @@ import java.util.SimpleTimeZone;
 import java.util.concurrent.Executor;
 
 public class WeatherForecast implements Parcelable {
+
 
     private Context mContext;
     private Executor executor;
@@ -130,7 +133,28 @@ public class WeatherForecast implements Parcelable {
         return simpleDateFormat.format(date).toString();
     }
 
-    public static String formatHightLows (double high , double low){
+    public String formatHightLows (Context context,double high , double low){
+
+        Resources res = context.getResources(); //assuming in an activity for example, otherwise you can provide a context.
+        String[] units = res.getStringArray(R.array.units_values);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unit = preferences.getString(context.getString(R.string.pref_units_key),context.getString(R.string.pref_units_default));
+        Log.v("Looo",unit);
+
+
+        if(unit.equals(units[0])){ // metric
+            // do nothing as already in metric
+        }
+        else if(unit.equals(units[1])){ // imperial
+            high = (high * 1.8) + 32;
+            low = (low * 1.8) + 32;
+
+        }else{
+            // not found
+            Log.v("Loo","Not Found Unit");
+        }
+
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 

@@ -35,7 +35,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, int position) {
-        holder.text.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+" - "+mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain() + " - " + WeatherForecast.formatHightLows(mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()));
+        WeatherForecast weatherForecast = new WeatherForecast();
+        holder.text.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+" - "+mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain() + " - " + weatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()));
         holder.text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,6 +6,15 @@
         android:id="@+id/action_refresh"
         android:title="Refresh"
         app:showAsAction="never">
-
+    </item>
+    <item
+        android:id="@+id/settings"
+        android:title="Settings"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/action_map"
+        android:title="Map Location"
+        app:showAsAction="never">
     </item>
 </menu>
