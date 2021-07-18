@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <item
+        android:id="@+id/action_map"
+        android:title="Map Location"
+        app:showAsAction="never">
+    </item>
     <item
         android:id="@+id/action_refresh"
         android:title="Refresh"
@@ -12,9 +16,5 @@
         android:title="Settings"
         app:showAsAction="never">
     </item>
-    <item
-        android:id="@+id/action_map"
-        android:title="Map Location"
-        app:showAsAction="never">
-    </item>
+
 </menu>

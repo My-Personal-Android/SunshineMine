@@ -7,6 +7,7 @@
         android:title="Share"
         android:icon="@drawable/icon_share"
         app:showAsAction="always"
+        app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         >
     </item>
     <item
