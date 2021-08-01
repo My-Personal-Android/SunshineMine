@@ -1,70 +1,49 @@
 package com.sunshinemine;
 
-import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.test.ProviderTestCase2;
 import android.util.Log;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.data.WeatherDBHelper;
+import com.sunshinemine.data.WeatherProvider;
 
-import junit.framework.TestSuite;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.runner.RunWith;
 
 import java.util.Map;
 import java.util.Set;
 
-import static org.junit.Assert.*;
-
 @RunWith(AndroidJUnit4.class)
-public class FullTestSuite extends TestSuite {
+public class MyProviderTestCases extends ProviderTestCase2<WeatherProvider> {
 
-    private static final String LOG_TAG = "FullTestSuite";
+    private Context mContext = ApplicationProvider.getApplicationContext();
 
-    private Context mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        assertEquals("com.sunshinemine", mContext.getPackageName());
+    public MyProviderTestCases() {
+        super(WeatherProvider.class, WeatherContract.CONTENT_AUTHORITY);
     }
 
-    @Test
-    public void testContentProvider() {
-
-        String type = mContext.getContentResolver().getType(WeatherContract.WeatherEntry.CONTENT_URI);
-        assertEquals(WeatherContract.WeatherEntry.CONTENT_TYPE, type);
-
-        type = mContext.getContentResolver().getType(WeatherContract.WeatherEntry.buildWeatherLocationWithDate("location","date"));
-        assertEquals(WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE, type);
-    }
-
-    @Test
-    public void testCreatDb() {
-        // Context of the app under test.
-        mContext.deleteDatabase(WeatherDBHelper.DATABASE_NAME);
-        SQLiteDatabase db = new WeatherDBHelper(mContext,WeatherDBHelper.DATABASE_NAME,null,0).getWritableDatabase();
-        assertEquals(true, db.isOpen());
-        db.close();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        setContext(ApplicationProvider.getApplicationContext());
     }
 
     @Test
     public void testInsertReadDb() {
 
-
         mContext.deleteDatabase(WeatherDBHelper.DATABASE_NAME);
 
         WeatherDBHelper weatherDBHelper = new WeatherDBHelper(mContext,WeatherDBHelper.DATABASE_NAME,null,0);
+
         // Context of the app under test.
         SQLiteDatabase db = weatherDBHelper.getWritableDatabase();
 
@@ -73,57 +52,40 @@ public class FullTestSuite extends TestSuite {
         ContentValues location_contentValues = getLocationValues();
 
         long row_ID ;
-        row_ID = db.insert(WeatherContract.LocationEntry.TABLE_NAME,null,location_contentValues);
 
-        assertTrue(row_ID!=-1);
-        Log.v(LOG_TAG,"NEW ROW ID -> "+row_ID);
+        Uri uri = mContext.getContentResolver().insert(WeatherContract.LocationEntry.CONTENT_URI, location_contentValues);
 
-//        Cursor cursor = mContext.getContentResolver().query(WeatherContract.LocationEntry.buildLocationUri(row_ID),
-//        null,
-//        null,
-//        null,
-//        null);
+        Log.v("URI = ",uri.toString());
+        assertNotNull(uri);
 
-        Cursor cursor = db.query(
-                WeatherContract.LocationEntry.TABLE_NAME,
+        row_ID = Long.valueOf(uri.getLastPathSegment());
+
+        Log.v("URI = ",WeatherContract.LocationEntry.buildLocationUri(row_ID).toString());
+
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherContract.LocationEntry.buildLocationUri(row_ID),
                 null,
                 null,
                 null,
-                null,
-                null,
-               null
+                null
         );
 
-        if(cursor==null){
-            fail("Location Cursor is null");
-        }
         if(cursor.moveToFirst()){
 
             ValidateCursor(location_contentValues,cursor);
 
-            ContentValues weatherValues = getWeatherValues(row_ID);
+            ContentValues weatherValues = getWeatherValues(0);
 
             long weather_ID ;
             weather_ID = db.insert(WeatherContract.WeatherEntry.TABLE_NAME,null,weatherValues);
 
             assertTrue(weather_ID!=-1);
-            Log.v(LOG_TAG,"NEW ROW WEATHER ID -> "+weather_ID);
-//
-//            Cursor Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null);
 
-            Cursor Weather_cursor = db.query(
-                    WeatherContract.WeatherEntry.TABLE_NAME,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
-            );
+            Cursor Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
 
             if(Weather_cursor==null){
                 fail("Weather Cursor is null");
@@ -188,4 +150,5 @@ public class FullTestSuite extends TestSuite {
             assertEquals(value,cursor.getString(index));
         }
     }
+
 }
