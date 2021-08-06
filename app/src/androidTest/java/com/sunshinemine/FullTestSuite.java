@@ -103,7 +103,6 @@ public class FullTestSuite extends TestSuite {
             weather_ID = db.insert(WeatherContract.WeatherEntry.TABLE_NAME,null,weatherValues);
 
             assertTrue(weather_ID!=-1);
-            Log.v("Hello Data",weather_ID+"");
 
             Cursor Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
                     null,
@@ -127,6 +126,27 @@ public class FullTestSuite extends TestSuite {
             Log.v("Hello", WeatherContract.WeatherEntry.buildWeatherLocation(TEST_LOCATION)+"");
 
              Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(TEST_LOCATION,TEST_DATE),
+                    null,
+                    null,
+                    null,
+                    null);
+
+            if(Weather_cursor==null){
+                fail("Weather Cursor is null");
+            }
+            if(Weather_cursor.moveToFirst()){ // this works only when cursor is initialised
+
+                ValidateCursor(weatherValues,Weather_cursor);
+
+            }else{
+                fail("No Weather values returned");
+            }
+
+            Weather_cursor.close();
+
+
+            Weather_cursor = mContext.getContentResolver().query(
+                    WeatherContract.WeatherEntry.buildWeatherLocationWithDate(TEST_LOCATION,TEST_DATE),
                     null,
                     null,
                     null,

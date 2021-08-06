@@ -51,6 +51,12 @@ public class WeatherProvider extends ContentProvider {
                     "." + WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING + " = ? AND " +
                     WeatherContract.WeatherEntry.COULUMN_DATETEXT + " >= ? ";
 
+    //location.location_setting = ? AND date = ?
+    private static final String sLocationSettingAndDaySelection =
+            WeatherContract.LocationEntry.TABLE_NAME +
+                    "." + WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING + " = ? AND " +
+                    WeatherContract.WeatherEntry.COULUMN_DATETEXT + " = ? ";
+
 
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
 
@@ -85,15 +91,15 @@ public class WeatherProvider extends ContentProvider {
     }
 
 
-    private Cursor getWeatherByLocationSettingAndDate(
+    private Cursor getWeatherByLocationSettingWithDate(
             Uri uri, String[] projection, String sortOrder) {
+        String day = WeatherContract.WeatherEntry.getDateFromUri(uri);
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
-        String date = WeatherContract.WeatherEntry.getDateFromUri(uri);
 
         return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 sLocationSettingWithStartDateSelection,
-                new String[]{locationSetting, date},
+                new String[]{locationSetting, day},
                 null,
                 null,
                 sortOrder
@@ -154,7 +160,8 @@ public class WeatherProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)){
             case WEATHER_WITH_LOCATION_AND_DATE:
                 {
-                    retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
+                    Log.v("Hello Achay","Wala");
+                    retCursor = getWeatherByLocationSettingWithDate(uri, projection, sortOrder);
                     break;
                 }
             case WEATHER_WITH_LOCATION:
