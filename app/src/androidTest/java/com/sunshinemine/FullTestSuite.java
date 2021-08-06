@@ -1,7 +1,6 @@
 package com.sunshinemine;
 
-import android.content.ContentProvider;
-import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,9 +16,7 @@ import com.sunshinemine.data.WeatherDBHelper;
 
 import junit.framework.TestSuite;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
 import org.junit.runner.RunWith;
 
 import java.util.Map;
@@ -99,8 +96,8 @@ public class FullTestSuite extends TestSuite {
 
             ContentValues weatherValues = getWeatherValues(row_ID);
 
-            long weather_ID ;
-            weather_ID = db.insert(WeatherContract.WeatherEntry.TABLE_NAME,null,weatherValues);
+            Uri uri_1 = mContext.getContentResolver().insert(WeatherContract.WeatherEntry.CONTENT_URI,weatherValues);
+            long weather_ID = ContentUris.parseId(uri_1);
 
             assertTrue(weather_ID!=-1);
 
@@ -169,7 +166,69 @@ public class FullTestSuite extends TestSuite {
         }
 
         db.close();
+        //deleteDatabaseTest();
+       // testUpdateLocation();
     }
+
+
+    public void deleteDatabaseTest() {
+        mContext.getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI,null,null);
+        mContext.getContentResolver().delete(WeatherContract.LocationEntry.CONTENT_URI,null,null);
+
+        Cursor cursor = mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI,null,null,null,null);
+        assertEquals(cursor.getCount(),0);
+        cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,null,null,null,null);
+        assertEquals(cursor.getCount(),0);
+        cursor.close();
+
+    }
+
+    /*
+        This test uses the provider to insert and then update the data. Uncomment this test to
+        see if your update location is functioning correctly.
+     */
+
+    
+    public void testUpdateLocation() {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = getLocationValues();
+        Uri locationUri = mContext.getContentResolver().
+                insert(WeatherContract.LocationEntry.CONTENT_URI, values);
+        long locationRowId = ContentUris.parseId(locationUri);
+
+        // Verify we got a row back.
+        assertTrue(locationRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + locationRowId);
+
+        ContentValues updatedValues = new ContentValues(values);
+        updatedValues.put(WeatherContract.LocationEntry._ID, locationRowId);
+        updatedValues.put(WeatherContract.LocationEntry.COULUMN_CITY_NAME, "Santa's Village");
+
+        // Create a cursor with observer to make sure that the content provider is notifying
+        // the observers as expected
+        Cursor locationCursor = mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI, null, null, null, null);
+
+        int count = mContext.getContentResolver().update(
+                WeatherContract.LocationEntry.CONTENT_URI, updatedValues, WeatherContract.LocationEntry._ID + "= ?",
+                new String[] { Long.toString(locationRowId)});
+        assertEquals(count, 1);
+
+        locationCursor.close();
+
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherContract.LocationEntry.CONTENT_URI,
+                null,   // projection
+                WeatherContract.LocationEntry._ID + " = " + locationRowId,
+                null,   // Values for the "where" clause
+                null    // sort order
+        );
+
+        Log.v("Hello",cursor.moveToFirst()+"");
+
+        cursor.close();
+    }
+
 
     static public String TEST_CITY_NAME= "North Pole";
     static public String TEST_LOCATION ="99705";
