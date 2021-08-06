@@ -24,8 +24,7 @@ public class WeatherDBHelper extends SQLiteOpenHelper {
                         WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING+ " TEXT UNIQUE NOT NULL, "+
                         WeatherContract.LocationEntry.COULUMN_CITY_NAME+ " TEXT NOT NULL, "+
                         WeatherContract.LocationEntry.COULUMN_COORD_LAT+ " REAL NOT NULL, "+
-                        WeatherContract.LocationEntry.COULUMN_COORD_LONG+ " REAL NOT NULL, "+
-                        " UNIQUE ("+ WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING+") ON CONFLICT IGNORE"+
+                        WeatherContract.LocationEntry.COULUMN_COORD_LONG+ " REAL NOT NULL "+
                         " );";
 
         final String SQL_CREATE_WEATHER_TABLE =

@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.format.Time;
 
 import androidx.core.net.ParseException;
 
@@ -21,6 +22,16 @@ public class WeatherContract {
     public static final String PATH_WEATHER = "weather";
 
     public static final String PATH_LOCATION = "location";
+
+
+    public static long normalizeDate(long startDate) {
+        // normalize the start date to the beginning of the (UTC) day
+        Time time = new Time();
+        time.set(startDate);
+        int julianDay = Time.getJulianDay(startDate, time.gmtoff);
+        return time.setJulianDay(julianDay);
+    }
+
 
     public static final class WeatherEntry implements BaseColumns {
 

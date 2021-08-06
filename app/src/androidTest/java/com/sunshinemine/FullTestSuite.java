@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -59,12 +60,13 @@ public class FullTestSuite extends TestSuite {
     }
 
     @Test
-    public void testInsertReadDb() {
+    public void testInsertReadContentProvider() {
 
 
         mContext.deleteDatabase(WeatherDBHelper.DATABASE_NAME);
 
         WeatherDBHelper weatherDBHelper = new WeatherDBHelper(mContext,WeatherDBHelper.DATABASE_NAME,null,0);
+
         // Context of the app under test.
         SQLiteDatabase db = weatherDBHelper.getWritableDatabase();
 
@@ -73,30 +75,24 @@ public class FullTestSuite extends TestSuite {
         ContentValues location_contentValues = getLocationValues();
 
         long row_ID ;
-        row_ID = db.insert(WeatherContract.LocationEntry.TABLE_NAME,null,location_contentValues);
 
-        assertTrue(row_ID!=-1);
-        Log.v(LOG_TAG,"NEW ROW ID -> "+row_ID);
+        Uri uri = mContext.getContentResolver().insert(WeatherContract.LocationEntry.CONTENT_URI, location_contentValues);
 
-//        Cursor cursor = mContext.getContentResolver().query(WeatherContract.LocationEntry.buildLocationUri(row_ID),
-//        null,
-//        null,
-//        null,
-//        null);
+        Log.v("URI = ",uri.toString());
+        assertNotNull(uri);
 
-        Cursor cursor = db.query(
-                WeatherContract.LocationEntry.TABLE_NAME,
+        row_ID = Long.valueOf(uri.getLastPathSegment());
+
+        Log.v("URI = ",WeatherContract.LocationEntry.buildLocationUri(row_ID).toString());
+
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherContract.LocationEntry.buildLocationUri(row_ID),
                 null,
                 null,
                 null,
-                null,
-                null,
-               null
+                null
         );
 
-        if(cursor==null){
-            fail("Location Cursor is null");
-        }
         if(cursor.moveToFirst()){
 
             ValidateCursor(location_contentValues,cursor);
@@ -107,23 +103,13 @@ public class FullTestSuite extends TestSuite {
             weather_ID = db.insert(WeatherContract.WeatherEntry.TABLE_NAME,null,weatherValues);
 
             assertTrue(weather_ID!=-1);
-            Log.v(LOG_TAG,"NEW ROW WEATHER ID -> "+weather_ID);
-//
-//            Cursor Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
-//                null,
-//                null,
-//                null,
-//                null);
+            Log.v("Hello Data",weather_ID+"");
 
-            Cursor Weather_cursor = db.query(
-                    WeatherContract.WeatherEntry.TABLE_NAME,
+            Cursor Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.CONTENT_URI,
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null
-            );
+                    null);
 
             if(Weather_cursor==null){
                 fail("Weather Cursor is null");
@@ -136,6 +122,28 @@ public class FullTestSuite extends TestSuite {
                 fail("No Weather values returned");
             }
 
+            Weather_cursor.close();
+
+            Log.v("Hello", WeatherContract.WeatherEntry.buildWeatherLocation(TEST_LOCATION)+"");
+
+             Weather_cursor = mContext.getContentResolver().query(WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(TEST_LOCATION,TEST_DATE),
+                    null,
+                    null,
+                    null,
+                    null);
+
+            if(Weather_cursor==null){
+                fail("Weather Cursor is null");
+            }
+            if(Weather_cursor.moveToFirst()){ // this works only when cursor is initialised
+
+                ValidateCursor(weatherValues,Weather_cursor);
+
+            }else{
+                fail("No Weather values returned");
+            }
+
+            Weather_cursor.close();
         }else{
             fail("No Location values returned");
         }
@@ -143,11 +151,14 @@ public class FullTestSuite extends TestSuite {
         db.close();
     }
 
+    static public String TEST_CITY_NAME= "North Pole";
+    static public String TEST_LOCATION ="99705";
+    static public String TEST_DATE = "20210801";
 
     static public ContentValues getWeatherValues(long row_ID){
         ContentValues weatherValues = new ContentValues();
         weatherValues.put(WeatherContract.WeatherEntry.COULUMN_LOCATION_KEY,row_ID);
-        weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DATETEXT,"201294");
+        weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DATETEXT,TEST_DATE);
         weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DEGREES,1.1);
         weatherValues.put(WeatherContract.WeatherEntry.COULUMN_HUMIDITY,1.2);
         weatherValues.put(WeatherContract.WeatherEntry.COULUMN_PRESSURE,1.3);
@@ -160,8 +171,8 @@ public class FullTestSuite extends TestSuite {
     }
     static public ContentValues getLocationValues(){
 
-        String test_Name= " North Pole ";
-        String test_LocationSetting = "99056";
+        String test_Name= TEST_CITY_NAME;
+        String test_LocationSetting = TEST_LOCATION;
         double test_Lattitude = 34.45;
         double test_Longitude = 45.67;
 

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class WeatherProvider extends ContentProvider {
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     private static final int WEATHER = 100;
     private static final int WEATHER_WITH_LOCATION = 101;
@@ -24,14 +25,16 @@ public class WeatherProvider extends ContentProvider {
 
     private WeatherDBHelper mOpenHelper;
 
-    private static SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder ;
+    private static final SQLiteQueryBuilder sWeatherByLocationSettingQueryBuilder ;
 
     static {
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+        //This is an inner join which looks like
+        //weather INNER JOIN location ON weather.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
-                WeatherContract.WeatherEntry.TABLE_NAME+" INNER JOIN "+
+                WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
                         WeatherContract.LocationEntry.TABLE_NAME +
-                        " ON " +WeatherContract.WeatherEntry.TABLE_NAME +
+                        " ON " + WeatherContract.WeatherEntry.TABLE_NAME +
                         "." + WeatherContract.WeatherEntry.COULUMN_LOCATION_KEY +
                         " = " + WeatherContract.LocationEntry.TABLE_NAME +
                         "." + WeatherContract.LocationEntry._ID);
@@ -50,7 +53,9 @@ public class WeatherProvider extends ContentProvider {
 
 
     private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
+
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+
         String startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
 
         String[] selectionArgs;
@@ -63,8 +68,11 @@ public class WeatherProvider extends ContentProvider {
             selectionArgs = new String[]{locationSetting, startDate};
             selection = sLocationSettingWithStartDateSelection;
         }
+        Log.v("Hello",selection);
+        Log.v("Hello",selectionArgs[0].toString()+"");
+        Log.v("Hello",sWeatherByLocationSettingQueryBuilder.getTables()+"");
 
-        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        Cursor cursor = sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
@@ -72,9 +80,26 @@ public class WeatherProvider extends ContentProvider {
                 null,
                 sortOrder
         );
+        Log.v("Hello",cursor.getColumnCount()+" -> "+cursor.moveToFirst());
+        return cursor;
     }
 
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    private Cursor getWeatherByLocationSettingAndDate(
+            Uri uri, String[] projection, String sortOrder) {
+        String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
+        String date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sLocationSettingWithStartDateSelection,
+                new String[]{locationSetting, date},
+                null,
+                null,
+                sortOrder
+        );
+    }
+
 
     private static UriMatcher buildUriMatcher(){
 
@@ -129,11 +154,13 @@ public class WeatherProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)){
             case WEATHER_WITH_LOCATION_AND_DATE:
                 {
-                    retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
+                    retCursor = getWeatherByLocationSettingAndDate(uri, projection, sortOrder);
                     break;
                 }
             case WEATHER_WITH_LOCATION:
                 {
+                    Log.v("Hello", "Query");
+
                     retCursor = getWeatherByLocationSetting(uri, projection, sortOrder);
                     break;
                 }
@@ -175,7 +202,6 @@ public class WeatherProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-                int index = retCursor.getColumnIndex(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING);
                 retCursor.moveToFirst();
                 Log.v("URI",retCursor.getString(1)+"");
               //  Log.v("URI",retCursor.getString(1)+"");
