@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +23,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import com.sunshinemine.data.WeatherContract;
 
 import org.json.JSONException;
 
@@ -177,9 +182,72 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
         WeatherForecast.setPreference(this,result);
 
         try {
-            weatherAdapter.swapWeather(WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(this)));
+            ArrayList<WeatherForecast> arrayList = WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(this));
+            weatherAdapter.swapWeather(arrayList);
+            long locationId = addlocation("0546","Mandi Bahauddin",32.5742,73.4828);
+            Log.v("Hello Brother",locationId+"");
+            Log.v("Hello Size",arrayList.size()+"");
+            insertBulk(arrayList,locationId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    private void insertBulk(ArrayList<WeatherForecast> weatherForecastArrayList,long id){
+
+        ArrayList<ContentValues> newList = new ArrayList<>();
+
+        for(int i=0;i<weatherForecastArrayList.size();i++){
+
+            ContentValues weatherValues = new ContentValues();
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_LOCATION_KEY,id);
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DATETEXT,WeatherContract.normalizeDate(weatherForecastArrayList.get(i).getDt()));
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DEGREES,weatherForecastArrayList.get(i).getWind_deg());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_HUMIDITY,weatherForecastArrayList.get(i).getHumidity());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_PRESSURE,weatherForecastArrayList.get(i).getPressure());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_MAX_TEMP,weatherForecastArrayList.get(i).getTemp().getMax());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_MIN_TEMP,weatherForecastArrayList.get(i).getTemp().getMin());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC,weatherForecastArrayList.get(i).getWeatherArrayList().get(0).getDescription());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_WIND_SPEED,weatherForecastArrayList.get(i).getWind_speed());
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_WEATHER_ID,weatherForecastArrayList.get(i).getWeatherArrayList().get(0).getId());
+
+            Log.v("Waloo",weatherValues.toString());
+            newList.add(weatherValues);
+        }
+
+        ContentValues[] cvArray =  new ContentValues[weatherForecastArrayList.size()];
+        newList.toArray(cvArray);
+        getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI,cvArray);
+
+    }
+
+    private long addlocation(String locationSetting,String cityName,double lat,double lon){
+        Cursor cursor = getContentResolver().query(
+                WeatherContract.LocationEntry.CONTENT_URI,
+                new String[]{WeatherContract.LocationEntry._ID},
+                WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING + " = ?",
+                new String[]{locationSetting},
+                null
+        );
+        if(cursor.moveToFirst()){
+            Log.v("Hello","Founded Record in the database");
+            int id= cursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+            return  cursor.getLong(id);
+        }else{
+            Log.v("Hello","Not Founded Record in the database");
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(WeatherContract.LocationEntry.COULUMN_CITY_NAME,cityName);
+            contentValues.put(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING,locationSetting);
+            contentValues.put(WeatherContract.LocationEntry.COULUMN_COORD_LAT,lat);
+            contentValues.put(WeatherContract.LocationEntry.COULUMN_COORD_LONG,lon);
+            Uri locationUri = getContentResolver().insert(
+                    WeatherContract.LocationEntry.CONTENT_URI,contentValues
+            );
+
+            return ContentUris.parseId(locationUri);
+        }
+    }
+
+
 }

@@ -63,6 +63,9 @@ public class WeatherForecast implements Parcelable {
     private double pop;
     private double uvi;
 
+    public void setWeatherArrayList(List<weather> weatherArrayList) {
+        this.weatherArrayList = weatherArrayList;
+    }
 
     protected WeatherForecast(Parcel in) {
         dt = in.readLong();
