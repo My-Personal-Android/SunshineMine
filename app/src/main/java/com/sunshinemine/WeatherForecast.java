@@ -208,6 +208,41 @@ public class WeatherForecast implements Parcelable {
         return  weatherForecastArrayList;
     }
 
+    public static WeatherForecast addCurrentWeatherForecast(JSONObject day_weather){
+
+        try {
+            Temp temp = new Temp();
+            temp.setMax(day_weather.getDouble("temp")+2.0);
+            temp.setMin(Double.parseDouble(String.format("%.2f", day_weather.getDouble("temp")-2.0)));
+
+            Feels_Like feels_like = new Feels_Like();
+            feels_like.setDay(day_weather.getDouble("feels_like"));
+
+            WeatherForecast weatherForecast =  new WeatherForecast(
+                    day_weather.getLong("dt"),
+                    day_weather.getLong("sunrise"),
+                    day_weather.getLong("sunset"),
+                    0,
+                    0,
+                    temp,
+                    feels_like,
+                    day_weather.getLong("pressure"),
+                    day_weather.getLong("humidity"),
+                    day_weather.getDouble("wind_speed"),
+                    day_weather.getLong("wind_deg"),
+                    day_weather.getDouble("wind_gust"),
+                    fetchWeatherArrayListFrom(day_weather.getJSONArray("weather")),
+                    day_weather.getLong("clouds"),
+                    0.0,
+                    day_weather.getDouble("uvi")
+            );
+            return weatherForecast;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static ArrayList<weather> fetchWeatherArrayListFrom(JSONArray jsonArray) throws JSONException {
 
         ArrayList<weather> weathers = new ArrayList<>();

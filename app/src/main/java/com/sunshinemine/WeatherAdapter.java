@@ -8,13 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherAdapterViewHolder> {
@@ -35,22 +38,51 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
         return new WeatherAdapter.WeatherAdapterViewHolder(view);
     }
 
+    @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+" - ");
-        holder.forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+" - " );
-        holder.high_textview.setText(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0]+"\u00B0 / ");
-        holder.low_textview.setText(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1]+"\u00B0");
-        holder.linear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if(0 == position){
+            holder.top_linear.setVisibility(View.VISIBLE);
+            holder.linear.setVisibility(View.GONE);
 
-                Intent intent = new Intent(context,WeatherForecastDetails.class);
-                Log.v("Helo",mWeatherForecast.get(position).toString());
-                intent.putExtra("Data", (Parcelable) mWeatherForecast.get(position));
-                context.startActivity(intent);
+            holder.list_item_date_textview.setText("Today  - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+            holder.list_item_forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"");
+            holder.list_item_high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
+            holder.list_item_low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
+
+            holder.list_item_icon.setImageResource(R.drawable.ic_launcher_background);
+            holder.top_linear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context,WeatherForecastDetails.class);
+                    Log.v("Helo",mWeatherForecast.get(position).toString());
+                    intent.putExtra("Data", (Parcelable) mWeatherForecast.get(position));
+                    context.startActivity(intent);
+                }
+            });
+        }else{
+            if(position == 1){
+                holder.date_textview.setText("Tomorrow  - "+WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+
+            }else{
+                holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+
             }
-        });
+            holder.forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"" );
+            holder.high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
+            holder.low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
+            holder.linear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context,WeatherForecastDetails.class);
+                    Log.v("Helo",mWeatherForecast.get(position).toString());
+                    intent.putExtra("Data", (Parcelable) mWeatherForecast.get(position));
+                    context.startActivity(intent);
+                }
+            });
+        }
     }
 
     public void swapWeather(ArrayList<WeatherForecast> weatherForecasts){
@@ -70,6 +102,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     }
 
     class WeatherAdapterViewHolder extends RecyclerView.ViewHolder{
+
+        public LinearLayout top_linear;
+        public TextView list_item_date_textview;
+        public TextView list_item_high_textview;
+        public TextView list_item_low_textview;
+        public ImageView list_item_icon;
+        public TextView list_item_forecast_textview;
+
+
         public LinearLayout linear;
         public TextView date_textview;
         public TextView forecast_textview;
@@ -80,6 +121,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         public WeatherAdapterViewHolder(View itemView){
             super(itemView);
+            // Top
+            top_linear= itemView.findViewById(R.id.top_linear);
+            list_item_date_textview =itemView.findViewById(R.id.list_item_date_textview);
+            list_item_high_textview =itemView.findViewById(R.id.list_item_high_textview);
+            list_item_low_textview =itemView.findViewById(R.id.list_item_low_textview);
+            list_item_icon =itemView.findViewById(R.id.list_item_icon);
+            list_item_forecast_textview =itemView.findViewById(R.id.list_item_forecast_textview);
+
+
+            // Below
             linear =itemView.findViewById(R.id.linear);
             date_textview =itemView.findViewById(R.id.date_textview);
             forecast_textview =itemView.findViewById(R.id.forecast_textview);

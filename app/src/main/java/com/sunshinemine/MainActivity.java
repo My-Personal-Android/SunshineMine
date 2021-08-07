@@ -36,6 +36,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -96,10 +97,6 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         weatherAdapter = new WeatherAdapter(this, new ArrayList<>());
         recyclerview_forecast.setAdapter(weatherAdapter);
         recyclerview_forecast.setItemAnimator(new DefaultItemAnimator());
-
-        String data = WeatherForecast.getPreference(this);
-        WeatherForecast.v(LOG_TAG,data);
-
 
     }
 
@@ -188,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
         try {
             ArrayList<WeatherForecast> arrayList = WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(this));
-            weatherAdapter.swapWeather(arrayList);
+           // weatherAdapter.swapWeather(arrayList);
             long locationId = addlocation("0546","Mandi Bahauddin",32.5742,73.4828);
             Log.v("Hello Brother",locationId+"");
             Log.v("Hello Size",arrayList.size()+"");
@@ -264,23 +261,32 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
-        String startDate = String.valueOf(System.currentTimeMillis());
+        Calendar cal  = Calendar.getInstance();
+        //subtracting a day
+        cal.add(Calendar.DATE, -1);
+
+        String startDate = String.valueOf(new Date(cal.getTimeInMillis()).getTime());
+        Log.v("Mera",startDate);
 
         String sortOrder = WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 "0546", startDate);
 
-        return new CursorLoader(this,
+        CursorLoader cursorLoader =  new CursorLoader(this,
                 weatherForLocationUri,
                 FORECAST_COLUMNS,
                 null,
                 null,
                 sortOrder);
+
+        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        Log.v("Mera",data.getCount()+"");
         if(data!=null && data.moveToFirst()) {
+            Log.v("Mera",data.getCount()+"");
             ArrayList<WeatherForecast> arrayList =new ArrayList<>();
             do {
                 Log.v("Hola", data.getInt(COL_WEATHER_ID) + " - " + data.getString(COL_WEATHER_DATE) + " - " + data.getString(COL_WEATHER_DESC) + " - " +

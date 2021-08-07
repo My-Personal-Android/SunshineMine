@@ -1,5 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">Weather Forecast</string>
+    <string name="app_name">WEATHER FORECAST</string>
 
     <string name="pref_location_key">location</string>
 

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,11 @@ import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import com.sunshinemine.data.WeatherContract;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class WeatherForecastDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -61,6 +67,11 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
     public TextView forecast_textview;
     public TextView high_textview;
     public TextView low_textview;
+    public TextView detail_day_textview;
+    public ImageView detail_icon;
+    public TextView detail_humidity_textview;
+    public TextView detail_pressure_textview;
+    public TextView detail_wind_textview;
 
     private String mLocation;
     @Override
@@ -81,11 +92,11 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         forecast_textview =findViewById(R.id.forecast_textview);
         high_textview =findViewById(R.id.high_textview);
         low_textview =findViewById(R.id.low_textview);
-
-//        date_textview.setText(WeatherForecast.getReadableDateString(weatherForecast.getDt()) + " - ");
-//        forecast_textview.setText(weatherForecast.getWeatherArrayList().get(0).getMain()+" - ");
-//        high_textview.setText(weatherForecast.formatHightLows(this,weatherForecast.getTemp().getMax(),weatherForecast.getTemp().getMin()).split("/")[0]+" / ");
-//        low_textview.setText(weatherForecast.formatHightLows(this,weatherForecast.getTemp().getMax(),weatherForecast.getTemp().getMin()).split("/")[1]);
+        detail_day_textview = findViewById(R.id.detail_day_textview);
+        detail_icon = findViewById(R.id.detail_icon);
+        detail_humidity_textview= findViewById(R.id.detail_humidity_textview);
+        detail_pressure_textview = findViewById(R.id.detail_pressure_textview);
+        detail_wind_textview = findViewById(R.id.detail_wind_textview);
 
     }
 
@@ -166,16 +177,48 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
                     data.getString(9)+" - "+
                     data.getString(10)
                     );
-            date_textview.setText(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + " - ");
-            forecast_textview.setText(data.getString(COL_WEATHER_DESC)+" - ");
-            high_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0 / ");
+            detail_day_textview.setText(getDateText(Long.parseLong(data.getString(COL_WEATHER_DATE))));
+            date_textview.setText(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + "");
+            forecast_textview.setText(data.getString(COL_WEATHER_DESC)+"");
+            high_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0");
             low_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[1]+"\u00B0");
 
+            detail_icon.setImageResource(R.drawable.ic_launcher_background);
+            detail_humidity_textview.setText(data.getString(COL_WEATHER_HUMIDITY)+"%");
+            detail_pressure_textview.setText(data.getString(COL_WEATHER_PRESSURE)+" km/h NW");
+            detail_wind_textview.setText(data.getString(COL_WEATHER_WIND_SPEED)+"");
         }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    private String getDateText(long mydate){
+
+       ;
+        Date date = new Date(mydate * 1000);
+
+        DateFormat df = new SimpleDateFormat("dd:MM:yy");
+        String newDate = df.format(date);
+
+        //Calendar cal = Calendar.getInstance();
+        String current_day = df.format(new Date());
+        Log.v("Date",newDate + " - "+current_day);
+
+
+        Calendar cal  = Calendar.getInstance();
+
+        //adding a day
+        cal.add(Calendar.DATE, +1);
+
+        if(newDate.equals(current_day)){
+            return "Today";
+        }else if(newDate.equals(df.format(new Date(cal.getTimeInMillis()).getTime()))){
+            return "Tomorrow";
+        }
+
+        return "On" ;
     }
 }
