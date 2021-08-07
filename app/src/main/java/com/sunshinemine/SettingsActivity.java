@@ -6,6 +6,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.sunshinemine.data.WeatherContract;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -22,6 +24,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI,null);
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {

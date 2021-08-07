@@ -75,7 +75,7 @@ public class WeatherProvider extends ContentProvider {
             selection = sLocationSettingWithStartDateSelection;
         }
         Log.v("Hello",selection);
-        Log.v("Hello",selectionArgs[0].toString()+"");
+        Log.v("Hello",selectionArgs[1].toString()+"");
         Log.v("Hello",sWeatherByLocationSettingQueryBuilder.getTables()+"");
 
         Cursor cursor = sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
@@ -323,7 +323,7 @@ public class WeatherProvider extends ContentProvider {
                 int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
-                        normalizeDate(value);
+                        //normalizeDate(value);
                         long _id = db.insert(WeatherContract.WeatherEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;

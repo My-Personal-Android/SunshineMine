@@ -35,7 +35,14 @@
         </activity>
         <provider
             android:authorities="com.sunshinemine"
-            android:name=".data.WeatherProvider"></provider>
+            android:name=".data.WeatherProvider"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.sunshinemine.LICENSE_TO_KILL">
+        </provider>
     </application>
+    <permission android:name="com.sunshinemine.LICENSE_TO_KILL"
+        android:protectionLevel="dangerous"
+        android:label="Licenced to Kill"></permission>
 
 </manifest>

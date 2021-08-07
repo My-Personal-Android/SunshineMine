@@ -1,8 +1,13 @@
 package com.sunshinemine;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.os.HandlerCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.SimpleCursorAdapter;
 
 import com.sunshinemine.data.WeatherContract;
 
@@ -30,14 +36,31 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity implements HttpCallBack{
+public class MainActivity extends AppCompatActivity implements HttpCallBack, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = "MainActivity";
 
-    public static Context context;
+    private String mLocation;
+    private static final int FORECAST_LOADER = 0;
+
+    private static final String[] FORECAST_COLUMNS = {
+            WeatherContract.WeatherEntry.TABLE_NAME+"."+ WeatherContract.WeatherEntry._ID,
+            WeatherContract.WeatherEntry.COULUMN_DATETEXT,
+            WeatherContract.WeatherEntry.COULUMN_SHORT_DESC,
+            WeatherContract.WeatherEntry.COULUMN_MAX_TEMP,
+            WeatherContract.WeatherEntry.COULUMN_MIN_TEMP,
+            WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING
+    };
+    public static final int COL_WEATHER_ID = 0;
+    public static final int COL_WEATHER_DATE = 1;
+    public static final int COL_WEATHER_DESC = 2;
+    public static final int COL_WEATHER_MAX_TEMP = 3;
+    public static final int COL_WEATHER_MIN_TEMP = 4;
+    public static final int COL_LOCATION_SETTING = 5;
 
     String url = "https://api.openweathermap.org/data/2.5/onecall?";
     String lattitude = "lat=32.5742";
@@ -56,17 +79,15 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
     private RecyclerView recyclerview_forecast;
     private WeatherAdapter weatherAdapter;
 
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        context = this;
+        LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
-
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
         recyclerview_forecast.setHasFixedSize(true);
@@ -78,22 +99,6 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
 
         String data = WeatherForecast.getPreference(this);
         WeatherForecast.v(LOG_TAG,data);
-
-        try {
-            weatherAdapter.swapWeather(WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(this)));
-
-            ArrayList<WeatherForecast> weatherForecastArrayList = WeatherForecast.getWeatherDataFromJson(data);
-            //Log.v(LOG_TAG,WeatherForecast.getReadableDateString(weatherForecastArrayList.get(7).getDt())+" - "+weatherForecastArrayList.get(7).getWeatherArrayList().get(0).getMain() + " - " + WeatherForecast.formatHightLows(weatherForecastArrayList.get(7).getTemp().getMax(),weatherForecastArrayList.get(7).getTemp().getMin()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-//        weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
-//        try {
-//            weatherForecast.makeRequest(this,my_url);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
 
     }
@@ -201,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
 
             ContentValues weatherValues = new ContentValues();
             weatherValues.put(WeatherContract.WeatherEntry.COULUMN_LOCATION_KEY,id);
-            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DATETEXT,WeatherContract.normalizeDate(weatherForecastArrayList.get(i).getDt()));
+            weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DATETEXT,weatherForecastArrayList.get(i).getDt());
             weatherValues.put(WeatherContract.WeatherEntry.COULUMN_DEGREES,weatherForecastArrayList.get(i).getWind_deg());
             weatherValues.put(WeatherContract.WeatherEntry.COULUMN_HUMIDITY,weatherForecastArrayList.get(i).getHumidity());
             weatherValues.put(WeatherContract.WeatherEntry.COULUMN_PRESSURE,weatherForecastArrayList.get(i).getPressure());
@@ -213,12 +218,17 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
 
             Log.v("Waloo",weatherValues.toString());
             newList.add(weatherValues);
+//            Uri locationUri = getContentResolver().insert(
+//                    WeatherContract.WeatherEntry.CONTENT_URI,weatherValues
+//            );
+//            Log.v("Waoo",ContentUris.parseId(locationUri)+"");
         }
 
         ContentValues[] cvArray =  new ContentValues[weatherForecastArrayList.size()];
         newList.toArray(cvArray);
-        getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI,cvArray);
-
+        Log.v("ToArray",cvArray.length+"");
+        int data = getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI,cvArray);
+        Log.v("Hello ->>>>>>","Bulk ROWS  = "+data+"");
     }
 
     private long addlocation(String locationSetting,String cityName,double lat,double lon){
@@ -250,4 +260,56 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack{
     }
 
 
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+
+        String startDate = String.valueOf(System.currentTimeMillis());
+
+        String sortOrder = WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                "0546", startDate);
+
+        return new CursorLoader(this,
+                weatherForLocationUri,
+                FORECAST_COLUMNS,
+                null,
+                null,
+                sortOrder);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if(data!=null && data.moveToFirst()) {
+            ArrayList<WeatherForecast> arrayList =new ArrayList<>();
+            do {
+                Log.v("Hola", data.getInt(COL_WEATHER_ID) + " - " + data.getString(COL_WEATHER_DATE) + " - " + data.getString(COL_WEATHER_DESC) + " - " +
+                        data.getString(COL_WEATHER_MAX_TEMP) + " - " + data.getString(COL_WEATHER_MIN_TEMP) + " - " + data.getString(COL_LOCATION_SETTING));
+
+                WeatherForecast weatherForecast = new WeatherForecast();
+                weatherForecast.setDt(Long.parseLong(data.getString(COL_WEATHER_DATE)));
+
+                ArrayList<WeatherForecast.weather> weathers = new ArrayList<>();
+                WeatherForecast.weather weather = new WeatherForecast.weather();
+                weather.setMain(data.getString(COL_WEATHER_DESC));
+                weathers.add(weather);
+                weatherForecast.setWeatherArrayList(weathers);
+
+                WeatherForecast.Temp temp = new WeatherForecast.Temp();
+                temp.setMax(Double.parseDouble(data.getString(COL_WEATHER_MAX_TEMP)));
+                temp.setMin(Double.parseDouble(data.getString(COL_WEATHER_MIN_TEMP)));
+                weatherForecast.setTemp(temp);
+
+                arrayList.add(weatherForecast);
+            }
+            while (data.moveToNext());
+            weatherAdapter.swapWeather(arrayList);
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        weatherAdapter.swapWeather(null);
+    }
 }

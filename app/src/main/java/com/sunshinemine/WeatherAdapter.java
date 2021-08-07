@@ -1,5 +1,6 @@
 package com.sunshinemine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,15 +31,17 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @Override
     public WeatherAdapterViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_weather, parent, false);
+        View view = inflater.inflate(R.layout.list_item_forcast, parent, false);
         return new WeatherAdapter.WeatherAdapterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, int position) {
-        WeatherForecast weatherForecast = new WeatherForecast();
-        holder.text.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+" - "+mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain() + " - " + weatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()));
-        holder.text.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+" - ");
+        holder.forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+" - " );
+        holder.high_textview.setText(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0]+"\u00B0 / ");
+        holder.low_textview.setText(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1]+"\u00B0");
+        holder.linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -66,11 +70,23 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     }
 
     class WeatherAdapterViewHolder extends RecyclerView.ViewHolder{
-        public TextView text;
+        public LinearLayout linear;
+        public TextView date_textview;
+        public TextView forecast_textview;
+        public TextView high_textview;
+        public TextView low_textview;
+
+      //  private TextView
 
         public WeatherAdapterViewHolder(View itemView){
             super(itemView);
-            text =itemView.findViewById(R.id.text);
+            linear =itemView.findViewById(R.id.linear);
+            date_textview =itemView.findViewById(R.id.date_textview);
+            forecast_textview =itemView.findViewById(R.id.forecast_textview);
+            high_textview =itemView.findViewById(R.id.high_textview);
+            low_textview =itemView.findViewById(R.id.low_textview);
+
+
         }
     }
 }

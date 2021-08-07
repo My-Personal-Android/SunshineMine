@@ -136,7 +136,7 @@ public class WeatherForecast implements Parcelable {
         return simpleDateFormat.format(date).toString();
     }
 
-    public String formatHightLows (Context context,double high , double low){
+    public static String formatHightLows (Context context,double high , double low){
 
         Resources res = context.getResources(); //assuming in an activity for example, otherwise you can provide a context.
         String[] units = res.getStringArray(R.array.units_values);

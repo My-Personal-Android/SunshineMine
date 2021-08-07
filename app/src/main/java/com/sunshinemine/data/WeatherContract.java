@@ -56,12 +56,12 @@ public class WeatherContract {
         public static final String COULUMN_DEGREES = "degrees";
 
         public static String getDbDateString(Date date) {
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
             return sdf.format(date);
         }
 
         public static Date getDateFromDb(String dateText) {
-            SimpleDateFormat dbDateFormat = new SimpleDateFormat(DATE_FORMAT);
+            SimpleDateFormat dbDateFormat = new SimpleDateFormat("mm/dd/yyyy");
             try {
                 return dbDateFormat.parse(dateText);
             } catch (ParseException | java.text.ParseException e ) {
