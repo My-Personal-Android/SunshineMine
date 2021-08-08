@@ -6,7 +6,7 @@
         <entry key="../../../../../../layout/custom_preview.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.13134057971014493" />
-        <entry key="app/src/main/res/layout/activity_weather_forecast_details.xml" value="0.14402173913043478" />
+        <entry key="app/src/main/res/layout/activity_weather_forecast_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_weather.xml" value="0.13451086956521738" />
         <entry key="app/src/main/res/layout/list_item_forcast.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_item_forecast_today.xml" value="0.16818642350557245" />
