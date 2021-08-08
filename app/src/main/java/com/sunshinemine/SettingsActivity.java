@@ -8,6 +8,8 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.sunshinemine.data.WeatherContract;
@@ -38,13 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_general, rootKey);
         }
+
     }
 
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
-        MainActivity.setPreference(this,loca.split("/")[1]);
-    }
 }

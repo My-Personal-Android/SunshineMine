@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     private RecyclerView recyclerview_forecast;
     private WeatherAdapter weatherAdapter;
 
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
         try {
-            String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+            String myString_key = getString(R.string.pref_city_key);
+            String myString_default_value = getString(R.string.pref_city_default);
+            String loca = preferences.getString(myString_key,myString_default_value);
             MainActivity.setPreference(this,loca.split("/")[1]);
             selected_city_textview.setText(MainActivity.getPreference(this));
             lattitude = loca.split("/")[0].split(",")[0];
@@ -181,7 +182,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     private void openPreferredLocationOnMap(){
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+        String myString_key = getString(R.string.pref_city_key);
+        String myString_default_value = getString(R.string.pref_city_default);
+        String location = preferences.getString(myString_key,myString_default_value);
         Log.v("Cityy",location);
 //        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
 //                Uri.parse("geo:0,0?q=37.423156,-122.084917 ( Mandi bahauddin)"));
@@ -294,7 +297,10 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+        String myString_key = getString(R.string.pref_city_key);
+        String myString_default_value = getString(R.string.pref_city_default);
+        String loca = preferences.getString(myString_key,myString_default_value);
+        Log.v("WallPaper",loca);
         MainActivity.setPreference(this,loca.split("/")[1]);
 
         // Karachi, Pakistan time is 10:00 hours ahead Chicago, United States
@@ -363,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
     public static String getPreference(Context context) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        return settings.getString(KEY, "Mandi Bahauddin");
+        return settings.getString(KEY, "MANDI BAHAUDDIN");
     }
 
     public static void ClearSharedPrefences(Context context) {
