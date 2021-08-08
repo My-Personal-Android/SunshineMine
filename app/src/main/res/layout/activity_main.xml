@@ -35,6 +35,7 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:gravity="center"
+                android:text="No Location Added"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/sunshine_dark_blue" />
         </androidx.cardview.widget.CardView>

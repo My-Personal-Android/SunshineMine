@@ -2,10 +2,10 @@
 
     <PreferenceCategory app:title="@string/location_header">
 
-        <EditTextPreference
-            app:key="@string/pref_location_key"
-            app:title="@string/location_title"
-            app:useSimpleSummaryProvider="true" />
+<!--        <EditTextPreference-->
+<!--            app:key="@string/pref_location_key"-->
+<!--            app:title="@string/location_title"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
 
         <ListPreference
             app:defaultValue="@string/pref_units_key"

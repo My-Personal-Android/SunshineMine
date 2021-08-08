@@ -1,7 +1,11 @@
 package com.sunshinemine;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
@@ -34,5 +38,13 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.pref_general, rootKey);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+        MainActivity.setPreference(this,loca.split("/")[1]);
     }
 }

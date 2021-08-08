@@ -154,7 +154,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Intent intent = getIntent();
         WeatherForecast weatherForecast = intent.getParcelableExtra("Data");
-        mLocation = "0546";
+        mLocation = MainActivity.getPreference(this);
         Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(mLocation,String.valueOf(weatherForecast.getDt()));
 
         return new CursorLoader(

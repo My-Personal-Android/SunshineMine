@@ -47,11 +47,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
     private static final String LOG_TAG = "MainActivity";
 
-
     public static final String PREFERENCE_FILE="com.sunshinemine";
     private static final String KEY="CITY";
 
-    private String mLocation;
     private TextView selected_city_textview;
     private static final int FORECAST_LOADER = 0;
 
@@ -90,22 +88,6 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     private WeatherAdapter weatherAdapter;
 
 
-    public static boolean setPreference(Context context, String value) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(KEY, value);
-        return editor.commit();
-    }
-
-    public static String getPreference(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        return settings.getString(KEY, "Mandi Bahauddin");
-    }
-
-    public static void ClearSharedPrefences(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        settings.edit().clear().commit();
-    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +112,26 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         recyclerview_forecast.setAdapter(weatherAdapter);
         recyclerview_forecast.setItemAnimator(new DefaultItemAnimator());
 
+        NetworkCall();
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void NetworkCall(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
+        try {
+            String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+            MainActivity.setPreference(this,loca.split("/")[1]);
+            selected_city_textview.setText(MainActivity.getPreference(this));
+            lattitude = loca.split("/")[0].split(",")[0];
+            longitude = loca.split("/")[0].split(",")[1];
+            Log.v("Cityy",loca);
+            my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+            weatherForecast.makeRequest(this,my_url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -162,23 +164,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
             case R.id.action_refresh:
             {
-
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-                Log.v("Looo",location);
-                weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
-                try {
-                    String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
-                    MainActivity.setPreference(this,loca.split("/")[1]);
-                    selected_city_textview.setText(MainActivity.getPreference(this));
-                    lattitude = loca.split("/")[0].split(",")[0];
-                    longitude = loca.split("/")[0].split(",")[1];
-                    Log.v("Cityy",loca);
-                    my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
-                    weatherForecast.makeRequest(this,my_url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                NetworkCall();
                 return true;
             }
             case R.id.settings:
@@ -232,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         try {
             ArrayList<WeatherForecast> arrayList = WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(this));
            // weatherAdapter.swapWeather(arrayList);
-            long locationId = addlocation("0546","Mandi Bahauddin",32.5742,73.4828);
+            long locationId = addlocation(MainActivity.getPreference(this),MainActivity.getPreference(this),32.5742,73.4828);
             Log.v("Hello Brother",locationId+"");
             Log.v("Hello Size",arrayList.size()+"");
             insertBulk(arrayList,locationId);
@@ -307,6 +293,10 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+        MainActivity.setPreference(this,loca.split("/")[1]);
+
         // Karachi, Pakistan time is 10:00 hours ahead Chicago, United States
         long ten_Hours_in_miliseconds = 36000000;
         String startDate = String.valueOf(new Date(Calendar.getInstance().getTimeInMillis() - ten_Hours_in_miliseconds).getTime());
@@ -314,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
         String sortOrder = WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-                "0546", startDate);
+                MainActivity.getPreference(this), startDate);
 
         CursorLoader cursorLoader =  new CursorLoader(this,
                 weatherForLocationUri,
@@ -363,4 +353,22 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         weatherAdapter.swapWeather(null);
     }
+
+    public static boolean setPreference(Context context, String value) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(KEY, value);
+        return editor.commit();
+    }
+
+    public static String getPreference(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        return settings.getString(KEY, "Mandi Bahauddin");
+    }
+
+    public static void ClearSharedPrefences(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        settings.edit().clear().commit();
+    }
+
 }
