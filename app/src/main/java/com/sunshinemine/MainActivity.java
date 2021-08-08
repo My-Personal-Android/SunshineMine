@@ -54,14 +54,16 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
             WeatherContract.WeatherEntry.COULUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COULUMN_MAX_TEMP,
             WeatherContract.WeatherEntry.COULUMN_MIN_TEMP,
-            WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING
+            WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING,
+            WeatherContract.WeatherEntry.COULUMN_WEATHER_ID
     };
-    public static final int COL_WEATHER_ID = 0;
+    public static final int COL_ID = 0;
     public static final int COL_WEATHER_DATE = 1;
     public static final int COL_WEATHER_DESC = 2;
     public static final int COL_WEATHER_MAX_TEMP = 3;
     public static final int COL_WEATHER_MIN_TEMP = 4;
     public static final int COL_LOCATION_SETTING = 5;
+    public static final int COL_WEATHER_ID = 6;
 
     String url = "https://api.openweathermap.org/data/2.5/onecall?";
     String lattitude = "lat=32.5742";
@@ -261,11 +263,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
-        Calendar cal  = Calendar.getInstance();
-        //subtracting a day
-        cal.add(Calendar.DATE, -1);
-
-        String startDate = String.valueOf(new Date(cal.getTimeInMillis()).getTime());
+        String startDate = String.valueOf(new Date(Calendar.getInstance().getTimeInMillis()).getTime());
         Log.v("Mera",startDate);
 
         String sortOrder = WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC";
@@ -298,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
                 ArrayList<WeatherForecast.weather> weathers = new ArrayList<>();
                 WeatherForecast.weather weather = new WeatherForecast.weather();
                 weather.setMain(data.getString(COL_WEATHER_DESC));
+                weather.setId(data.getInt(COL_WEATHER_ID));
                 weathers.add(weather);
                 weatherForecast.setWeatherArrayList(weathers);
 

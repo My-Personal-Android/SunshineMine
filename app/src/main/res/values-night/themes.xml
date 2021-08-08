@@ -2,13 +2,15 @@
     <!-- Base application theme. -->
     <style name="Theme.SunshineMine" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <!-- Primary brand color. -->
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/sunshine_blue</item>
+        <item name="colorPrimaryVariant">@color/sunshine_dark_blue</item>
+        <item name="colorOnPrimary">@color/sunshine_light_blue</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorPrimary</item>
-        <item name="colorSecondaryVariant">@color/colorPrimaryDark</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/sunshine_blue</item>
+        <item name="colorSecondaryVariant">@color/sunshine_dark_blue</item>
+        <item name="colorOnSecondary">@color/sunshine_light_blue</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

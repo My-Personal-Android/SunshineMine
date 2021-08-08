@@ -1,8 +1,11 @@
 package com.sunshinemine;
 
+import static com.sunshinemine.Utility.convertToCamelCase;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,16 +44,18 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        //Log.v("PIC",Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId())+"");
+        Log.v("PIC",mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()+"");
         if(0 == position){
             holder.top_linear.setVisibility(View.VISIBLE);
             holder.linear.setVisibility(View.GONE);
 
             holder.list_item_date_textview.setText("Today  - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
-            holder.list_item_forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"");
+            holder.list_item_forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
             holder.list_item_high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.list_item_low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
 
-            holder.list_item_icon.setImageResource(R.drawable.ic_launcher_background);
+            holder.list_item_icon.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
             holder.top_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -62,6 +67,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
                 }
             });
         }else{
+
+            holder.top_linear.setVisibility(View.GONE);
+            holder.linear.setVisibility(View.VISIBLE);
             if(position == 1){
                 holder.date_textview.setText("Tomorrow  - "+WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
 
@@ -69,9 +77,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
                 holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
 
             }
-            holder.forecast_textview.setText(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"" );
+            holder.forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"" ));
             holder.high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
+            holder.image.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
             holder.linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -116,6 +125,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
         public TextView forecast_textview;
         public TextView high_textview;
         public TextView low_textview;
+        public ImageView image;
 
       //  private TextView
 
@@ -136,8 +146,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             forecast_textview =itemView.findViewById(R.id.forecast_textview);
             high_textview =itemView.findViewById(R.id.high_textview);
             low_textview =itemView.findViewById(R.id.low_textview);
-
+            image = itemView.findViewById(R.id.image);
 
         }
     }
+
 }

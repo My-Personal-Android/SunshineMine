@@ -1,5 +1,7 @@
 package com.sunshinemine;
 
+import static com.sunshinemine.Utility.convertToCamelCase;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -50,7 +52,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
             WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING
     };
 
-    public static final int COL_WEATHER_ID = 0;
+    public static final int COL_ID = 0;
     public static final int COL_WEATHER_DATE = 1;
     public static final int COL_WEATHER_DESC = 2;
     public static final int COL_WEATHER_MAX_TEMP = 3;
@@ -59,7 +61,8 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
     public static final int COL_WEATHER_PRESSURE = 6;
     public static final int COL_WEATHER_WIND_SPEED = 7;
     public static final int COL_WEATHER_DEGREES = 8;
-    public static final int COL_WEATHER_CONDITION_ID = 9;
+    public static final int COL_WEATHER_ID = 9;
+    public static final int COL_LOCATION_SETTING = 10;
 
     private  String intent_data = null;
 
@@ -79,7 +82,10 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather_forecast_details);
 
-         LoaderManager.getInstance(this).initLoader(DETAIL_LOADER,null,this);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        LoaderManager.getInstance(this).initLoader(DETAIL_LOADER,null,this);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -179,14 +185,14 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
                     );
             detail_day_textview.setText(getDateText(Long.parseLong(data.getString(COL_WEATHER_DATE))));
             date_textview.setText(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + "");
-            forecast_textview.setText(data.getString(COL_WEATHER_DESC)+"");
+            forecast_textview.setText(convertToCamelCase(data.getString(COL_WEATHER_DESC)+""));
             high_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0");
             low_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[1]+"\u00B0");
 
-            detail_icon.setImageResource(R.drawable.ic_launcher_background);
-            detail_humidity_textview.setText(data.getString(COL_WEATHER_HUMIDITY)+"%");
-            detail_pressure_textview.setText(data.getString(COL_WEATHER_PRESSURE)+" km/h NW");
-            detail_wind_textview.setText(data.getString(COL_WEATHER_WIND_SPEED)+"");
+            detail_icon.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_ID)));
+            detail_humidity_textview.setText("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
+            detail_pressure_textview.setText("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
+            detail_wind_textview.setText("Wind : "+data.getString(COL_WEATHER_WIND_SPEED)+" km/h NW");
         }
     }
 
