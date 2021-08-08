@@ -71,6 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-condensed"
+                    android:textSize="22sp"
                     android:layout_gravity="center_horizontal"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textColor="@color/white"/>
@@ -97,8 +98,7 @@
                     ></ImageView>
             </LinearLayout>
             <LinearLayout
-                android:layout_weight="1"
-                android:layout_margin="8dp"
+                android:layout_weight="6"
                 android:paddingLeft="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -109,7 +109,9 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="TODAY"
+                    android:fontFamily="sans-serif-condensed"
                     android:gravity="bottom"
+                    android:textSize="22sp"
                     android:minHeight="?android:attr/listPreferredItemHeight"
                     tools:ignore="MissingConstraints"></TextView>
                 <TextView
@@ -117,7 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
-
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-condensed"
                     android:layout_weight="1"
                     android:text="Sunnay"
                     android:gravity="top"
@@ -127,7 +130,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/high_textview"
@@ -135,6 +137,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="88"
+                    android:textSize="22sp"
                     android:gravity="bottom"
                     android:minHeight="?android:attr/listPreferredItemHeight"
                     tools:ignore="MissingConstraints"></TextView>
@@ -145,6 +148,7 @@
                     android:layout_weight="1"
                     android:layout_marginTop="8dp"
                     android:text="63"
+                    android:textSize="14sp"
                     android:gravity="top"
                     android:minHeight="?android:attr/listPreferredItemHeight"
                     tools:ignore="MissingConstraints"></TextView>
@@ -155,7 +159,7 @@
     <View
         android:layout_below="@id/Both_layouts"
         android:layout_width="match_parent"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginRight="24dp"
         android:layout_height="1dp"
         android:background="#f4f4f4"></View>

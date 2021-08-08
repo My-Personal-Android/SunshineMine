@@ -192,7 +192,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
             detail_icon.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_ID)));
             detail_humidity_textview.setText("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
             detail_pressure_textview.setText("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
-            detail_wind_textview.setText("Wind : "+data.getString(COL_WEATHER_WIND_SPEED)+" km/h NW");
+            detail_wind_textview.setText("Wind : "+Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
         }
     }
 

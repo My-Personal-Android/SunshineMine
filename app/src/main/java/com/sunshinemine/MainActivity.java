@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);

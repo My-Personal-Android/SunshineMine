@@ -23,6 +23,8 @@ public class SettingsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setIcon(R.mipmap.ic_launcher);
         }
         getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI,null);
     }

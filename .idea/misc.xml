@@ -6,6 +6,8 @@
         <entry key="../../../../../../layout/custom_preview.xml" value="0.15833333333333333" />
         <entry key="app/src/main/res/2/mipmap-anydpi-v26/ic_launcher.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/drawable/ic_clear_black_24dp.xml" value="0.12777777777777777" />
+        <entry key="app/src/main/res/drawable/ic_clear_opaque_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
