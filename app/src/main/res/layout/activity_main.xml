@@ -28,6 +28,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="Developer Awais Mansha"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/grey_700"
+            android:layout_margin="8dp"
+            ></TextView>
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

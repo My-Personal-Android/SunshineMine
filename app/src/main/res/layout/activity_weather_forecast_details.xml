@@ -7,7 +7,7 @@
         android:gravity="center_vertical"
         android:layout_gravity="left"
         android:background="@color/sunshine_light_blue"
-        android:layout_margin="24dp"
+        android:layout_margin="40dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -17,12 +17,14 @@
         <TextView
             android:fontFamily="sans-serif-condensed"
             android:id="@+id/detail_day_textview"
+            android:layout_marginLeft="16dp"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
         <TextView
+            android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif-condensed"
             android:id="@+id/date_textview"
             android:layout_height="wrap_content"
@@ -32,6 +34,7 @@
 
         <!-- Main content: high, low, art, weather state -->
         <LinearLayout
+            android:layout_marginLeft="8dp"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
@@ -86,6 +89,7 @@
 
         <!-- Humidity, wind, pressure -->
         <LinearLayout
+            android:layout_marginLeft="16dp"
             android:layout_height="match_parent"
             android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
@@ -115,5 +119,18 @@
                 android:layout_width="match_parent"
                 android:textAppearance="?android:textAppearanceLarge" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="Developer Awais Mansha"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/white"
+            ></TextView>
+
     </LinearLayout>
 </ScrollView>
