@@ -7,7 +7,10 @@
 
     <string name="pref_units_key">units</string>
 
+    <string name="pref_city_key">city</string>
+
     <string name="pref_units_default">metric</string>
+    <string name="pref_city_default">32.582039494628724,73.47173655981688</string>
 
     <!-- Windspeed formats -->
     <!-- Wind in mph [CHAR LIMIT=25] -->
@@ -31,6 +34,7 @@
     <string name="location_title">Your location</string>
     <string name="units_title">Your Units</string>
 
+    <string name="city_title">City</string>
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>

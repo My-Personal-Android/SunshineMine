@@ -13,7 +13,34 @@
         android:layout_margin="20dp"
         android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
-            android:id="@+id/CardDetials"
+            android:id="@+id/CardDetials_1"
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0.0px"
+            android:elevation="8dp"
+            android:layout_centerHorizontal="true"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            card_view:cardElevation="3dp"
+            card_view:cardPreventCornerOverlap="false"
+            card_view:cardCornerRadius="4dp"
+            tools:ignore="MissingConstraints">
+            <TextView
+                android:id="@+id/selected_city_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="42sp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:gravity="center"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/sunshine_dark_blue" />
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/CardDetials_2"
+            android:layout_below="@id/CardDetials_1"
             android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

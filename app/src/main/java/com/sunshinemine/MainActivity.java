@@ -8,6 +8,7 @@ import androidx.core.os.HandlerCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+import androidx.preference.ListPreference;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.sunshinemine.data.WeatherContract;
 
@@ -45,7 +47,12 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
     private static final String LOG_TAG = "MainActivity";
 
+
+    public static final String PREFERENCE_FILE="com.sunshinemine";
+    private static final String KEY="CITY";
+
     private String mLocation;
+    private TextView selected_city_textview;
     private static final int FORECAST_LOADER = 0;
 
     private static final String[] FORECAST_COLUMNS = {
@@ -66,12 +73,12 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     public static final int COL_WEATHER_ID = 6;
 
     String url = "https://api.openweathermap.org/data/2.5/onecall?";
-    String lattitude = "lat=32.5742";
-    String longitude = "lon=73.4828";
+    String lattitude = "32.5742";
+    String longitude = "73.4828";
     String unit = "units=metric";
     String appid= "appid=8c7175339095430fdf24c1cac276d9d5";
 
-    String my_url = url + lattitude + "&" +longitude + "&" + unit + "&" + appid;
+    String my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
 
     private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
     private static final Handler mainThreadHandler = HandlerCompat.createAsync(Looper.getMainLooper());
@@ -82,6 +89,23 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     private RecyclerView recyclerview_forecast;
     private WeatherAdapter weatherAdapter;
 
+
+    public static boolean setPreference(Context context, String value) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(KEY, value);
+        return editor.commit();
+    }
+
+    public static String getPreference(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        return settings.getString(KEY, "Mandi Bahauddin");
+    }
+
+    public static void ClearSharedPrefences(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+        settings.edit().clear().commit();
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
+
+        selected_city_textview = findViewById(R.id.selected_city_textview);
+        selected_city_textview.setText(MainActivity.getPreference(this));
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
 
@@ -141,6 +168,13 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
                 Log.v("Looo",location);
                 weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
                 try {
+                    String loca = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+                    MainActivity.setPreference(this,loca.split("/")[1]);
+                    selected_city_textview.setText(MainActivity.getPreference(this));
+                    lattitude = loca.split("/")[0].split(",")[0];
+                    longitude = loca.split("/")[0].split(",")[1];
+                    Log.v("Cityy",loca);
+                    my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
                     weatherForecast.makeRequest(this,my_url);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -160,9 +194,12 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     }
     private void openPreferredLocationOnMap(){
 
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("geo:0,0?q=37.423156,-122.084917 ( Mandi bahauddin)"));
-        startActivity(intent);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String location = preferences.getString(getString(R.string.pref_city_key),getString(R.string.pref_city_default));
+        Log.v("Cityy",location);
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+//                Uri.parse("geo:0,0?q=37.423156,-122.084917 ( Mandi bahauddin)"));
+//        startActivity(intent);
 //        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
 //        Log.v("Looo",location);
