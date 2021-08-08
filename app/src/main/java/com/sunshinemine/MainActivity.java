@@ -159,20 +159,24 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         }
     }
     private void openPreferredLocationOnMap(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
-        Log.v("Looo",location);
 
-        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
-                .appendQueryParameter("q",location).build();
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geoLocation);
-
-        if(intent.resolveActivity(getPackageManager())!=null){
-           startActivity(intent);
-        }else{
-            Log.v("Looo","Could Not call location");
-        }
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse("geo:0,0?q=37.423156,-122.084917 ( Mandi bahauddin)"));
+        startActivity(intent);
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        String location = preferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_default));
+//        Log.v("Looo",location);
+//
+//        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+//                .appendQueryParameter("q",location).build();
+//        Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
+//        intent.setData(geoLocation);
+//
+//        if(intent.resolveActivity(getPackageManager())!=null){
+//           startActivity(intent);
+//        }else{
+//            Log.v("Looo","Could Not call location");
+//        }
 
     }
     @Override
@@ -266,7 +270,9 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
 
-        String startDate = String.valueOf(new Date(Calendar.getInstance().getTimeInMillis()).getTime());
+        // Karachi, Pakistan time is 10:00 hours ahead Chicago, United States
+        long ten_Hours_in_miliseconds = 36000000;
+        String startDate = String.valueOf(new Date(Calendar.getInstance().getTimeInMillis() - ten_Hours_in_miliseconds).getTime());
         Log.v("Mera",startDate);
 
         String sortOrder = WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC";

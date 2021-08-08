@@ -50,7 +50,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.top_linear.setVisibility(View.VISIBLE);
             holder.linear.setVisibility(View.GONE);
 
-            holder.list_item_date_textview.setText("Today  - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+            holder.list_item_date_textview.setText("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             holder.list_item_forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
             holder.list_item_high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.list_item_low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
@@ -71,7 +71,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.top_linear.setVisibility(View.GONE);
             holder.linear.setVisibility(View.VISIBLE);
             if(position == 1){
-                holder.date_textview.setText("Tomorrow  - "+WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+                holder.date_textview.setText("Tomorrow "+"");
 
             }else{
                 holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
