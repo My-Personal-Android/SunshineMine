@@ -2,23 +2,36 @@ package com.sunshinemine.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
 
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
+import com.sunshinemine.Utility;
 import com.sunshinemine.WeatherForecast;
 import com.sunshinemine.data.WeatherContract;
 
@@ -33,10 +46,32 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = "SunshineSyncAdapter";
+
+    // Interval at which to sync with the weather, in seconds.
+    // 60 seconds (1 minute) * 180 = 3 hours
+    public static final int SYNC_INTERVAL = 5 ; // sec
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+    private static final int WEATHER_NOTIFICATION_ID = 137;
+
+
+    private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
+            WeatherContract.WeatherEntry.COULUMN_WEATHER_ID,
+            WeatherContract.WeatherEntry.COULUMN_MAX_TEMP,
+            WeatherContract.WeatherEntry.COULUMN_MIN_TEMP,
+            WeatherContract.WeatherEntry.COULUMN_SHORT_DESC
+    };
+
+    // these indices must match the projection
+    private static final int INDEX_WEATHER_ID = 0;
+    private static final int INDEX_MAX_TEMP = 1;
+    private static final int INDEX_MIN_TEMP = 2;
+    private static final int INDEX_SHORT_DESC = 3;
 
     public SunshineSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -264,25 +299,185 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 "com.sunshinemine", bundle);
     }
 
+    /**
+     * Helper method to schedule the sync adapter periodic execution
+     */
+    public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
+        Account account = getSyncAccount(context);
+        String authority = "com.sunshinemine";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // we can enable inexact timers in our periodic sync
+            SyncRequest request = new SyncRequest.Builder().
+                    syncPeriodic(syncInterval, flexTime).
+                    setSyncAdapter(account, authority).
+                    setExtras(new Bundle()).build();
+            ContentResolver.requestSync(request);
+        } else {
+            ContentResolver.addPeriodicSync(account,
+                    authority, new Bundle(), syncInterval);
+        }
+    }
     private static void onAccountCreated(Account newAccount, Context context) {
-//        /*
-//         * Since we've created an account
-//         */
-//        SunshineSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
-//
-//        /*
-//         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
-//         */
-//        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
-//
-//        /*
-//         * Finally, let's do a sync to get things started
-//         */
-//        syncImmediately(context);
+        /*
+         * Since we've created an account
+         */
+        SunshineSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+
+        /*
+         * Without calling setSyncAutomatically, our periodic sync will not be enabled.
+         */
+        ContentResolver.setSyncAutomatically(newAccount, "com.sunshinemine", true);
+
+
+        String url = "https://api.openweathermap.org/data/2.5/onecall?";
+        String lattitude = "32.5742";
+        String longitude = "73.4828";
+        String unit = "units=metric";
+        String appid= "appid=8c7175339095430fdf24c1cac276d9d5";
+
+        String my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String myString_key = context.getString(R.string.pref_city_key);
+        String myString_default_value = context.getString(R.string.pref_city_default);
+        String loca = preferences.getString(myString_key,myString_default_value);
+        MainActivity.setPreference(context,loca.split("/")[1]);
+        lattitude = loca.split("/")[0].split(",")[0];
+        longitude = loca.split("/")[0].split(",")[1];
+        Log.v("Cityy",loca);
+        my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+
+        /*
+         * Finally, let's do a sync to get things started
+         */
+        syncImmediately(context,my_url);
     }
 
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
+    }
+
+    public String getSelectedLocation(){
+        String url = "https://api.openweathermap.org/data/2.5/onecall?";
+        String lattitude = "32.5742";
+        String longitude = "73.4828";
+        String unit = "units=metric";
+        String appid= "appid=8c7175339095430fdf24c1cac276d9d5";
+
+        String my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String myString_key =getContext(). getString(R.string.pref_city_key);
+        String myString_default_value = getContext().getString(R.string.pref_city_default);
+        String loca = preferences.getString(myString_key,myString_default_value);
+        MainActivity.setPreference(getContext(),loca.split("/")[1]);
+        lattitude = loca.split("/")[0].split(",")[0];
+        longitude = loca.split("/")[0].split(",")[1];
+        Log.v("Cityy",loca);
+        my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+        return my_url;
+    }
+
+    public void notifyWeather() {
+
+        Context context = getContext();
+
+        //checking the last update and notify if it' the first of the day
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+        boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
+                Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
+
+        if ( displayNotifications ) {
+
+            String lastNotificationKey = context.getString(R.string.pref_last_notification);
+            long lastSync = prefs.getLong(lastNotificationKey, 0);
+
+            if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
+                // Last sync was more than 1 day ago, let's send a notification with the weather.
+                String locationQuery = getSelectedLocation();
+
+                Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, String.valueOf(System.currentTimeMillis()));
+
+                // we'll query our contentProvider, as always
+                Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    int weatherId = cursor.getInt(INDEX_WEATHER_ID);
+                    double high = cursor.getDouble(INDEX_MAX_TEMP);
+                    double low = cursor.getDouble(INDEX_MIN_TEMP);
+                    String desc = cursor.getString(INDEX_SHORT_DESC);
+
+                    int iconId = Utility.getIconResourceForWeatherCondition(weatherId);
+                    Resources resources = context.getResources();
+                    Bitmap largeIcon = BitmapFactory.decodeResource(resources,
+                            Utility.getArtResourceForWeatherCondition(weatherId));
+                    String title = context.getString(R.string.app_name);
+
+                    // Define the text of the forecast.
+                    String contentText = String.format(context.getString(R.string.format_notification),
+                            desc,
+                            Utility.formatTemperature(context, high),
+                            Utility.formatTemperature(context, low));
+
+
+                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationCompat.Builder mBuilder = null;
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                        NotificationChannel notificationChannel = new NotificationChannel("ID", "Name", importance);
+                        notificationManager.createNotificationChannel(notificationChannel);
+                        mBuilder = new NotificationCompat.Builder(getContext(), notificationChannel.getId());
+                    } else {
+                        mBuilder = new NotificationCompat.Builder(getContext());
+                    }
+
+                    mBuilder = mBuilder
+                            .setColor(resources.getColor(R.color.sunshine_light_blue))
+                            .setSmallIcon(iconId)
+                            .setLargeIcon(largeIcon)
+                            .setContentTitle(title)
+                            .setContentText(contentText);
+                    // NotificationCompatBuilder is a very convenient way to build backward-compatible
+                    // notifications.  Just throw in some data.
+//                    NotificationCompat.Builder mBuilder =
+//                            new NotificationCompat.Builder(getContext())
+//                                    .setColor(resources.getColor(R.color.sunshine_light_blue))
+//                                    .setSmallIcon(iconId)
+//                                    .setLargeIcon(largeIcon)
+//                                    .setContentTitle(title)
+//                                    .setContentText(contentText);
+
+                    // Make something interesting happen when the user clicks on the notification.
+                    // In this case, opening the app is sufficient.
+                    Intent resultIntent = new Intent(context, MainActivity.class);
+
+                    // The stack builder object will contain an artificial back stack for the
+                    // started Activity.
+                    // This ensures that navigating backward from the Activity leads out of
+                    // your application to the Home screen.
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                    stackBuilder.addNextIntent(resultIntent);
+                    PendingIntent resultPendingIntent =
+                            stackBuilder.getPendingIntent(
+                                    0,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
+                    mBuilder.setContentIntent(resultPendingIntent);
+
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
+                    mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
+
+                    //refreshing last sync
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putLong(lastNotificationKey, System.currentTimeMillis());
+                    editor.commit();
+                }
+                cursor.close();
+            }
+        }
     }
 
 }

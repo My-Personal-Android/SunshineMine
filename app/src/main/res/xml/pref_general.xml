@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/location_header">
 
@@ -22,6 +23,13 @@
             app:key="@string/pref_city_key"
             app:title="@string/city_title"
             app:useSimpleSummaryProvider="true" />
+
+        <CheckBoxPreference
+            app:title="@string/pref_enable_notifications_label"
+            app:key="@string/pref_enable_notifications_key"
+            app:summaryOff="@string/pref_enable_notifications_false"
+            app:summaryOn="@string/pref_enable_notifications_true"
+            app:defaultValue="@string/pref_enable_notifications_default"></CheckBoxPreference>
 
     </PreferenceCategory>
 

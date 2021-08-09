@@ -115,25 +115,29 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
         recyclerview_forecast.setAdapter(weatherAdapter);
         recyclerview_forecast.setItemAnimator(new DefaultItemAnimator());
 
+        SunshineSyncAdapter.initializeSyncAdapter(this);
+        //new SunshineSyncAdapter(this,true).notifyWeather();
         NetworkCall();
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void NetworkCall(){
-
+    public String getSelectedLocation(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String myString_key = getString(R.string.pref_city_key);
         String myString_default_value = getString(R.string.pref_city_default);
         String loca = preferences.getString(myString_key,myString_default_value);
         MainActivity.setPreference(this,loca.split("/")[1]);
-        selected_city_textview.setText(MainActivity.getPreference(this));
         lattitude = loca.split("/")[0].split(",")[0];
         longitude = loca.split("/")[0].split(",")[1];
         Log.v("Cityy",loca);
         my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+        return my_url;
+    }
 
-        SunshineSyncAdapter.syncImmediately(this,my_url);
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void NetworkCall(){
+
+        SunshineSyncAdapter.syncImmediately(this,getSelectedLocation());
 
 
 
