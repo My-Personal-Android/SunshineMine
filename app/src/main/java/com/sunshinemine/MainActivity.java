@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,6 +35,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.sunshinemine.data.WeatherContract;
+import com.sunshinemine.service.SunshineService;
+import com.sunshinemine.sync.SunshineSyncAdapter;
 
 import org.json.JSONException;
 
@@ -117,22 +121,46 @@ public class MainActivity extends AppCompatActivity implements HttpCallBack, Loa
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void NetworkCall(){
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
-        try {
-            String myString_key = getString(R.string.pref_city_key);
-            String myString_default_value = getString(R.string.pref_city_default);
-            String loca = preferences.getString(myString_key,myString_default_value);
-            MainActivity.setPreference(this,loca.split("/")[1]);
-            selected_city_textview.setText(MainActivity.getPreference(this));
-            lattitude = loca.split("/")[0].split(",")[0];
-            longitude = loca.split("/")[0].split(",")[1];
-            Log.v("Cityy",loca);
-            my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
-            weatherForecast.makeRequest(this,my_url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String myString_key = getString(R.string.pref_city_key);
+        String myString_default_value = getString(R.string.pref_city_default);
+        String loca = preferences.getString(myString_key,myString_default_value);
+        MainActivity.setPreference(this,loca.split("/")[1]);
+        selected_city_textview.setText(MainActivity.getPreference(this));
+        lattitude = loca.split("/")[0].split(",")[0];
+        longitude = loca.split("/")[0].split(",")[1];
+        Log.v("Cityy",loca);
+        my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+
+        SunshineSyncAdapter.syncImmediately(this,my_url);
+
+
+
+//        Intent alarmIntent = new Intent(this,SunshineService.AlarmReceiver.class);
+//        alarmIntent.putExtra("URL",my_url);
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);
+//        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+5000,pendingIntent);
+//
+
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        weatherForecast = new WeatherForecast(this,executorService,mainThreadHandler);
+//        try {
+//            String myString_key = getString(R.string.pref_city_key);
+//            String myString_default_value = getString(R.string.pref_city_default);
+//            String loca = preferences.getString(myString_key,myString_default_value);
+//            MainActivity.setPreference(this,loca.split("/")[1]);
+//            selected_city_textview.setText(MainActivity.getPreference(this));
+//            lattitude = loca.split("/")[0].split(",")[0];
+//            longitude = loca.split("/")[0].split(",")[1];
+//            Log.v("Cityy",loca);
+//            my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+//            weatherForecast.makeRequest(this,my_url);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+
     }
 
     @Override

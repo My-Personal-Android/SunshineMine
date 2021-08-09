@@ -32,28 +32,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="42sp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:gravity="center"
                 android:text="No Location Added"
                 android:fontFamily="sans-serif-condensed"
                 android:textColor="@color/sunshine_dark_blue" />
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/CardDetials_2"
-            android:layout_below="@id/CardDetials_1"
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0.0px"
-            android:elevation="8dp"
-            android:clipToPadding="false"
-            android:clipChildren="false"
-            card_view:cardElevation="3dp"
-            card_view:cardPreventCornerOverlap="false"
-            card_view:cardCornerRadius="4dp"
-            tools:ignore="MissingConstraints">
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/CardDetials_2"-->
+<!--            android:layout_below="@id/CardDetials_1"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:divider="@android:color/transparent"-->
+<!--            android:dividerHeight="0.0px"-->
+<!--            android:elevation="8dp"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:clipChildren="false"-->
+<!--            card_view:cardElevation="3dp"-->
+<!--            card_view:cardPreventCornerOverlap="false"-->
+<!--            card_view:cardCornerRadius="4dp"-->
+<!--            tools:ignore="MissingConstraints">-->
 
 <!--    <com.sunshinemine.MyView-->
 <!--        android:layout_width="wrap_content"-->
@@ -69,6 +69,7 @@
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        android:id="@+id/my_edit_text"/>-->
             <RelativeLayout
+                android:layout_below="@id/CardDetials_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <androidx.recyclerview.widget.RecyclerView
@@ -78,7 +79,7 @@
                     android:layout_height="wrap_content"
                     />
             </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+<!--        </androidx.cardview.widget.CardView>-->
     </RelativeLayout>
     <TextView
         app:layout_constraintBottom_toBottomOf="parent"

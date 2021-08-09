@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sunshinemine">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -10,6 +11,14 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
     <application
         android:allowBackup="true"
@@ -33,13 +42,44 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- The Content Provider -->
         <provider
             android:authorities="com.sunshinemine"
             android:name=".data.WeatherProvider"
             android:enabled="true"
-            android:exported="true"
+            android:syncable="true"
+            android:exported="false"
             android:permission="com.sunshinemine.LICENSE_TO_KILL">
         </provider>
+
+        <!-- The Service -->
+        <service android:name=".service.SunshineService"></service>
+
+        <!-- The Boradcast Receiver  -->
+        <receiver android:name=".service.SunshineService$AlarmReceiver"></receiver>
+
+        <!-- The Authenticator service -->
+        <service android:name=".sync.SunshineAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".sync.SunshineSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
     </application>
     <permission android:name="com.sunshinemine.LICENSE_TO_KILL"
         android:protectionLevel="dangerous"
