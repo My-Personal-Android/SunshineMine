@@ -33,7 +33,7 @@ import java.util.Date;
 public class WeatherForecastDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DETAIL_LOADER = 0;
-    public static final String DATE_KEY = "date";
+    public static String DATA_KEY_EXTRA = "Data";
     public static final String LOCATION_KEY = "location";
 
     private static final String[] DETAIL_COLUMNS = {
@@ -90,8 +90,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-        WeatherForecast weatherForecast = intent.getParcelableExtra("Data");
+        WeatherForecast weatherForecast = getIntent().getParcelableExtra(DATA_KEY_EXTRA);
         Log.v("Helo",weatherForecast.toString());
 
         date_textview =findViewById(R.id.date_textview);
@@ -110,7 +109,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT,intent_data + " # SUNSHINE MINE");
+        intent.putExtra(Intent.EXTRA_TEXT,intent_data + " # SUNSHINE MINE by Awais Mansha");
         return intent;
     }
     @Override
@@ -152,8 +151,9 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        Intent intent = getIntent();
-        WeatherForecast weatherForecast = intent.getParcelableExtra("Data");
+
+        WeatherForecast weatherForecast = getIntent().getParcelableExtra(DATA_KEY_EXTRA);
+
         mLocation = MainActivity.getPreference(this);
         Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(mLocation,String.valueOf(weatherForecast.getDt()));
 
@@ -171,19 +171,10 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
 
         if(data!=null && data.moveToFirst()){
-            Log.v("Hooo",data.getString(0)+" - "+
-                    data.getString(1)+" - "+
-                    data.getString(2)+" - "+
-                    data.getString(3)+" - "+
-                    data.getString(4)+" - "+
-                    data.getString(5)+" - "+
-                    data.getString(6)+" - "+
-                    data.getString(7)+" - "+
-                    data.getString(8)+" - "+
-                    data.getString(9)+" - "+
-                    data.getString(10)
-                    );
-            detail_day_textview.setText(getDateText(Long.parseLong(data.getString(COL_WEATHER_DATE))));
+
+            Log.v("Hooo",data.getString(0)+" - "+ data.getString(1)+" - "+ data.getString(2)+" - "+ data.getString(3)+" - "+ data.getString(4)+" - "+ data.getString(5)+" - "+ data.getString(6)+" - "+ data.getString(7)+" - "+ data.getString(8)+" - "+ data.getString(9)+" - "+ data.getString(10));
+
+            detail_day_textview.setText(getDateText_ExceptDate(Long.parseLong(data.getString(COL_WEATHER_DATE))));
             date_textview.setText(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + "");
             forecast_textview.setText(convertToCamelCase(data.getString(COL_WEATHER_DESC)+""));
             high_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0");
@@ -198,12 +189,10 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
     }
 
-    private String getDateText(long mydate){
+    private String getDateText_ExceptDate(long mydate){
 
-       ;
         Date date = new Date(mydate * 1000);
 
         DateFormat df = new SimpleDateFormat("dd:MM:yy");

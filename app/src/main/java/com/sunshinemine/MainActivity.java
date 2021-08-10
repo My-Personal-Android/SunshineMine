@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String location = preferences.getString(this.getString(R.string.pref_city_key),this.getString(R.string.pref_city_default));
 
-        Uri gmmIntentUri = Uri.parse("geo:"+location.split("/")[0].split(",")[0]+","+location.split("/")[0].split(",")[1]);
+        Uri gmmIntentUri = Uri.parse("geo:"+location.split("/")[0].split(",")[0] + "," + location.split("/")[0].split(",")[1]);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);

@@ -5,7 +5,6 @@ import static com.sunshinemine.Utility.convertToCamelCase;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherAdapterViewHolder> {
@@ -44,8 +40,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        //Log.v("PIC",Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId())+"");
-        Log.v("PIC",mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()+"");
+
         if(0 == position){
             holder.top_linear.setVisibility(View.VISIBLE);
             holder.linear.setVisibility(View.GONE);
@@ -61,8 +56,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
                 public void onClick(View v) {
 
                     Intent intent = new Intent(context,WeatherForecastDetails.class);
-                    Log.v("Helo",mWeatherForecast.get(position).toString());
-                    intent.putExtra("Data", (Parcelable) mWeatherForecast.get(position));
+                    intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(position));
                     context.startActivity(intent);
                 }
             });
@@ -71,7 +65,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.top_linear.setVisibility(View.GONE);
             holder.linear.setVisibility(View.VISIBLE);
             if(position == 1){
-                holder.date_textview.setText("Tomorrow "+"");
+                holder.date_textview.setText("Tomorrow ");
 
             }else{
                 holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
@@ -86,8 +80,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
                 public void onClick(View v) {
 
                     Intent intent = new Intent(context,WeatherForecastDetails.class);
-                    Log.v("Helo",mWeatherForecast.get(position).toString());
-                    intent.putExtra("Data", (Parcelable) mWeatherForecast.get(position));
+                    intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(position));
                     context.startActivity(intent);
                 }
             });
@@ -131,6 +124,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         public WeatherAdapterViewHolder(View itemView){
             super(itemView);
+
             // Top
             top_linear= itemView.findViewById(R.id.top_linear);
             list_item_date_textview =itemView.findViewById(R.id.list_item_date_textview);

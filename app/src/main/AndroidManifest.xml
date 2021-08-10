@@ -52,12 +52,6 @@
             android:permission="com.sunshinemine.LICENSE_TO_KILL">
         </provider>
 
-        <!-- The Service -->
-        <service android:name=".service.SunshineService"></service>
-
-        <!-- The Boradcast Receiver  -->
-        <receiver android:name=".service.SunshineService$AlarmReceiver"></receiver>
-
         <!-- The Authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
