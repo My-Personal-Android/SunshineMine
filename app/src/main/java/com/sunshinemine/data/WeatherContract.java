@@ -13,6 +13,8 @@ import java.util.Date;
 
 import static android.provider.Settings.System.DATE_FORMAT;
 
+import com.sunshinemine.R;
+
 public class WeatherContract {
 
     public static final String CONTENT_AUTHORITY = "com.sunshinemine"; // similar to as a domain name of website to differentiate between different apps

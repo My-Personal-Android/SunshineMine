@@ -22,12 +22,12 @@
     </string-array>
 
     <string-array name="city_values">
-        <item>32.582039494628724,73.47173655981688/MANDI BAHAUDDIN</item>
-        <item>32.42878325034325,73.5772291476551/PHALIA</item>
-        <item>32.574935026876965,74.07312319592045/GUJRAT</item>
-        <item>32.15272985608684,74.18657489934944/GUJRANWALA</item>
-        <item>31.518933529737748,74.33984001374077/LAHORE</item>
-        <item>33.71433337057566,73.0497054637207/ISLAMABAD</item>
-        <item>32.93851885844077,73.72553003615866/JHELUM</item>
+        <item>32.5742,73.4828/MANDI BAHAUDDIN</item>
+        <item>32.4327,73.5771/PHALIA</item>
+        <item>32.5731,74.1005/GUJRAT</item>
+        <item>32.1877,74.1945/GUJRANWALA</item>
+        <item>31.5204,74.3587/LAHORE</item>
+        <item>33.6844,73.0479/ISLAMABAD</item>
+        <item>32.9425,73.7257/JHELUM</item>
     </string-array>
 </resources>

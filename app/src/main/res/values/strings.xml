@@ -1,5 +1,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="app_name"> Weather Forecast</string>
+
+    <string name="CONTENT_AUTHORITY">com.sunshinemine</string>
+
+    <string name="URL_FORMAT">https://api.openweathermap.org/data/2.5/onecall?lat=<xliff:g id="lattitude">%s</xliff:g>&amp;lon=<xliff:g id="longitude">%s</xliff:g>&amp;units=metric&amp;appid=8c7175339095430fdf24c1cac276d9d5</string>
 
     <string name="pref_location_key">location</string>
 
@@ -8,7 +13,7 @@
     <string name="pref_units_key">units</string>
 
     <string name="pref_city_key">city</string>
-    <string name="sync_account_type">com.sunshinemine</string>
+    <string name="sync_account_type">sunshinemine.com</string>
 
     <string name="pref_units_default">metric</string>
     <string name="pref_city_default">32.582039494628724,73.47173655981688/MANDI BAHAUDDIN</string>

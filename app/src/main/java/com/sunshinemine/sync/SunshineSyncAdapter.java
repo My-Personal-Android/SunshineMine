@@ -46,7 +46,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -81,23 +80,26 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
 
-         String url = extras.getString("URL");
+        String url = getMyUrl(getContext());
 
         String result = null;
         try {
-            result = makeSynchronousRequest(url);
-            Log.v(LOG_TAG,result.toString());
 
-            WeatherForecast.v(LOG_TAG,result);
-            WeatherForecast.setPreference(getContext(),result);
+            result = makeSynchronousRequest(url);
+            Log.v(LOG_TAG,result);
 
             try {
-                ArrayList<WeatherForecast> arrayList = WeatherForecast.getWeatherDataFromJson(WeatherForecast.getPreference(getContext()));
-                // weatherAdapter.swapWeather(arrayList);
-                long locationId = addlocation(MainActivity.getPreference(getContext()),MainActivity.getPreference(getContext()),32.5742,73.4828);
-                Log.v("Hello Brother",locationId+"");
-                Log.v("Hello Size",arrayList.size()+"");
-                insertBulk_AfterFilterData(arrayList,locationId);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String location = preferences.getString(getContext().getString(R.string.pref_city_key),getContext().getString(R.string.pref_city_default));
+
+                long locationId = addlocation(
+                        MainActivity.getPreference(getContext()),MainActivity.getPreference(getContext()),
+                        Double.parseDouble(location.split("/")[0].split(",")[0]),
+                        Double.parseDouble(location.split("/")[0].split(",")[1]));
+
+                insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result),locationId);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -126,10 +128,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Log.v("Waloo",weatherValues.toString());
             newList.add(weatherValues);
-//            Uri locationUri = getContentResolver().insert(
-//                    WeatherContract.WeatherEntry.CONTENT_URI,weatherValues
-//            );
-//            Log.v("Waoo",ContentUris.parseId(locationUri)+"");
         }
 
         ContentValues[] cvArray =  new ContentValues[weatherForecastArrayList.size()];
@@ -248,6 +246,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         return output.toString();
     }
+
     /**
      * Helper method to get the fake account to be used with SyncAdapter, or make a new one
      * if the fake account doesn't exist yet.  If we make a new account, we call the
@@ -290,13 +289,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
      * Helper method to have the sync adapter sync immediately
      * @param context The context used to access the account service
      */
-    public static void syncImmediately(Context context,String url) {
+    public static void syncImmediately(Context context) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        bundle.putString("URL",url);
         ContentResolver.requestSync(getSyncAccount(context),
-                "com.sunshinemine", bundle);
+                context.getString(R.string.CONTENT_AUTHORITY), bundle);
     }
 
     /**
@@ -304,7 +302,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
         Account account = getSyncAccount(context);
-        String authority = "com.sunshinemine";
+        String authority = context.getString(R.string.CONTENT_AUTHORITY);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // we can enable inexact timers in our periodic sync
             SyncRequest request = new SyncRequest.Builder().
@@ -317,6 +315,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     authority, new Bundle(), syncInterval);
         }
     }
+
     private static void onAccountCreated(Account newAccount, Context context) {
         /*
          * Since we've created an account
@@ -326,55 +325,32 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
          */
-        ContentResolver.setSyncAutomatically(newAccount, "com.sunshinemine", true);
-
-
-        String url = "https://api.openweathermap.org/data/2.5/onecall?";
-        String lattitude = "32.5742";
-        String longitude = "73.4828";
-        String unit = "units=metric";
-        String appid= "appid=8c7175339095430fdf24c1cac276d9d5";
-
-        String my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String myString_key = context.getString(R.string.pref_city_key);
-        String myString_default_value = context.getString(R.string.pref_city_default);
-        String loca = preferences.getString(myString_key,myString_default_value);
-        MainActivity.setPreference(context,loca.split("/")[1]);
-        lattitude = loca.split("/")[0].split(",")[0];
-        longitude = loca.split("/")[0].split(",")[1];
-        Log.v("Cityy",loca);
-        my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
+        ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.CONTENT_AUTHORITY), true);
 
         /*
          * Finally, let's do a sync to get things started
          */
-        syncImmediately(context,my_url);
+        syncImmediately(context);
+    }
+
+    private static String getMyUrl(Context context){
+
+        String URL ="";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String location = preferences.getString(context.getString(R.string.pref_city_key),context.getString(R.string.pref_city_default));
+
+        MainActivity.setPreference(context,location.split("/")[1]);
+
+        Log.v("City Location",location.split("/")[0]);
+
+        URL = context.getString(R.string.URL_FORMAT,location.split("/")[0].split(",")[0],location.split("/")[0].split(",")[1]);
+        Log.v("City Url",URL);
+
+        return URL;
     }
 
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
-    }
-
-    public String getSelectedLocation(){
-        String url = "https://api.openweathermap.org/data/2.5/onecall?";
-        String lattitude = "32.5742";
-        String longitude = "73.4828";
-        String unit = "units=metric";
-        String appid= "appid=8c7175339095430fdf24c1cac276d9d5";
-
-        String my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String myString_key =getContext(). getString(R.string.pref_city_key);
-        String myString_default_value = getContext().getString(R.string.pref_city_default);
-        String loca = preferences.getString(myString_key,myString_default_value);
-        MainActivity.setPreference(getContext(),loca.split("/")[1]);
-        lattitude = loca.split("/")[0].split(",")[0];
-        longitude = loca.split("/")[0].split(",")[1];
-        Log.v("Cityy",loca);
-        my_url = url +"lat="+ lattitude + "&" +"lon="+longitude + "&" + unit + "&" + appid;
-        return my_url;
     }
 
     public void notifyWeather() {
@@ -394,7 +370,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
                 // Last sync was more than 1 day ago, let's send a notification with the weather.
-                String locationQuery = getSelectedLocation();
+                String locationQuery = getMyUrl(context);
 
                 Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, String.valueOf(System.currentTimeMillis()));
 
@@ -438,15 +414,6 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                             .setLargeIcon(largeIcon)
                             .setContentTitle(title)
                             .setContentText(contentText);
-                    // NotificationCompatBuilder is a very convenient way to build backward-compatible
-                    // notifications.  Just throw in some data.
-//                    NotificationCompat.Builder mBuilder =
-//                            new NotificationCompat.Builder(getContext())
-//                                    .setColor(resources.getColor(R.color.sunshine_light_blue))
-//                                    .setSmallIcon(iconId)
-//                                    .setLargeIcon(largeIcon)
-//                                    .setContentTitle(title)
-//                                    .setContentText(contentText);
 
                     // Make something interesting happen when the user clicks on the notification.
                     // In this case, opening the app is sufficient.
