@@ -175,15 +175,24 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
             Log.v("Hooo",data.getString(0)+" - "+ data.getString(1)+" - "+ data.getString(2)+" - "+ data.getString(3)+" - "+ data.getString(4)+" - "+ data.getString(5)+" - "+ data.getString(6)+" - "+ data.getString(7)+" - "+ data.getString(8)+" - "+ data.getString(9)+" - "+ data.getString(10));
 
             detail_day_textview.setText(getDateText_ExceptDate(Long.parseLong(data.getString(COL_WEATHER_DATE))));
+            detail_day_textview.setContentDescription(getDateText_ExceptDate(Long.parseLong(data.getString(COL_WEATHER_DATE))));
             date_textview.setText(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + "");
+            date_textview.setContentDescription(WeatherForecast.getReadableDateString(Long.parseLong(data.getString(COL_WEATHER_DATE))) + "");
             forecast_textview.setText(convertToCamelCase(data.getString(COL_WEATHER_DESC)+""));
+            forecast_textview.setContentDescription(convertToCamelCase(data.getString(COL_WEATHER_DESC)+""));
             high_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0");
+            high_textview.setContentDescription(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[0]+"\u00B0");
             low_textview.setText(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[1]+"\u00B0");
+            low_textview.setContentDescription(WeatherForecast.formatHightLows(this,data.getDouble(COL_WEATHER_MAX_TEMP),data.getDouble(COL_WEATHER_MIN_TEMP)).split("/")[1]+"\u00B0");
 
             detail_icon.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_ID)));
+            detail_icon.setContentDescription(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_ID))+"");
             detail_humidity_textview.setText("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
+            detail_humidity_textview.setContentDescription("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
             detail_pressure_textview.setText("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
+            detail_pressure_textview.setContentDescription("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
             detail_wind_textview.setText("Wind : "+Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
+            detail_wind_textview.setContentDescription("Wind : "+Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
         }
     }
 

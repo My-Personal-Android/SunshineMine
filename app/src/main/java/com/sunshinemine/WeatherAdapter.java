@@ -43,14 +43,19 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         if(0 == position){
             holder.top_linear.setVisibility(View.VISIBLE);
+            holder.top_linear.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setVisibility(View.GONE);
 
             holder.list_item_date_textview.setText("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+            holder.list_item_date_textview.setContentDescription("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             holder.list_item_forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
+            holder.list_item_forecast_textview.setContentDescription(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
             holder.list_item_high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
+            holder.list_item_high_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.list_item_low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
-
+            holder.list_item_low_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
             holder.list_item_icon.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
+            holder.list_item_icon.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.top_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -64,17 +69,22 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
             holder.top_linear.setVisibility(View.GONE);
             holder.linear.setVisibility(View.VISIBLE);
+            holder.linear.setContentDescription(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             if(position == 1){
                 holder.date_textview.setText("Tomorrow ");
-
+                holder.date_textview.setContentDescription("Tomorrow");
             }else{
                 holder.date_textview.setText(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
-
+                holder.date_textview.setContentDescription(WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             }
             holder.forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"" ));
+            holder.forecast_textview.setContentDescription(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()+"" ));
             holder.high_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
+            holder.high_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
+            holder.low_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
             holder.image.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
+            holder.image.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
