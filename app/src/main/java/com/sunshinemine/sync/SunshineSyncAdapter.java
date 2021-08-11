@@ -417,10 +417,10 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     Resources resources = context.getResources();
                     Bitmap largeIcon = BitmapFactory.decodeResource(resources,
                             Utility.getArtResourceForWeatherCondition(weatherId));
-                    String title = context.getString(R.string.app_name) + ": "+locationQuery.toLowerCase();
+                    String title = context.getString(R.string.app_name);
 
                     // Define the text of the forecast.
-                    String contentText = String.format(context.getString(R.string.format_notification),
+                    String contentText =Utility.convertToCamelCase(locationQuery.toLowerCase()) + " : " +String.format(context.getString(R.string.format_notification),
                             Utility.convertToCamelCase(desc),
                             WeatherForecast.formatHightLows(context, high,low).split("/")[0],
                             WeatherForecast.formatHightLows(context, high,low).split("/")[1]);
