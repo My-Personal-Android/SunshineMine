@@ -2,6 +2,7 @@ package com.sunshinemine.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -353,9 +354,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         getSyncAccount(context);
     }
 
-    public void notifyWeather() {
-
-        Context context = getContext();
+    public static void notifyWeather(Context context) {
 
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -364,20 +363,28 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
 
         if ( displayNotifications ) {
+            Log.v("AWAIS","Display");
 
             String lastNotificationKey = context.getString(R.string.pref_last_notification);
             long lastSync = prefs.getLong(lastNotificationKey, 0);
 
-            if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
-                // Last sync was more than 1 day ago, let's send a notification with the weather.
-                String locationQuery = getMyUrl(context);
+//            if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
+                Log.v("AWAIS","Notify");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+                String location = preferences.getString(context.getString(R.string.pref_city_key),context.getString(R.string.pref_city_default));
 
+                // Last sync was more than 1 day ago, let's send a notification with the weather.
+                String locationQuery = location.split("/")[1];
+
+                Log.v("AWAIS",locationQuery);
                 Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, String.valueOf(System.currentTimeMillis()));
 
+                Log.v("AWAIS",weatherUri.toString());
                 // we'll query our contentProvider, as always
                 Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
 
                 if (cursor.moveToFirst()) {
+                    Log.v("AWAIS","Move to First");
                     int weatherId = cursor.getInt(INDEX_WEATHER_ID);
                     double high = cursor.getDouble(INDEX_MAX_TEMP);
                     double low = cursor.getDouble(INDEX_MIN_TEMP);
@@ -391,21 +398,21 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     // Define the text of the forecast.
                     String contentText = String.format(context.getString(R.string.format_notification),
-                            desc,
+                            Utility.convertToCamelCase(desc),
                             Utility.formatTemperature(context, high),
                             Utility.formatTemperature(context, low));
 
 
-                    NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     NotificationCompat.Builder mBuilder = null;
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                        int importance = NotificationManager.IMPORTANCE_HIGH;
                         NotificationChannel notificationChannel = new NotificationChannel("ID", "Name", importance);
                         notificationManager.createNotificationChannel(notificationChannel);
-                        mBuilder = new NotificationCompat.Builder(getContext(), notificationChannel.getId());
+                        mBuilder = new NotificationCompat.Builder(context, notificationChannel.getId());
                     } else {
-                        mBuilder = new NotificationCompat.Builder(getContext());
+                        mBuilder = new NotificationCompat.Builder(context);
                     }
 
                     mBuilder = mBuilder
@@ -433,7 +440,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     mBuilder.setContentIntent(resultPendingIntent);
 
                     NotificationManager mNotificationManager =
-                            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                            (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                     // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
                     mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
 
@@ -444,7 +451,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 cursor.close();
             }
-        }
+//        }
     }
 
 }

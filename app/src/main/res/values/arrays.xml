@@ -12,7 +12,7 @@
 
 
     <string-array name="city_entries">
-        <item>MANDI BAHAUDDIN</item>
+        <item>MANDIBAHAUDDIN</item>
         <item>PHALIA</item>
         <item>GUJRAT</item>
         <item>GUJRANWALA</item>
@@ -22,7 +22,7 @@
     </string-array>
 
     <string-array name="city_values">
-        <item>32.5742,73.4828/MANDI BAHAUDDIN</item>
+        <item>32.5742,73.4828/MANDIBAHAUDDIN</item>
         <item>32.4327,73.5771/PHALIA</item>
         <item>32.5731,74.1005/GUJRAT</item>
         <item>32.1877,74.1945/GUJRANWALA</item>

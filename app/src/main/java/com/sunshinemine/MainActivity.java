@@ -100,8 +100,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         SunshineSyncAdapter.syncImmediately(this);
 
-        Log.v("OPPO",getString(R.string.URL_FORMAT,"2234.5","24.5"));
-
+        //FC6FXVHBVKT3HABJ
+        SunshineSyncAdapter.notifyWeather(this);
     }
 
     @Override
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public static String getPreference(Context context) {
         SharedPreferences settings = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
-        return settings.getString(KEY, "MANDI BAHAUDDIN");
+        return settings.getString(KEY, "MANDIBAHAUDDIN");
     }
 
 }
