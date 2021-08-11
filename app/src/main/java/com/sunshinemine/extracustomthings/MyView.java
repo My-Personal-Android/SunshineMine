@@ -1,4 +1,4 @@
-package com.sunshinemine;
+package com.sunshinemine.extracustomthings;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+
+import com.sunshinemine.R;
 
 
 public class MyView extends EditText {
