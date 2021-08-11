@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
@@ -54,10 +56,22 @@ public class SettingsActivity extends AppCompatActivity {
                     editText.setInputType(InputType.TYPE_CLASS_NUMBER); // set only numbers allowed to input
                     editText.selectAll(); // select all text
                     int maxLength = 5;
-                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)}); // set maxLength to 2
+                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
                     Log.v("Kaloo",editText.getText().toString());
                 }
             });
+//            preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//                @Override
+//                public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                  //  Log.v("Kaloo",newValue;
+////                    editText.setInputType(InputType.TYPE_CLASS_NUMBER); // set only numbers allowed to input
+////                    editText.selectAll(); // select all text
+////                    int maxLength = 5;
+////                    editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+////                    Log.v("Kaloo",editText.getText().toString());
+//                    return false;
+//                }
+//            });
         }
 
     }

@@ -422,8 +422,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     // Define the text of the forecast.
                     String contentText = String.format(context.getString(R.string.format_notification),
                             Utility.convertToCamelCase(desc),
-                            Utility.formatTemperature(context, high),
-                            Utility.formatTemperature(context, low));
+                            WeatherForecast.formatHightLows(context, high,low).split("/")[0],
+                            WeatherForecast.formatHightLows(context, high,low).split("/")[1]);
 
 
                     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
