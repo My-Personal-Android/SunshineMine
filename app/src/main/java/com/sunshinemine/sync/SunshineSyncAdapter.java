@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -42,6 +43,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,6 +76,18 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final int INDEX_MIN_TEMP = 2;
     private static final int INDEX_SHORT_DESC = 3;
 
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({LOCATION_STATUS_OK,LOCATION_STATUS_SERVER_DOWN,LOCATION_STATUS_SERVER_INVALID,LOCATION_STATUS_UNKNOWN})
+    public @interface LocationStatus{}
+
+
+    public static final int LOCATION_STATUS_OK = 0;
+    public static final int LOCATION_STATUS_SERVER_DOWN = 1;
+    public static final int LOCATION_STATUS_SERVER_INVALID = 2;
+    public static final int LOCATION_STATUS_UNKNOWN = 3;
+
+
     public SunshineSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
@@ -87,23 +102,25 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         try {
 
             result = makeSynchronousRequest(url);
-            Log.v(LOG_TAG,result);
+
+            Log.v("Kaloo",result);
+
+
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String location = preferences.getString(getContext().getString(R.string.pref_city_key),getContext().getString(R.string.pref_city_default));
+
+            long locationId = addlocation(
+                    MainActivity.getPreference(getContext()),MainActivity.getPreference(getContext()),
+                    Double.parseDouble(location.split("/")[0].split(",")[0]),
+                    Double.parseDouble(location.split("/")[0].split(",")[1]));
 
             try {
-
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String location = preferences.getString(getContext().getString(R.string.pref_city_key),getContext().getString(R.string.pref_city_default));
-
-                long locationId = addlocation(
-                        MainActivity.getPreference(getContext()),MainActivity.getPreference(getContext()),
-                        Double.parseDouble(location.split("/")[0].split(",")[0]),
-                        Double.parseDouble(location.split("/")[0].split(",")[1]));
-
-                insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result),locationId);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result), locationId);
+            }catch (Exception e){
+                setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,6 +153,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.v("ToArray",cvArray.length+"");
         int data = getContext().getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI,cvArray);
         Log.v("Hello ->>>>>>","Bulk ROWS  = "+data+"");
+        setLocationStatus(getContext(),LOCATION_STATUS_OK);
     }
 
     private long addlocation(String locationSetting,String cityName,double lat,double lon){
@@ -169,7 +187,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     protected String makeSynchronousRequest(String url) throws IOException {
         Log.v(LOG_TAG,"httpCallRequest makeSynchronousRequest");
-        String jsonResponse = "";
+        String jsonResponse = null;
 
         URL mUrl = null;
         try {
@@ -200,24 +218,25 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             urlConnection.connect();
             //Log.v(LOG_TAG, "httpCallRequest -> Overall Message " + urlConnection.getResponseMessage()+" \t Overall Code"+urlConnection.getResponseCode());
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() >= 200 && urlConnection.getResponseCode()<=299) {
                 Log.v(LOG_TAG, "httpCallRequest -> Good request " + urlConnection.getResponseMessage());
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
+                setLocationStatus(getContext(),LOCATION_STATUS_OK);
 
-            } else if (urlConnection.getResponseCode() == 400) {
-
+            } else if (urlConnection.getResponseCode() >= 400 && urlConnection.getResponseCode() <=499) {
+                setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
                 Log.v(LOG_TAG, "httpCallRequest -> Bad request " + urlConnection.getResponseMessage());
 
-            }else if(urlConnection.getResponseCode()==401) {
-
+            }
+            else if (urlConnection.getResponseCode() >= 500 && urlConnection.getResponseCode() <=599) {
+                setLocationStatus(getContext(),LOCATION_STATUS_SERVER_DOWN);
                 Log.v(LOG_TAG, "httpCallRequest -> Bad request " + urlConnection.getResponseMessage());
 
-            } else {
-
+            }else {
+                setLocationStatus(getContext(),LOCATION_STATUS_UNKNOWN);
                 Log.v(LOG_TAG, "Not Fetched -> " + urlConnection.getResponseMessage());
                 Log.v(LOG_TAG, urlConnection.getResponseCode() + "");
-
             }
 
         } catch (IOException e) {
@@ -230,6 +249,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 inputStream.close();
             }
         }
+
+//        if(jsonResponse == null){
+//            setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
+//        }else if(jsonResponse == ""){
+//            setLocationStatus(getContext(),LOCATION_STATUS_SERVER_DOWN);
+//        }
         return jsonResponse;
     }
 
@@ -452,6 +477,13 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 cursor.close();
             }
 //        }
+    }
+
+    static private void setLocationStatus(Context context, @LocationStatus int locationStatus){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor spe = sp.edit();
+        spe.putInt(context.getString(R.string.pref_location_status_key),locationStatus);
+        spe.commit();
     }
 
 }

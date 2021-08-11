@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.sunshinemine.data.WeatherContract;
@@ -42,7 +43,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String LOG_TAG = "MainActivity";
 
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView recyclerview_forecast;
     private WeatherAdapter weatherAdapter;
+    private TextView Empty_Textview;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
+        Empty_Textview = findViewById(R.id.Empty_Textview);
         selected_city_textview = findViewById(R.id.selected_city_textview);
         selected_city_textview.setText(MainActivity.getPreference(this));
 
@@ -93,6 +96,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerview_forecast.setLayoutManager(new LinearLayoutManager(this));
 
         weatherAdapter = new WeatherAdapter(this, new ArrayList<>());
+        weatherAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            void checkEmpty() {
+                Empty_Textview.setVisibility(weatherAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                updateEmptyView();
+            }
+        });
         recyclerview_forecast.setAdapter(weatherAdapter);
         recyclerview_forecast.setItemAnimator(new DefaultItemAnimator());
 
@@ -218,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             while (data.moveToNext());
             weatherAdapter.swapWeather(arrayList);
         }
-
+        updateEmptyView();
     }
 
     @Override
@@ -238,4 +265,46 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return settings.getString(KEY, "MANDIBAHAUDDIN");
     }
 
+    private void updateEmptyView(){
+        if(weatherAdapter.getItemCount() == 0 ){
+            if(null != Empty_Textview){
+                int message = R.string.empty_forecast_list;
+                @SunshineSyncAdapter.LocationStatus int location = Utility.getLocationStatus(this);
+                switch (location){
+                    case SunshineSyncAdapter.LOCATION_STATUS_SERVER_DOWN:
+                        message = R.string.empty_forecast_list_server_down;
+                        break;
+                    case SunshineSyncAdapter.LOCATION_STATUS_SERVER_INVALID:
+                        message = R.string.empty_forecast_list_server_error;
+                        break;
+                    default:
+                        if(!Utility.isNetworkAvailable(this)){
+                            message = R.string.empty_forecast_list_no_network;
+                        };
+                }
+                Empty_Textview.setText(message);
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.pref_location_status_key))){
+            updateEmptyView();
+        }
+    }
 }

@@ -2,8 +2,12 @@ package com.sunshinemine;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import androidx.preference.PreferenceManager;
+
+import com.sunshinemine.sync.SunshineSyncAdapter;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -157,5 +161,18 @@ public class Utility {
         }
 
         return ret.toString();
+    }
+
+    static public boolean isNetworkAvailable(Context context){
+        ConnectivityManager connectivityManager =
+        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo !=null && networkInfo.isConnectedOrConnecting();
+    }
+
+    static public @SunshineSyncAdapter.LocationStatus
+    int getLocationStatus(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getInt(context.getString(R.string.pref_location_status_key),SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
     }
 }
