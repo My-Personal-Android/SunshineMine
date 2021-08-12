@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         SunshineSyncAdapter.syncImmediately(this);
 
         //FC6FXVHBVKT3HABJ
-        SunshineSyncAdapter.notifyWeather(this);
+
     }
 
     @Override

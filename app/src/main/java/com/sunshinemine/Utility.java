@@ -11,6 +11,7 @@ import com.sunshinemine.sync.SunshineSyncAdapter;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Utility {
 
@@ -174,5 +175,70 @@ public class Utility {
     int getLocationStatus(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getInt(context.getString(R.string.pref_location_status_key),SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN);
+    }
+
+    public static String getArtUrlForWeatherCondition(Context context, int weatherId) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String formatArtUrl = prefs.getString(context.getString(R.string.pref_art_pack_key), context.getString(R.string.pref_art_pack_sunshine));
+
+
+        String url = null;
+        // Based on weather code data found at:
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if (weatherId >= 200 && weatherId <= 232) {
+            url = String.format(Locale.US, formatArtUrl, "storm");
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            url = String.format(Locale.US, formatArtUrl, "light_rain");
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            url = String.format(Locale.US, formatArtUrl, "rain");
+        } else if (weatherId == 511) {
+            url = String.format(Locale.US, formatArtUrl, "snow");
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            url = String.format(Locale.US, formatArtUrl, "rain");
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            url = String.format(Locale.US, formatArtUrl, "snow");
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            url = String.format(Locale.US, formatArtUrl, "fog");
+        } else if (weatherId == 761 || weatherId == 781) {
+            url = String.format(Locale.US, formatArtUrl, "storm");
+        } else if (weatherId == 800) {
+            url = String.format(Locale.US, formatArtUrl, "clear");
+        } else if (weatherId == 801) {
+            url = String.format(Locale.US, formatArtUrl, "light_clouds");
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            url = String.format(Locale.US, formatArtUrl, "clouds");
+        }
+        return url;
+    }
+
+
+    public static String getImageUrlForWeatherCondition(int weatherId) {
+        // Based on weather code data found at:
+        // http://bugs.openweathermap.org/projects/api/wiki/Weather_Condition_Codes
+        if (weatherId >= 200 && weatherId <= 232) {
+            return "http://upload.wikimedia.org/wikipedia/commons/2/28/Thunderstorm_in_Annemasse,_France.jpg";
+        } else if (weatherId >= 300 && weatherId <= 321) {
+            return "http://upload.wikimedia.org/wikipedia/commons/a/a0/Rain_on_leaf_504605006.jpg";
+        } else if (weatherId >= 500 && weatherId <= 504) {
+            return "http://upload.wikimedia.org/wikipedia/commons/6/6c/Rain-on-Thassos.jpg";
+        } else if (weatherId == 511) {
+            return "http://upload.wikimedia.org/wikipedia/commons/b/b8/Fresh_snow.JPG";
+        } else if (weatherId >= 520 && weatherId <= 531) {
+            return "http://upload.wikimedia.org/wikipedia/commons/6/6c/Rain-on-Thassos.jpg";
+        } else if (weatherId >= 600 && weatherId <= 622) {
+            return "http://upload.wikimedia.org/wikipedia/commons/b/b8/Fresh_snow.JPG";
+        } else if (weatherId >= 701 && weatherId <= 761) {
+            return "http://upload.wikimedia.org/wikipedia/commons/e/e6/Westminster_fog_-_London_-_UK.jpg";
+        } else if (weatherId == 761 || weatherId == 781) {
+            return "http://upload.wikimedia.org/wikipedia/commons/d/dc/Raised_dust_ahead_of_a_severe_thunderstorm_1.jpg";
+        } else if (weatherId == 800) {
+            return "http://upload.wikimedia.org/wikipedia/commons/7/7e/A_few_trees_and_the_sun_(6009964513).jpg";
+        } else if (weatherId == 801) {
+            return "http://upload.wikimedia.org/wikipedia/commons/e/e7/Cloudy_Blue_Sky_(5031259890).jpg";
+        } else if (weatherId >= 802 && weatherId <= 804) {
+            return "http://upload.wikimedia.org/wikipedia/commons/5/54/Cloudy_hills_in_Elis,_Greece_2.jpg";
+        }
+        return null;
     }
 }

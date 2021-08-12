@@ -5,7 +5,9 @@ import static com.sunshinemine.Utility.convertToCamelCase;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherAdapterViewHolder> {
@@ -24,6 +28,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
     private Context context;
     private ArrayList<WeatherForecast> mWeatherForecast;
+    private String pic_key=null;
 
     public WeatherAdapter(Context context, ArrayList<WeatherForecast> WeatherForecastlist) {
         this.context = context;
@@ -34,6 +39,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     public WeatherAdapterViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.list_item_forcast, parent, false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String pic_key = prefs.getString(context.getString(R.string.pref_pics_key),context.getString(R.string.pref_pics_default));
+        this.pic_key=pic_key;
+        Log.v("LoooL",pic_key);
         return new WeatherAdapter.WeatherAdapterViewHolder(view);
     }
 
@@ -42,6 +51,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         if(0 == position){
+
             holder.top_linear.setVisibility(View.VISIBLE);
             holder.top_linear.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setVisibility(View.GONE);
@@ -54,7 +64,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.list_item_high_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.list_item_low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
             holder.list_item_low_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
-            holder.list_item_icon.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
+
+            if(pic_key.equals("image")){
+                Glide.with(context)
+                        .load(Utility.getImageUrlForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .error(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .circleCrop()
+                        .into(holder.list_item_icon);
+            }else {
+                Glide.with(context)
+                        .load(Utility.getArtUrlForWeatherCondition(context, mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .error(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .into(holder.list_item_icon);
+            }
+
             holder.list_item_icon.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.top_linear.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,7 +106,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.high_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[0])));
             holder.low_textview.setText(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
             holder.low_textview.setContentDescription(context.getString(R.string.format_temperature,Float.parseFloat(WeatherForecast.formatHightLows(context,mWeatherForecast.get(position).getTemp().getMax(),mWeatherForecast.get(position).getTemp().getMin()).split("/")[1])));
-            holder.image.setImageResource(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()));
+
+            if(pic_key.equals("image")){
+                Glide.with(context)
+                        .load(Utility.getImageUrlForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .error(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .circleCrop()
+                        .into(holder.image);
+            }else {
+                Glide.with(context)
+                        .load(Utility.getArtUrlForWeatherCondition(context, mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .error(Utility.getArtResourceForWeatherCondition(mWeatherForecast.get(position).getWeatherArrayList().get(0).getId()))
+                        .into(holder.image);
+            }
+
             holder.image.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setOnClickListener(new View.OnClickListener() {
                 @Override

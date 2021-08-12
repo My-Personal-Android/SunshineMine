@@ -31,6 +31,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
+import com.bumptech.glide.Glide;
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
 import com.sunshinemine.Utility;
@@ -50,14 +51,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = "SunshineSyncAdapter";
 
     // Interval at which to sync with the weather, in seconds.
-    // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 5 ; // sec
+    // 60 seconds (1 minute) * 60 = 1 hours
+    public static final int SYNC_INTERVAL = 60 * 60 ; // sec
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
     private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int WEATHER_NOTIFICATION_ID = 137;
@@ -115,6 +117,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             try {
                 insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result), locationId);
+                SunshineSyncAdapter.notifyWeather(getContext());
             }catch (Exception e){
                 setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
             }
@@ -382,6 +385,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+        String pic_key = prefs.getString(context.getString(R.string.pref_pics_key),context.getString(R.string.pref_pics_default));
         boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
                 Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
 
@@ -415,8 +419,43 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     int iconId = Utility.getIconResourceForWeatherCondition(weatherId);
                     Resources resources = context.getResources();
-                    Bitmap largeIcon = BitmapFactory.decodeResource(resources,
-                            Utility.getArtResourceForWeatherCondition(weatherId));
+
+                    int artResourceId = Utility.getArtResourceForWeatherCondition(weatherId);
+                    String artUrl=null;
+
+                    if(pic_key.equals("image")){
+                        artUrl = Utility.getImageUrlForWeatherCondition(weatherId);
+                    }else {
+                        artUrl = Utility.getArtUrlForWeatherCondition(context, weatherId);
+                    }
+
+                    // On Honeycomb and higher devices, we can retrieve the size of the large icon
+                    // Prior to that, we use a fixed size
+                    int largeIconWidth = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+                            ? resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_width)
+                            : resources.getDimensionPixelSize(R.dimen.notification_large_icon_default);
+
+                    int largeIconHeight = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
+                            ? resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height)
+                            : resources.getDimensionPixelSize(R.dimen.notification_large_icon_default);
+
+
+                    Bitmap largeIcon;
+
+                    try {
+                        largeIcon = Glide.with(context)
+                                .asBitmap()
+                                .load(artUrl)
+                                .circleCrop()
+                                .error(artResourceId)
+                                .into(largeIconWidth, largeIconHeight).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        Log.e(LOG_TAG, "Error retrieving large icon from " + artUrl, e);
+                        largeIcon = BitmapFactory.decodeResource(resources, artResourceId);
+                    }
+
+//                    Bitmap largeIcon = BitmapFactory.decodeResource(resources,
+//                            Utility.getArtResourceForWeatherCondition(weatherId));
                     String title = context.getString(R.string.app_name);
 
                     // Define the text of the forecast.

@@ -33,6 +33,14 @@
             app:summaryOn="@string/pref_enable_notifications_true"
             app:defaultValue="@string/pref_enable_notifications_default"></CheckBoxPreference>
 
+        <ListPreference
+            app:defaultValue="@string/pref_pics_default"
+            app:entries="@array/pics_entries"
+            app:entryValues="@array/pics_values"
+            app:key="@string/pref_pics_key"
+            app:title="@string/pics_title"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
 <!--    <PreferenceCategory app:title="@string/sync_header">-->

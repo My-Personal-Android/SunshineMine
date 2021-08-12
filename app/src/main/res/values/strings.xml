@@ -70,4 +70,23 @@
     <string name="empty_forecast_list_server_error">No Weather Information Available. \n The Server is not Valid.</string>
 
     <string name="pref_location_status_key" translatable="false">loc-status</string>
+
+    <!-- Label for the art pack preference [CHAR LIMIT=30] -->
+    <string name="pref_art_pack_label" translatable="false">Icon Pack</string>
+
+    <!-- Label for Sunshine option in art pack preference [CHAR LIMIT=25] -->
+    <string name="pref_art_pack_label_sunshine" translatable="false">Sunshine</string>
+
+    <!-- Label for cute dogs option in art pack preference [CHAR LIMIT=25] -->
+    <string name="pref_art_pack_label_cute_dogs" translatable="false">Cute dogs</string>
+
+    <!-- Value in SharedPreferences for Sunshine art pack option [CHAR LIMIT=NONE] -->
+    <string name="pref_art_pack_key" translatable="false">art_pack</string>
+    <string name="pref_art_pack_sunshine" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-xxhdpi/art_%s.png</string>
+
+
+    <string name="pref_pics_key" translatable="false">pics-key</string>
+    <string name="pref_pics_default" translatable="false">icon</string>
+    <string name="pics_title" translatable="false">Choose Picture to Display</string>
+
 </resources>

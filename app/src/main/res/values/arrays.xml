@@ -30,4 +30,15 @@
         <item>33.6844,73.0479/ISLAMABAD</item>
         <item>32.9425,73.7257/JHELUM</item>
     </string-array>
+
+
+    <string-array name="pics_entries">
+        <item>ICON</item>
+        <item>IMAGE</item>
+    </string-array>
+
+    <string-array name="pics_values">
+        <item>icon</item>
+        <item>image</item>
+    </string-array>
 </resources>
