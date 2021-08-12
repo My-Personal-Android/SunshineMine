@@ -182,7 +182,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
 
     public void showDialogtoAlert(Bundle bundle){
         new AlertDialog.Builder(this)
-                .setTitle(" Alert")
+                .setTitle(" Weather Alert")
                 .setMessage("Heads up : " +Utility.convertToCamelCase(bundle.getString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC))+ " in " + Utility.convertToCamelCase(bundle.getString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING)) + " ..! ")
                 .setIcon(R.mipmap.ic_launcher)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
