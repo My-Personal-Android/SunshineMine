@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "228713767718",
+    "project_id": "sunshinemine-361e8",
+    "storage_bucket": "sunshinemine-361e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228713767718:android:2973cbeb5855375d19d7e7",
+        "android_client_info": {
+          "package_name": "com.sunshinemine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228713767718-0hqiupcdgv8aol5tqreb93tmva702mjf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunshinemine",
+            "certificate_hash": "179254b936e729b53ec3ce49184c62e6ca873a93"
+          }
+        },
+        {
+          "client_id": "228713767718-vh9o09gfhvs524dktpcs45117bqb1bfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYy3e_094JOxwQZSOVMfYBrNuCtQL1lOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228713767718-vh9o09gfhvs524dktpcs45117bqb1bfr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

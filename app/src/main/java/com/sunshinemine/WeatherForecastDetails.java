@@ -95,7 +95,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         setContentView(R.layout.activity_weather_forecast_details);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setIcon(R.drawable.ic_logo);
 
         LoaderManager.getInstance(this).initLoader(DETAIL_LOADER,null,this);
 

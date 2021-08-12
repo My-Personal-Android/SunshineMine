@@ -3,19 +3,25 @@ package com.sunshinemine;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import androidx.core.os.HandlerCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -31,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
 
@@ -40,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -74,6 +82,32 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private WeatherAdapter weatherAdapter;
     private TextView Empty_Textview;
 
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle bundle = new Bundle();
+            bundle.putString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC,intent.getExtras().getString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC));
+            bundle.putString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING,intent.getExtras().getString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING));
+            showDialogtoAlert(bundle);
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mMessageReceiver),
+                new IntentFilter("MyData")
+        );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        getSupportActionBar().setIcon(R.drawable.ic_logo);
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
@@ -129,6 +163,40 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         //FC6FXVHBVKT3HABJ
 
+        Bundle bundle= getIntent().getExtras();
+        // when app is not running and notification come
+        if(bundle!=null){
+           showDialogtoAlert(bundle);
+        }
+
+        FirebaseMessaging.getInstance ().getToken ()
+                .addOnCompleteListener ( task -> {
+                    if (!task.isSuccessful ()) {
+                        //Could not get FirebaseMessagingToken
+                        return;
+                    }
+                    if (null != task.getResult ()) {
+                        //Got FirebaseMessagingToken
+                        String firebaseMessagingToken = Objects.requireNonNull ( task.getResult () );
+                        //Use firebaseMessagingToken further
+                        Log.v("Token Firebase = ",firebaseMessagingToken);
+                    }
+                } );
+
+
+    }
+
+    public void showDialogtoAlert(Bundle bundle){
+        new AlertDialog.Builder(this)
+                .setTitle(" Alert")
+                .setMessage("Heads up : " +Utility.convertToCamelCase(bundle.getString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC))+ " in " + Utility.convertToCamelCase(bundle.getString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING)) + " ..! ")
+                .setIcon(R.mipmap.ic_launcher)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }})
+                .show();
     }
 
     @Override

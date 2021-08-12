@@ -89,4 +89,6 @@
     <string name="pref_pics_default" translatable="false">icon</string>
     <string name="pics_title" translatable="false">Choose Picture to Display</string>
 
+    <string name="default_notification_channel_id" translatable="false">default</string>
+
 </resources>
