@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -56,7 +57,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             holder.top_linear.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setVisibility(View.GONE);
 
-            holder.list_item_date_textview.setText("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
+            holder.list_item_date_textview.setText("Today - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             holder.list_item_date_textview.setContentDescription("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             holder.list_item_forecast_textview.setText(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
             holder.list_item_forecast_textview.setContentDescription(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain())+"");
@@ -151,7 +152,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
     class WeatherAdapterViewHolder extends RecyclerView.ViewHolder{
 
-        public LinearLayout top_linear;
+        public GridLayout top_linear;
         public TextView list_item_date_textview;
         public TextView list_item_high_textview;
         public TextView list_item_low_textview;
@@ -172,7 +173,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             super(itemView);
 
             // Top
-            top_linear= itemView.findViewById(R.id.top_linear);
+            top_linear= itemView.findViewById(R.id.top_grid);
             list_item_date_textview =itemView.findViewById(R.id.list_item_date_textview);
             list_item_high_textview =itemView.findViewById(R.id.list_item_high_textview);
             list_item_low_textview =itemView.findViewById(R.id.list_item_low_textview);

@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Empty_Textview = findViewById(R.id.Empty_Textview);
         selected_city_textview = findViewById(R.id.selected_city_textview);
-        selected_city_textview.setText(MainActivity.getPreference(this));
+        selected_city_textview.setText(Utility.convertToCamelCase(MainActivity.getPreference(this).toLowerCase()));
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
 

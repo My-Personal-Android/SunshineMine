@@ -113,6 +113,10 @@
             </intent-filter>
         </service>
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
     <permission android:name="com.sunshinemine.LICENSE_TO_KILL"
         android:protectionLevel="dangerous"
