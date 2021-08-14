@@ -39,7 +39,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @Override
     public WeatherAdapterViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.list_item_forcast, parent, false);
+        View view = inflater.inflate(R.layout.list_item_forecast, parent, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String pic_key = prefs.getString(context.getString(R.string.pref_pics_key),context.getString(R.string.pref_pics_default));
         this.pic_key=pic_key;
