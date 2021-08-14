@@ -18,13 +18,13 @@
             android:theme="@style/ThemeOverlay.AppCompat.Light">
         </androidx.appcompat.widget.Toolbar>
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_below="@id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="5">
-            <androidx.gridlayout.widget.GridLayout
+            <GridLayout
                 android:id="@+id/detail_grid_1"
                 android:layout_below="@id/toolbar"
                 android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:background="@android:color/white"
                 app:columnCount="2">
 
-                <Space
+                <android.widget.Space
                     app:layout_columnSpan="2"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1"/>
@@ -107,14 +107,15 @@
                     app:layout_columnWeight="1"
                     tools:text="10"/>
 
-                <Space
+                <androidx.legacy.widget.Space
                     app:layout_columnSpan="2"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1"/>
 
-            </androidx.gridlayout.widget.GridLayout>
+            </GridLayout>
 
-            <androidx.gridlayout.widget.GridLayout android:layout_below="@id/detail_grid_1"
+            <androidx.gridlayout.widget.GridLayout
+                android:layout_below="@id/detail_grid_1"
                 android:id="@+id/detail_grid_2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -185,7 +186,6 @@
                     app:layout_gravity="fill"
                     tools:text="4km/h NW"/>
             </androidx.gridlayout.widget.GridLayout>
-
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

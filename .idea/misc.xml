@@ -9,9 +9,11 @@
         <entry key="app/src/main/res/drawable/ic_clear_black_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_clear_opaque_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/drawable/icon_share.xml" value="0.35743589743589743" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout-land/activity_weather_forecast_details.xml" value="0.29365079365079366" />
         <entry key="app/src/main/res/layout-sw600dp/detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout-sw600dp/item.xml" value="0.1" />
         <entry key="app/src/main/res/layout-sw720dp/item.xml" value="0.1" />

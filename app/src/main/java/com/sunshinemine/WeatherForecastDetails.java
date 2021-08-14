@@ -205,10 +205,6 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
             case android.R.id.home:
                 this.finish();
                 return true;
-            case R.id.settings:
-                Intent intent = new Intent(this,SettingsActivity.class);
-                this.startActivity(intent);
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -266,11 +262,11 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
             }
             detail_icon.setContentDescription(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_ID))+"");
 
-            detail_humidity_textview.setText("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
+            detail_humidity_textview.setText(data.getString(COL_WEATHER_HUMIDITY)+"%");
             detail_humidity_textview.setContentDescription("Humidity : "+data.getString(COL_WEATHER_HUMIDITY)+"%");
-            detail_pressure_textview.setText("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
+            detail_pressure_textview.setText(data.getString(COL_WEATHER_PRESSURE)+" hPa");
             detail_pressure_textview.setContentDescription("Pressure : "+data.getString(COL_WEATHER_PRESSURE)+" hPa");
-            detail_wind_textview.setText("Wind : "+Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
+            detail_wind_textview.setText(Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
             detail_wind_textview.setContentDescription("Wind : "+Utility.getFormattedWind(this,Float.parseFloat(data.getString(COL_WEATHER_WIND_SPEED)),Float.parseFloat(data.getString(COL_WEATHER_DEGREES)))+"");
         }
     }

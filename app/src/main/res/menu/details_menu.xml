@@ -10,16 +10,4 @@
         app:actionProviderClass="androidx.appcompat.widget.ShareActionProvider"
         >
     </item>
-    <item
-        android:id="@+id/message"
-        android:title="Message"
-        android:icon="@drawable/icon_message"
-        app:showAsAction="always"
-        >
-    </item>
-    <item
-        android:id="@+id/settings"
-        android:title="Settings"
-        app:showAsAction="never">
-    </item>
 </menu>
