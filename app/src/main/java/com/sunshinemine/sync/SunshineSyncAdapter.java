@@ -478,7 +478,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                     }
 
                     mBuilder = mBuilder
-                            .setColor(resources.getColor(R.color.sunshine_light_blue))
+                            .setColor(resources.getColor(R.color.primary_light))
                             .setSmallIcon(iconId)
                             .setLargeIcon(largeIcon)
                             .setContentTitle(title)
