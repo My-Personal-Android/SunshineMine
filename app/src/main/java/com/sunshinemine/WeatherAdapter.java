@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -53,8 +53,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         if(0 == position){
 
-            holder.top_linear.setVisibility(View.VISIBLE);
-            holder.top_linear.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
+            holder.top_relative.setVisibility(View.VISIBLE);
+            holder.top_relative.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setVisibility(View.GONE);
 
             holder.list_item_date_textview.setText("Today - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
@@ -80,18 +80,10 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             }
 
             holder.list_item_icon.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
-            holder.top_linear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        }
+        else if(position <= mWeatherForecast.size()){
 
-                    Intent intent = new Intent(context,WeatherForecastDetails.class);
-                    intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(position));
-                    context.startActivity(intent);
-                }
-            });
-        }else{
-
-            holder.top_linear.setVisibility(View.GONE);
+            holder.top_relative.setVisibility(View.GONE);
             holder.linear.setVisibility(View.VISIBLE);
             holder.linear.setContentDescription(convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             if(position == 1){
@@ -122,15 +114,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             }
 
             holder.image.setContentDescription("Image for Weather : "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
-            holder.linear.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent intent = new Intent(context,WeatherForecastDetails.class);
-                    intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(position));
-                    context.startActivity(intent);
-                }
-            });
         }
     }
 
@@ -150,9 +133,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
         return mWeatherForecast.size();
     }
 
-    class WeatherAdapterViewHolder extends RecyclerView.ViewHolder{
+    class WeatherAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public GridLayout top_linear;
+        public RelativeLayout top_relative;
         public TextView list_item_date_textview;
         public TextView list_item_high_textview;
         public TextView list_item_low_textview;
@@ -173,7 +156,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             super(itemView);
 
             // Top
-            top_linear= itemView.findViewById(R.id.top_grid);
+            top_relative = itemView.findViewById(R.id.top_relative);
             list_item_date_textview =itemView.findViewById(R.id.list_item_date_textview);
             list_item_high_textview =itemView.findViewById(R.id.list_item_high_textview);
             list_item_low_textview =itemView.findViewById(R.id.list_item_low_textview);
@@ -188,6 +171,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             high_textview =itemView.findViewById(R.id.high_textview);
             low_textview =itemView.findViewById(R.id.low_textview);
             image = itemView.findViewById(R.id.image);
+
+            itemView.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context,WeatherForecastDetails.class);
+            intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
+            context.startActivity(intent);
 
         }
     }

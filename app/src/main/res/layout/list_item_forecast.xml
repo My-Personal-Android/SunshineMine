@@ -13,6 +13,7 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:visibility="visible"
             android:id="@+id/top_relative"
             android:background="@color/white"
             android:layout_width="match_parent"
@@ -93,68 +94,68 @@
             android:elevation="1dp"
             android:layout_marginBottom="1dp"
             android:layout_height="100dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@drawable/touch_selector"
-            android:gravity="center_vertical"
-            android:minHeight="?android:attr/listPreferredItemHeight"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
-            android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
-            android:visibility="visible">
-
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="@dimen/list_icon"
-                android:layout_height="@dimen/list_icon"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
-                android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material" />
-
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/touch_selector"
+                android:gravity="center_vertical"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
+                android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="@dimen/list_icon"
+                    android:layout_height="@dimen/list_icon"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/abc_list_item_padding_horizontal_material"
+                    android:layout_marginRight="@dimen/abc_list_item_padding_horizontal_material" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/date_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+                    <TextView
+                        android:id="@+id/forecast_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColor="@color/secondary_text" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/date_textview"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/high_textview"
+                    android:layout_width="@dimen/forecast_text_width"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/forecast_temperature_space"
+                    android:layout_marginRight="@dimen/forecast_temperature_space"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="right"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/forecast_text_size" />
 
                 <TextView
-                    android:id="@+id/forecast_textview"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/low_textview"
+                    android:layout_width="@dimen/forecast_text_width"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="@color/secondary_text" />
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="right"
+                    android:textColor="@color/forecast_low_text"
+                    android:textSize="@dimen/forecast_text_size" />
+
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/high_textview"
-                android:layout_width="@dimen/forecast_text_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/forecast_temperature_space"
-                android:layout_marginRight="@dimen/forecast_temperature_space"
-                android:fontFamily="sans-serif-light"
-                android:gravity="right"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/forecast_text_size" />
-
-            <TextView
-                android:id="@+id/low_textview"
-                android:layout_width="@dimen/forecast_text_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif-light"
-                android:gravity="right"
-                android:textColor="@color/forecast_low_text"
-                android:textSize="@dimen/forecast_text_size" />
-
-        </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
