@@ -142,6 +142,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
                 <RelativeLayout
+                    android:id="@+id/detail_additional_pane"
                     android:layout_below="@id/detail_grid_1"
                     android:layout_width="match_parent"
                     android:background="@color/detail_accent_pane_background"

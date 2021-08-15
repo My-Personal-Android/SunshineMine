@@ -17,4 +17,14 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
+
+    <style name="AppTheme.Main" parent="@style/Theme.SunshineMine">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="AppTheme.Details" parent="@style/Theme.SunshineMine">
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/details_window_enter_transition</item>
+        <item name="android:windowReturnTransition">@transition/details_window_return_transition</item>
+    </style>
 </resources>

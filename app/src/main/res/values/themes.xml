@@ -15,4 +15,9 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
+    <style name="AppTheme.Main" parent="@style/Theme.SunshineMine">
+    </style>
+
+    <style name="AppTheme.Details" parent="@style/Theme.SunshineMine">
+    </style>
 </resources>

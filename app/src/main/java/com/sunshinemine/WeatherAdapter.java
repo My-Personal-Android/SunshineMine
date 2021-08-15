@@ -3,6 +3,7 @@ package com.sunshinemine;
 import static com.sunshinemine.Utility.convertToCamelCase;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -177,11 +180,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(context,WeatherForecastDetails.class);
-            intent.putExtra(WeatherForecastDetails.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
-            context.startActivity(intent);
+            Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
+            intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
+           // context.startActivity(intent);
 
-        }
+            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context);
+            ActivityCompat.startActivity(context, intent, activityOptions.toBundle());        }
     }
 
 }

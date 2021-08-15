@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class WeatherForecastDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class WeatherForecastDetailsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DETAIL_LOADER = 0;
     public static String DATA_KEY_EXTRA = "Data";
@@ -132,7 +132,7 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
@@ -196,19 +196,6 @@ public class WeatherForecastDetails extends AppCompatActivity implements LoaderM
                         dialog.cancel();
                     }})
                 .show();
-    }
-
-    // function to the button on press
-    @Override
-    public boolean onOptionsItemSelected( MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
     }
 
 
