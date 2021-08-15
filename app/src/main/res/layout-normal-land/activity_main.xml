@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/listPreferredItemHeight"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:layout_marginBottom="4dp"
+                android:contentDescription="@string/app_name"
+                android:fontFamily="@font/dancing_script_bold"
+                android:gravity="center_vertical"
+                android:text="Sunshine"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                android:textColor="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <RelativeLayout
+            android:layout_marginLeft="120dp"
+            android:layout_marginRight="120dp"
+            android:background="@color/white"
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/selected_city_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:contentDescription="Seleted Location Name"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="No Location Added"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/secondary_text" />
+            <RelativeLayout
+                android:layout_below="@id/selected_city_textview"
+                android:background="#f4f4f4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:contentDescription="Locations Recyclerview"
+                    android:id="@+id/recyclerview_forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <TextView
+                    android:id="@+id/Empty_Textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Empty Location Text"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    android:layout_centerInParent="true"
+                    android:text="@string/empty_forecast_list"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/primary_dark" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
