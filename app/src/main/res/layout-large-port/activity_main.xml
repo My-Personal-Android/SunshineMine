@@ -37,13 +37,12 @@
         </androidx.appcompat.widget.Toolbar>
 
         <RelativeLayout
-            android:layout_marginTop="132dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginTop="124dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
-                android:background="#f4f4f4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <androidx.recyclerview.widget.RecyclerView

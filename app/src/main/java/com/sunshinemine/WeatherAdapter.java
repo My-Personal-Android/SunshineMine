@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -143,7 +144,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         public TextView selected_city_textview;
 
-        public RelativeLayout top_relative;
+        public CardView top_relative;
         public TextView list_item_date_textview;
         public TextView list_item_high_textview;
         public TextView list_item_low_textview;

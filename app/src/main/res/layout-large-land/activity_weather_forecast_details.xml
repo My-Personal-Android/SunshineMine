@@ -28,10 +28,10 @@
             app:layout_scrollFlags="scroll|enterAlways" />
     </androidx.appcompat.widget.Toolbar>
     <RelativeLayout
-        android:layout_marginRight="170dp"
-        android:layout_marginLeft="170dp"
-        android:layout_marginBottom="100dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginRight="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="124dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -42,11 +42,12 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0.0px"
             android:elevation="8dp"
+            android:layout_margin="8dp"
             android:clipToPadding="false"
             android:clipChildren="false"
-            card_view:cardElevation="4dp"
+            card_view:cardElevation="3dp"
             card_view:cardPreventCornerOverlap="false"
-            card_view:cardCornerRadius="3dp"
+            card_view:cardCornerRadius="4dp"
             tools:ignore="MissingConstraints">
             <LinearLayout
                 android:layout_below="@id/sample_toolbar"
