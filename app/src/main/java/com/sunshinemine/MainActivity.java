@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String PREFERENCE_FILE="com.sunshinemine";
     private static final String KEY="CITY";
 
-    private TextView selected_city_textview;
     private static final int FORECAST_LOADER = 0;
 
     private static final String[] FORECAST_COLUMNS = {
@@ -124,8 +123,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         Empty_Textview = findViewById(R.id.Empty_Textview);
-        selected_city_textview = findViewById(R.id.selected_city_textview);
-        selected_city_textview.setText(Utility.convertToCamelCase(MainActivity.getPreference(this).toLowerCase()));
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
 

@@ -54,11 +54,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
+
         if(0 == position){
 
             holder.top_relative.setVisibility(View.VISIBLE);
             holder.top_relative.setContentDescription("Today "+convertToCamelCase(mWeatherForecast.get(position).getWeatherArrayList().get(0).getMain()));
             holder.linear.setVisibility(View.GONE);
+
+            holder.selected_city_textview.setText(Utility.convertToCamelCase(MainActivity.getPreference(context).toLowerCase()));
 
             holder.list_item_date_textview.setText("Today - "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
             holder.list_item_date_textview.setContentDescription("Today- "+ WeatherForecast.getReadableDateString(mWeatherForecast.get(position).getDt())+"");
@@ -138,6 +141,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
     class WeatherAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        public TextView selected_city_textview;
+
         public RelativeLayout top_relative;
         public TextView list_item_date_textview;
         public TextView list_item_high_textview;
@@ -157,6 +162,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         public WeatherAdapterViewHolder(View itemView){
             super(itemView);
+
+            // Selected city textview
+            selected_city_textview = itemView.findViewById(R.id.selected_city_textview);
 
             // Top
             top_relative = itemView.findViewById(R.id.top_relative);

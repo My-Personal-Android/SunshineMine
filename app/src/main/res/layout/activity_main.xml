@@ -26,7 +26,6 @@
                 android:layout_height="?attr/listPreferredItemHeight"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:layout_marginBottom="6dp"
                 android:contentDescription="@string/app_name"
                 android:fontFamily="@font/dancing_script_bold"
                 android:gravity="center_vertical"
@@ -39,20 +38,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/selected_city_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:contentDescription="Seleted Location Name"
-                android:fontFamily="sans-serif"
-                android:gravity="center"
-                android:text="No Location Added"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/secondary_text" />
             <RelativeLayout
-                android:layout_below="@id/selected_city_textview"
                 android:background="#f4f4f4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -62,18 +48,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
+
                 <TextView
                     android:id="@+id/Empty_Textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:contentDescription="Empty Location Text"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
-                    android:gravity="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                    android:layout_centerInParent="true"
                     android:text="@string/empty_forecast_list"
-                    android:fontFamily="sans-serif"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="@color/primary_dark" />
             </RelativeLayout>
         </RelativeLayout>

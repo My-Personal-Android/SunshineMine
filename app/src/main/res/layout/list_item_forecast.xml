@@ -21,8 +21,19 @@
             android:elevation="@dimen/appbar_elevation"
             android:layout_marginBottom="@dimen/appbar_elevation"
             >
-
+            <TextView
+                android:id="@+id/selected_city_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
+                android:contentDescription="Seleted Location Name"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="No Location"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/secondary_text" />
             <androidx.gridlayout.widget.GridLayout
+                android:layout_below="@+id/selected_city_textview"
                 android:id="@+id/top_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,11 +87,12 @@
                 <TextView
                     android:id="@+id/list_item_low_textview"
                     android:layout_width="0dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
                     android:textColor="@color/secondary_text"
-                    android:textSize="36sp"
+                    android:textSize="32dp"
                     app:layout_columnWeight="1"
                     tools:text="10" />
 
@@ -90,16 +102,13 @@
             android:id="@+id/linear"
             android:layout_below="@+id/top_relative"
             android:layout_width="match_parent"
-            android:background="@color/white"
-            android:elevation="1dp"
             android:layout_marginBottom="1dp"
-            android:layout_height="100dp">
+            android:layout_height="?android:attr/listPreferredItemHeight">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/touch_selector"
                 android:gravity="center_vertical"
-                android:minHeight="?android:attr/listPreferredItemHeight"
                 android:orientation="horizontal"
                 android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
                 android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
