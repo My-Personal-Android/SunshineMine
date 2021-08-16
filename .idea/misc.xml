@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/layout-land/list_item_forecast.xml" value="0.2625" />
         <entry key="app/src/main/res/layout-large-land/activity_main.xml" value="0.15" />
         <entry key="app/src/main/res/layout-large-land/activity_weather_forecast_details.xml" value="0.15" />
+        <entry key="app/src/main/res/layout-large-land/list_item_forecast.xml" value="0.1" />
         <entry key="app/src/main/res/layout-large-port/activity_main.xml" value="0.21550546448087432" />
         <entry key="app/src/main/res/layout-large-port/activity_weather_forecast_details.xml" value="0.18" />
         <entry key="app/src/main/res/layout-large-port/list_item_forecast.xml" value="0.18032786885245902" />

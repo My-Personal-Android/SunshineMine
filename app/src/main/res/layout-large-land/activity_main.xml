@@ -38,8 +38,8 @@
 
         <RelativeLayout
             android:layout_marginTop="132dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginLeft="100dp"
+            android:layout_marginRight="270dp"
+            android:layout_marginLeft="270dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
