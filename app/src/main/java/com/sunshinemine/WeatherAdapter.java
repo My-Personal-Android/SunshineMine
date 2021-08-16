@@ -35,19 +35,31 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     private ArrayList<WeatherForecast> mWeatherForecast;
     private String pic_key=null;
 
-    public WeatherAdapter(Context context, ArrayList<WeatherForecast> WeatherForecastlist) {
+    private View mEmptyView;
+    private WeatherAdapterOnClickHandler mClickHandler;
+
+    public static interface WeatherAdapterOnClickHandler {
+        void onClick(Long date, WeatherAdapterViewHolder vh);
+    }
+
+    public WeatherAdapter(Context context, ArrayList<WeatherForecast> WeatherForecastlist,WeatherAdapterOnClickHandler mClickHandler,View view) {
         this.context = context;
         this.mWeatherForecast = WeatherForecastlist;
+        this.mEmptyView = view;
+        this.mClickHandler = mClickHandler;
     }
     @NonNull
     @Override
     public WeatherAdapterViewHolder onCreateViewHolder(@NonNull  ViewGroup parent, int viewType) {
+
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.list_item_forecast, parent, false);
+        view.setFocusable(true);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String pic_key = prefs.getString(context.getString(R.string.pref_pics_key),context.getString(R.string.pref_pics_default));
         this.pic_key=pic_key;
-        Log.v("LoooL",pic_key);
+
         return new WeatherAdapter.WeatherAdapterViewHolder(view);
     }
 
@@ -124,19 +136,20 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
         }
     }
 
-    public void swapWeather(ArrayList<WeatherForecast> weatherForecasts){
+    public void swapWeatherList(ArrayList<WeatherForecast> weatherForecasts){
 
         mWeatherForecast = weatherForecasts;
         if (mWeatherForecast != null) {
             // Force the RecyclerView to refresh
             this.notifyDataSetChanged();
         }
-
+        mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public int getItemCount() {
-        if(mWeatherForecast==null) return 0;
+        if(mWeatherForecast==null)
+            return 0;
         return mWeatherForecast.size();
     }
 
@@ -189,12 +202,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
 
         @Override
         public void onClick(View v) {
+
+            mClickHandler.onClick(new Long(getAdapterPosition()),this);
             Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
             intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
            // context.startActivity(intent);
 
             ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context);
-            ActivityCompat.startActivity(context, intent, activityOptions.toBundle());        }
+            ActivityCompat.startActivity(context, intent, activityOptions.toBundle());
+        }
     }
 
 }

@@ -19,13 +19,13 @@
         <entry key="app/src/main/res/layout-land/item_list_forecast.xml" value="0.29365079365079366" />
         <entry key="app/src/main/res/layout-land/list_item_forcast.xml" value="0.29365079365079366" />
         <entry key="app/src/main/res/layout-land/list_item_forecast.xml" value="0.2625" />
-        <entry key="app/src/main/res/layout-large-land/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-large-land/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout-large-land/activity_weather_forecast_details.xml" value="0.15" />
         <entry key="app/src/main/res/layout-large-land/list_item_forecast.xml" value="0.13764044943820225" />
         <entry key="app/src/main/res/layout-large-port/activity_main.xml" value="0.21550546448087432" />
         <entry key="app/src/main/res/layout-large-port/activity_weather_forecast_details.xml" value="0.18" />
         <entry key="app/src/main/res/layout-large-port/list_item_forecast.xml" value="0.18032786885245902" />
-        <entry key="app/src/main/res/layout-normal-land/activity_main.xml" value="0.2625" />
+        <entry key="app/src/main/res/layout-normal-land/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout-normal-land/activity_weather_forecast_details.xml" value="0.24945000143889848" />
         <entry key="app/src/main/res/layout-normal-land/list_item_forecast.xml" value="0.2605820105820106" />
         <entry key="app/src/main/res/layout-normal-port/activity_main.xml" value="0.2391304347826087" />
@@ -36,7 +36,7 @@
         <entry key="app/src/main/res/layout-sw600dp/item.xml" value="0.1" />
         <entry key="app/src/main/res/layout-sw720dp/item.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w600dp-land/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/activity_start_compaign_dialogue.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_weather_forecast_details.xml" value="0.25" />

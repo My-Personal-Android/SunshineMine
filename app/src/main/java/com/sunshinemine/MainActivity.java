@@ -5,21 +5,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.os.HandlerCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,8 +24,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -43,15 +36,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -125,12 +113,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Empty_Textview = findViewById(R.id.Empty_Textview);
 
         recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
-
-        recyclerview_forecast = findViewById(R.id.recyclerview_forecast);
         recyclerview_forecast.setHasFixedSize(true);
         recyclerview_forecast.setLayoutManager(new LinearLayoutManager(this));
 
-        weatherAdapter = new WeatherAdapter(this, new ArrayList<>());
+        weatherAdapter = new WeatherAdapter(this, new ArrayList<>(), new WeatherAdapter.WeatherAdapterOnClickHandler() {
+            @Override
+            public void onClick(Long date, WeatherAdapter.WeatherAdapterViewHolder vh) {
+                Log.v("Chito",date+"");
+            }
+        },Empty_Textview);
+
         weatherAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -158,24 +150,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerview_forecast.setAdapter(weatherAdapter);
         // specify an adapter (see also next example)
 
-//        final View parallaxView = findViewById(R.id.parallax_bar);
-//        if (null != parallaxView) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-//                recyclerview_forecast.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//                    @Override
-//                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                        super.onScrolled(recyclerView, dx, dy);
-//                        int max = parallaxView.getHeight();
-//                        if (dy > 0) {
-//                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2 ));
-//                        } else {
-//                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
-//                        }
-//                    }
-//                });
-//            }
-//        }
+        final View parallaxView = findViewById(R.id.parallax_bar);
+        if (null != parallaxView) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                recyclerview_forecast.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        int max = parallaxView.getHeight();
+                        if (dy > 0) {
+                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2 ));
+                        } else {
+                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
+                        }
+                    }
+                });
+            }
+        }
 
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
@@ -332,14 +324,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 arrayList.add(weatherForecast);
             }
             while (data.moveToNext());
-            weatherAdapter.swapWeather(arrayList);
+            weatherAdapter.swapWeatherList(arrayList);
         }
         updateEmptyView();
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        weatherAdapter.swapWeather(null);
+        weatherAdapter.swapWeatherList(null);
     }
 
     public static boolean setPreference(Context context, String value) {
