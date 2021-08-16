@@ -93,6 +93,7 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
     public TextView detail_humidity_textview;
     public TextView detail_pressure_textview;
     public TextView detail_wind_textview;
+    public TextView selected_city_textview;
 
     private String mLocation;
     private String pic_key =null;
@@ -148,6 +149,7 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
         String pic_key = prefs.getString(this.getString(R.string.pref_pics_key),this.getString(R.string.pref_pics_default));
         this.pic_key=pic_key;
 
+        selected_city_textview=findViewById(R.id.selected_city_textview);
         date_textview =findViewById(R.id.date_textview);
         forecast_textview =findViewById(R.id.forecast_textview);
         high_textview =findViewById(R.id.high_textview);
@@ -157,6 +159,8 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
         detail_humidity_textview= findViewById(R.id.detail_humidity_textview);
         detail_pressure_textview = findViewById(R.id.detail_pressure_textview);
         detail_wind_textview = findViewById(R.id.detail_wind_textview);
+
+        selected_city_textview.setText(Utility.convertToCamelCase(MainActivity.getPreference(this).toLowerCase()));
 
     }
 

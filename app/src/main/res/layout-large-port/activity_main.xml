@@ -7,7 +7,7 @@
     android:background="#f4f4f4"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/parallax_bar"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -25,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/listPreferredItemHeight"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:contentDescription="@string/app_name"
                 android:fontFamily="@font/dancing_script_bold"
@@ -36,6 +37,9 @@
         </androidx.appcompat.widget.Toolbar>
 
         <RelativeLayout
+            android:layout_marginTop="132dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="100dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
@@ -64,5 +68,5 @@
                     android:textColor="@color/primary_dark" />
             </RelativeLayout>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

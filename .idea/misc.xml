@@ -22,10 +22,13 @@
         <entry key="app/src/main/res/layout-large-land/activity_main.xml" value="0.15" />
         <entry key="app/src/main/res/layout-large-land/activity_weather_forecast_details.xml" value="0.15" />
         <entry key="app/src/main/res/layout-large-port/activity_main.xml" value="0.21550546448087432" />
-        <entry key="app/src/main/res/layout-large-port/activity_weather_forecast_details.xml" value="0.33" />
+        <entry key="app/src/main/res/layout-large-port/activity_weather_forecast_details.xml" value="0.18" />
+        <entry key="app/src/main/res/layout-large-port/list_item_forecast.xml" value="0.18032786885245902" />
         <entry key="app/src/main/res/layout-normal-land/activity_main.xml" value="0.2625" />
         <entry key="app/src/main/res/layout-normal-land/activity_weather_forecast_details.xml" value="0.24945000143889848" />
+        <entry key="app/src/main/res/layout-normal-port/activity_main.xml" value="0.2391304347826087" />
         <entry key="app/src/main/res/layout-normal-port/activity_weather_forecast_details.xml" value="0.20697463768115942" />
+        <entry key="app/src/main/res/layout-normal-port/list_item_forecast.xml" value="0.2391304347826087" />
         <entry key="app/src/main/res/layout-small-land/activity_main.xml" value="0.2598958333333333" />
         <entry key="app/src/main/res/layout-sw600dp/detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout-sw600dp/item.xml" value="0.1" />

@@ -158,24 +158,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerview_forecast.setAdapter(weatherAdapter);
         // specify an adapter (see also next example)
 
-        final View parallaxView = findViewById(R.id.parallax_bar);
-        if (null != parallaxView) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                recyclerview_forecast.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        int max = parallaxView.getHeight();
-                        if (dy > 0) {
-                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2 ));
-                        } else {
-                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
-                        }
-                    }
-                });
-            }
-        }
+//        final View parallaxView = findViewById(R.id.parallax_bar);
+//        if (null != parallaxView) {
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+//                recyclerview_forecast.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//                    @Override
+//                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                        super.onScrolled(recyclerView, dx, dy);
+//                        int max = parallaxView.getHeight();
+//                        if (dy > 0) {
+//                            parallaxView.setTranslationY(Math.max(-max, parallaxView.getTranslationY() - dy / 2 ));
+//                        } else {
+//                            parallaxView.setTranslationY(Math.min(0, parallaxView.getTranslationY() - dy / 2));
+//                        }
+//                    }
+//                });
+//            }
+//        }
 
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
