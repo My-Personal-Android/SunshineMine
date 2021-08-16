@@ -53,7 +53,6 @@
 
                 <TextView
                     android:id="@+id/detail_day_textview"
-                    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
                     android:fontFamily="sans-serif"
                     android:gravity="right"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -65,7 +64,6 @@
                     tools:text="Today, April 03"/>
                 <TextView
                     android:id="@+id/date_textview"
-                    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
                     android:fontFamily="sans-serif"
                     android:gravity="left"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -118,7 +116,6 @@
                     app:layout_columnWeight="1"
                     tools:text="10"/>
 
-
             </androidx.gridlayout.widget.GridLayout>
 
             <androidx.gridlayout.widget.GridLayout android:layout_below="@id/detail_grid_1"
@@ -128,15 +125,14 @@
                 android:layout_weight="2"
                 android:layout_gravity="center"
                 android:background="@color/detail_accent_pane_background"
-
                 android:paddingLeft="104dp"
                 android:paddingRight="104dp"
-
                 app:columnCount="2">
 
                 <TextView
                     android:id="@+id/detail_humidity_label_textview"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
                     android:fontFamily="sans-serif"
                     android:gravity="center_vertical"
                     android:text="@string/humidity"
@@ -147,6 +143,8 @@
                     app:layout_rowWeight="1"/>
 
                 <TextView
+                    android:layout_marginTop="@dimen/abc_list_item_padding_horizontal_material"
+
                     android:id="@+id/detail_humidity_textview"
                     android:gravity="center_vertical"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
@@ -175,6 +173,7 @@
                 <TextView
                     android:id="@+id/detail_wind_label_textview"
                     android:fontFamily="sans-serif"
+                    android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
                     android:gravity="center_vertical"
                     android:text="@string/wind"
                     android:textColor="@color/detail_accent_label"
@@ -186,6 +185,7 @@
                 <TextView
                     android:id="@+id/detail_wind_textview"
                     android:gravity="center_vertical"
+                    android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
                     android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textColor="@android:color/white"
                     app:layout_gravity="fill"
