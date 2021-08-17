@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
@@ -35,6 +36,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
@@ -178,7 +180,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 });
             }
         }
-
+//        final AppBarLayout appBarLayout = findViewById(R.id.appbar);
+//        if(null!=appBarLayout){
+//            ViewCompat.setElevation(appBarLayout,0);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                recyclerview_forecast.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//                    @Override
+//                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                        super.onScrolled(recyclerView, dx, dy);
+//                        if( 0 == recyclerview_forecast.computeHorizontalScrollOffset()){
+//                            appBarLayout.setElevation(0);
+//                        }else{
+//                            appBarLayout.setElevation(appBarLayout.getTargetElevation());
+//                        }
+//                    }
+//                });
+//            }
+//        }
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
 
@@ -308,6 +326,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if(data.getCount() == 0 ){
+            supportStartPostponedEnterTransition();
+        }
         Log.v("Mera",data.getCount()+"");
         if(data!=null && data.moveToFirst()) {
             Log.v("Mera",data.getCount()+"");

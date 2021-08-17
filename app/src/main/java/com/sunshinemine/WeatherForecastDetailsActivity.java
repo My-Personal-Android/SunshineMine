@@ -11,8 +11,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -125,6 +128,7 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,7 +166,7 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
 
         selected_city_textview.setText(Utility.convertToCamelCase(MainActivity.getPreference(this).toLowerCase()));
 
-    }
+   }
 
     private Intent creatShareForecastIntent(){
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -188,6 +192,17 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
 
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void showDialogtoAlert(Bundle bundle){
         new AlertDialog.Builder(this)

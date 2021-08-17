@@ -61,6 +61,7 @@
                     android:id="@+id/list_item_icon"
                     android:layout_width="0dp"
                     android:adjustViewBounds="true"
+                    android:transitionName="@string/detail_icon_transition_name"
                     android:maxWidth="@dimen/today_icon"
                     android:maxHeight="@dimen/today_icon"
                     app:layout_columnWeight="1"

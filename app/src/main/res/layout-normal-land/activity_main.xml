@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linear_1"
+        android:id="@+id/parallax_bar"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -24,11 +24,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/listPreferredItemHeight"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="?attr/actionBarSize"
+                android:layout_gravity="left"
                 android:contentDescription="@string/app_name"
                 android:fontFamily="@font/dancing_script_bold"
                 android:gravity="center_vertical"
+                android:textSize="24sp"
                 android:text="Sunshine"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textColor="@color/white"
@@ -37,7 +37,7 @@
 
     </LinearLayout>
         <LinearLayout
-            android:layout_below="@id/linear_1"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="100dp"
             android:layout_marginRight="100dp"
             android:layout_width="match_parent"

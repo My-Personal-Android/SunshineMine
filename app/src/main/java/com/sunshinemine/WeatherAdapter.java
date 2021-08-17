@@ -1,15 +1,19 @@
 package com.sunshinemine;
 
+import static androidx.core.content.ContextCompat.startActivity;
 import static com.sunshinemine.Utility.convertToCamelCase;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -200,6 +204,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             itemView.setOnClickListener(this::onClick);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onClick(View v) {
 
@@ -207,8 +212,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
             intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
             // For Transition Effect
-            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context);
-            ActivityCompat.startActivity(context, intent, activityOptions.toBundle());
+            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
+                    v,context.getString(R.string.detail_icon_transition_name));
+            context.startActivity(intent, activityOptions.toBundle());
         }
     }
 
