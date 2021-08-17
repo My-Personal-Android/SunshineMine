@@ -84,11 +84,11 @@ public class TodayWidgetIntentService extends IntentService {
             int layoutId;
 
             if (widgetWidth >= largeWidth) {
-                layoutId = R.layout.today_widget_provider_large;
+                layoutId = R.layout.widget_today_large;
             } else if (widgetWidth >= defaultWidth) {
-                layoutId = R.layout.today_widget_provider;
+                layoutId = R.layout.widget_today;
             } else {
-                layoutId = R.layout.today_widget_provider_small;
+                layoutId = R.layout.widget_today_small;
             }
 
             RemoteViews views = new RemoteViews(getPackageName(), layoutId);

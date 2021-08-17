@@ -19,9 +19,11 @@ import com.sunshinemine.WeatherForecastDetailsActivity;
 import com.sunshinemine.sync.SunshineSyncAdapter;
 
 public class DetailWidgetProvider extends AppWidgetProvider {
+
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
+
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_detail);
 
             // Create an Intent to launch MainActivity
@@ -36,12 +38,15 @@ public class DetailWidgetProvider extends AppWidgetProvider {
                 setRemoteAdapterV11(context, views);
             }
             boolean useDetailActivity = context.getResources().getBoolean(R.bool.use_detail_activity);
+
             Intent clickIntentTemplate = useDetailActivity
                     ? new Intent(context, WeatherForecastDetailsActivity.class)
                     : new Intent(context, MainActivity.class);
+
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
                     .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
             views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
             views.setEmptyView(R.id.widget_list, R.id.widget_empty);
 
