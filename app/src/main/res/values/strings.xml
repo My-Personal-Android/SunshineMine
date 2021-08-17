@@ -84,6 +84,21 @@
     <string name="pref_art_pack_key" translatable="false">art_pack</string>
     <string name="pref_art_pack_sunshine" translatable="false">https://raw.githubusercontent.com/udacity/Sunshine-Version-2/sunshine_master/app/src/main/res/drawable-xxhdpi/art_%s.png</string>
 
+    <!-- Date format for displaying day of week and date (i.e. Mon Jun 1) [CHAR LIMIT=20] -->
+    <string name="format_full_friendly_date"  translatable="false">
+        <xliff:g id="day">%1$s</xliff:g>,
+        <xliff:g id="date">%2$s</xliff:g>
+    </string>
+    <!-- Date label when displaying today's weather forecast [CHAR LIMIT=20] -->
+    <string name="today"  translatable="false">Today</string>
+
+    <!-- Date label when displaying tomorrow's weather forecast [CHAR LIMIT=20] -->
+    <string name="tomorrow"  translatable="false">Tomorrow</string>
+
+    <!-- Strings related to Widgets -->
+    <string name="title_widget_today">Sunshine Today</string>
+    <string name="title_widget_detail">Sunshine Details</string>
+
 
     <string name="pref_pics_key" translatable="false">pics-key</string>
     <string name="pref_pics_default" translatable="false">icon</string>
@@ -98,5 +113,63 @@
     <string name="pressure" translatable="false">Pressure</string>
     <!-- Windspeed formats -->
     <string name="wind" translatable="false">Wind</string>
+
+    <!-- Weather Conditions -->
+    <string name="condition_2xx" translatable="false">Storm</string>
+    <string name="condition_3xx" translatable="false">Drizzle</string>
+    <string name="condition_500" translatable="false">Light Rain</string>
+    <string name="condition_501" translatable="false">Moderate Rain</string>
+    <string name="condition_502" translatable="false">Heavy Rain</string>
+    <string name="condition_503" translatable="false">Intense Rain</string>
+    <string name="condition_504" translatable="false">Extreme Rain</string>
+    <string name="condition_511" translatable="false">Freezing Rain</string>
+    <string name="condition_520" translatable="false">Light Shower</string>
+    <string name="condition_521" translatable="false">Shower</string>
+    <string name="condition_522" translatable="false">Heavy Shower</string>
+    <string name="condition_531" translatable="false">Ragged Shower</string>
+    <string name="condition_600" translatable="false">Light Snow</string>
+    <string name="condition_601" translatable="false">Snow</string>
+    <string name="condition_602" translatable="false">Heavy Snow</string>
+    <string name="condition_611" translatable="false">Sleet</string>
+    <string name="condition_612" translatable="false">Shower Sleet</string>
+    <string name="condition_615" translatable="false">Rain and Snow</string> <!-- light rain and snow -->
+    <string name="condition_616" translatable="false">Rain and Snow</string>
+    <string name="condition_620" translatable="false">Shower Snow</string> <!-- light shower snow -->
+    <string name="condition_621" translatable="false">Shower Snow</string>
+    <string name="condition_622" translatable="false">Shower Snow</string> <!-- heavy shower snow -->
+    <string name="condition_701" translatable="false">Mist</string>
+    <string name="condition_711" translatable="false">Smoke</string>
+    <string name="condition_721" translatable="false">Haze</string>
+    <string name="condition_731" translatable="false">Sand, Dust</string>
+    <string name="condition_741" translatable="false">Fog</string>
+    <string name="condition_751" translatable="false">Sand</string>
+    <string name="condition_761" translatable="false">Dust</string>
+    <string name="condition_762" translatable="false">Volcanic Ash</string>
+    <string name="condition_771" translatable="false">Squalls</string>
+    <string name="condition_781" translatable="false">Tornado</string>
+    <string name="condition_800" translatable="false">Clear</string>
+    <string name="condition_801" translatable="false">Mostly Clear</string>
+    <string name="condition_802" translatable="false">Scattered Clouds</string>
+    <string name="condition_803" translatable="false">Broken Clouds</string>
+    <string name="condition_804" translatable="false">Overcast Clouds</string>
+    <string name="condition_900" translatable="false">Tornado</string>
+    <string name="condition_901" translatable="false">Tropical Storm</string>
+    <string name="condition_902" translatable="false">Hurricane</string>
+    <string name="condition_903" translatable="false">Cold</string>
+    <string name="condition_904" translatable="false">Hot</string>
+    <string name="condition_905" translatable="false">Windy</string>
+    <string name="condition_906" translatable="false">Hail</string>
+    <string name="condition_951" translatable="false">Calm</string>
+    <string name="condition_952" translatable="false">Light Breeze</string>
+    <string name="condition_953" translatable="false">Gentle Breeze</string>
+    <string name="condition_954" translatable="false">Breeze</string> <!-- moderate breeze -->
+    <string name="condition_955" translatable="false">Fresh Breeze</string>
+    <string name="condition_956" translatable="false">Strong Breeze</string>
+    <string name="condition_957" translatable="false">High Wind</string>
+    <string name="condition_958" translatable="false">Gale</string>
+    <string name="condition_959" translatable="false">Severe Gale</string>
+    <string name="condition_960" translatable="false">Storm</string>
+    <string name="condition_961" translatable="false">Violent Storm</string>
+    <string name="condition_962" translatable="false">Hurricane</string>
 
 </resources>

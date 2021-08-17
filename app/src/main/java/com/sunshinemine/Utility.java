@@ -1,15 +1,18 @@
 package com.sunshinemine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.format.Time;
 
 import androidx.preference.PreferenceManager;
 
 import com.sunshinemine.sync.SunshineSyncAdapter;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -22,13 +25,21 @@ public class Utility {
                 .equals(context.getString(R.string.pref_location_default));
     }
 
-    public static String formatTemperature(Context context, double temperature) {
+    public static String formatTemperatureInFahrenheit(Context context, double temperature) {
         // Data stored in Celsius by default.  If user prefers to see in Fahrenheit, convert
         // the values here.
         String suffix = "\u00B0";
         if (!isMetric(context)) {
             temperature = (temperature * 1.8) + 32;
         }
+
+        // For presentation, assume the user doesn't care about tenths of a degree.
+        return String.format(context.getString(R.string.format_temperature), temperature);
+    }
+    public static String formatTemperatureInCelsius(Context context, double temperature) {
+        // Data stored in Celsius by default.  If user prefers to see in Fahrenheit, convert
+        // the values here.
+        String suffix = "\u00B0";
 
         // For presentation, assume the user doesn't care about tenths of a degree.
         return String.format(context.getString(R.string.format_temperature), temperature);
@@ -240,5 +251,81 @@ public class Utility {
             return "http://upload.wikimedia.org/wikipedia/commons/5/54/Cloudy_hills_in_Elis,_Greece_2.jpg";
         }
         return null;
+    }
+
+    public static String getPreferredLocation(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String location  = prefs.getString(context.getString(R.string.pref_city_key),context.getString(R.string.pref_city_default));
+        return location.split("/")[1];
+    }
+
+    public static boolean usingLocalGraphics(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String sunshineArtPack = context.getString(R.string.pref_art_pack_sunshine);
+        return prefs.getString(context.getString(R.string.pref_art_pack_key),
+                sunshineArtPack).equals(sunshineArtPack);
+    }
+
+    @SuppressLint("StringFormatMatches")
+    public static String getFriendlyDayString(Context context, long dateInMillis, boolean displayLongToday) {
+        // The day string for forecast uses the following logic:
+        // For today: "Today, June 8"
+        // For tomorrow:  "Tomorrow"
+        // For the next 5 days: "Wednesday" (just the day name)
+        // For all days after that: "Mon Jun 8"
+
+        Time time = new Time();
+        time.setToNow();
+        long currentTime = System.currentTimeMillis();
+        int julianDay = Time.getJulianDay(dateInMillis, time.gmtoff);
+        int currentJulianDay = Time.getJulianDay(currentTime, time.gmtoff);
+
+        // If the date we're building the String for is today's date, the format
+        // is "Today, June 24"
+        if (displayLongToday && julianDay == currentJulianDay) {
+            String today = context.getString(R.string.today);
+            int formatId = R.string.format_full_friendly_date;
+            return String.format(context.getString(
+                    formatId,
+                    today,
+                    getFormattedMonthDay(context, dateInMillis)));
+        } else if (julianDay < currentJulianDay + 7) {
+            // If the input date is less than a week in the future, just return the day name.
+            return getDayName(context, dateInMillis);
+        } else {
+            // Otherwise, use the form "Mon Jun 3"
+            SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("EEE MMM dd");
+            return shortenedDateFormat.format(dateInMillis);
+        }
+    }
+
+    public static String getDayName(Context context, long dateInMillis) {
+        // If the date is today, return the localized version of "Today" instead of the actual
+        // day name.
+
+        Time t = new Time();
+        t.setToNow();
+        int julianDay = Time.getJulianDay(dateInMillis, t.gmtoff);
+        int currentJulianDay = Time.getJulianDay(System.currentTimeMillis(), t.gmtoff);
+        if (julianDay == currentJulianDay) {
+            return context.getString(R.string.today);
+        } else if (julianDay == currentJulianDay + 1) {
+            return context.getString(R.string.tomorrow);
+        } else {
+            Time time = new Time();
+            time.setToNow();
+            // Otherwise, the format is just the day of the week (e.g "Wednesday".
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+            return dayFormat.format(dateInMillis);
+        }
+    }
+
+    public static String getFormattedMonthDay(Context context, long dateInMillis) {
+        Time time = new Time();
+        time.setToNow();
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat(Utility.DATE_FORMAT);
+        SimpleDateFormat monthDayFormat = new SimpleDateFormat("MMMM dd");
+        String monthDayString = monthDayFormat.format(dateInMillis);
+        return monthDayString;
     }
 }

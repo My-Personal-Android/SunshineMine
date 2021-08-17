@@ -57,6 +57,9 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private static final String LOG_TAG = "SunshineSyncAdapter";
 
+    public static final String ACTION_DATA_UPDATED = "com.sunshinemine.ACTION_DATA_UPDATED";
+
+
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 60 = 1 hours
     public static final int SYNC_INTERVAL = 60 * 60 ; // sec
@@ -118,6 +121,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             try {
                 insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result), locationId);
                 SunshineSyncAdapter.notifyWeather(getContext());
+                updateWidgets();
             }catch (Exception e){
                 setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
             }
@@ -523,4 +527,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         spe.commit();
     }
 
+    private void updateWidgets() {
+        Context context = getContext();
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+    }
 }
