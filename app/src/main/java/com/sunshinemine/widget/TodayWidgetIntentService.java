@@ -100,7 +100,7 @@ public class TodayWidgetIntentService extends IntentService {
                 setRemoteContentDescription(views, description);
             }
             views.setTextViewText(R.id.widget_location,location);
-            views.setTextViewText(R.id.widget_description, description);
+            views.setTextViewText(R.id.widget_description, Utility.convertToCamelCase(description));
             views.setTextViewText(R.id.widget_high_temperature, formattedMaxTemperature);
             views.setTextViewText(R.id.widget_low_temperature, formattedMinTemperature);
 
