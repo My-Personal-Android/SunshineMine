@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable/icon_message.xml" value="0.287962962962963" />
         <entry key="app/src/main/res/drawable/icon_share.xml" value="0.35743589743589743" />
+        <entry key="app/src/main/res/drawable/rounded_corner_widget.xml" value="0.259375" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/drawable/touch_selector_white.xml" value="0.25925925925925924" />

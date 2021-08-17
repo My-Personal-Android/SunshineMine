@@ -15,19 +15,21 @@
         <ImageView
             android:id="@+id/widget_icon"
             android:layout_width="@dimen/widget_today_min_resize_width"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:scaleType="centerInside"
             tools:src="@drawable/art_clear" />
+
         <TextView
             android:id="@+id/widget_location"
-            android:layout_toRightOf="@id/widget_icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_above="@id/widget_high_temperature"
             android:layout_gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
+            android:gravity="center"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/primary_text"
             tools:text="MandiBahauddin" />
