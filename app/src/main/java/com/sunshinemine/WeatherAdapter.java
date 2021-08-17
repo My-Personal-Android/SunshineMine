@@ -206,8 +206,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             mClickHandler.onClick(new Long(getAdapterPosition()),this);
             Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
             intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
-           // context.startActivity(intent);
-
+            // For Transition Effect
             ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context);
             ActivityCompat.startActivity(context, intent, activityOptions.toBundle());
         }

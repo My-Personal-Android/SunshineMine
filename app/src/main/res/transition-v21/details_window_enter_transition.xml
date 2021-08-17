@@ -10,7 +10,7 @@
     </fade>
     <slide android:slideEdge="top">
         <targets>
-            <target android:targetId="@id/toolbar" />
+            <target android:targetId="@id/my_relative" />
         </targets>
     </slide>
     <slide android:slideEdge="bottom">
