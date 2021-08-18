@@ -9,12 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.widget.RemoteViews;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.TaskStackBuilder;
-
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
+import com.sunshinemine.Utility;
 import com.sunshinemine.WeatherForecastDetailsActivity;
 import com.sunshinemine.sync.SunshineSyncAdapter;
 
@@ -59,6 +58,11 @@ public class DetailWidgetProvider extends AppWidgetProvider {
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
         if (SunshineSyncAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+//            // Setting location for
+//            RemoteViews location_view = new RemoteViews(context.getPackageName(),R.layout.widget_detail);
+//            String location = Utility.getPreferredLocation(context);
+//            location_view.setTextViewText(R.id.widget_location,location);
+//
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);

@@ -227,6 +227,7 @@ public class WeatherForecastDetailsActivity extends AppCompatActivity implements
         mLocation = MainActivity.getPreference(this);
         Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(mLocation,String.valueOf(weatherForecast.getDt()));
 
+        Log.v("Logo","In Detail Activity"+weatherUri.toString());
         return new CursorLoader(
                 this,
                 weatherUri,

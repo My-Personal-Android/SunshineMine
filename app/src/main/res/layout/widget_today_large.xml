@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_corner_widget"
     android:padding="@dimen/widget_margin">
 
     <RelativeLayout
@@ -27,10 +26,9 @@
             android:layout_above="@id/widget_high_temperature"
             android:layout_gravity="center_horizontal"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="8dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:textAppearance="?android:textAppearanceLarge"
+            android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/primary_text"
             tools:text="MandiBahauddin" />
 

@@ -208,6 +208,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
         @Override
         public void onClick(View v) {
 
+            Log.v("Logo key,",mWeatherForecast.get(getAdapterPosition())+"");
             mClickHandler.onClick(new Long(getAdapterPosition()),this);
             Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
             intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));

@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.15833333333333333" />
+        <entry key="../../../../.gradle/caches/transforms-2/files-2.1/f81f7bf9e48e05bec822b5a402705e36/appcompat-1.3.0/res/drawable/abc_list_selector_holo_light.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/2/mipmap-anydpi-v26/ic_launcher.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable/ic_clear_black_24dp.xml" value="0.12777777777777777" />
@@ -12,6 +13,8 @@
         <entry key="app/src/main/res/drawable/icon_message.xml" value="0.287962962962963" />
         <entry key="app/src/main/res/drawable/icon_share.xml" value="0.35743589743589743" />
         <entry key="app/src/main/res/drawable/rounded_corner_widget.xml" value="0.259375" />
+        <entry key="app/src/main/res/drawable/rounded_corner_widget_blue_dark.xml" value="0.18489583333333334" />
+        <entry key="app/src/main/res/drawable/rounded_corner_widget_light.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/drawable/touch_selector_white.xml" value="0.25925925925925924" />
@@ -54,6 +57,9 @@
         <entry key="app/src/main/res/layout/today_widiget_small.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/widget_detail.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/widget_detail_list_item.xml" value="0.23369565217391305" />
+        <entry key="app/src/main/res/layout/widget_today.xml" value="0.27445652173913043" />
+        <entry key="app/src/main/res/layout/widget_today_large.xml" value="0.16869300911854104" />
+        <entry key="app/src/main/res/layout/widget_today_small.xml" value="0.27445652173913043" />
         <entry key="app/src/main/res/menu/details_menu.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/menu/forecastmenu.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2564814814814815" />

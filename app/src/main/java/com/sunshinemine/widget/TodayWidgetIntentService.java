@@ -3,16 +3,25 @@ package com.sunshinemine.widget;
 import android.annotation.TargetApi;
 import android.app.IntentService;
 import android.app.PendingIntent;
+import android.app.WallpaperColors;
+import android.app.WallpaperManager;
 import android.appwidget.AppWidgetManager;
+import android.content.AsyncQueryHandler;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
+
+import androidx.annotation.RequiresApi;
 
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
@@ -33,13 +42,17 @@ public class TodayWidgetIntentService extends IntentService {
     private static final int INDEX_MAX_TEMP = 2;
     private static final int INDEX_MIN_TEMP = 3;
 
+    private WallpaperManager wallpaperManager ;
+
     public TodayWidgetIntentService() {
         super("TodayWidgetIntentService");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        wallpaperManager = WallpaperManager.getInstance(this);
         // Retrieve all of the Today widget ids: these are the widgets we need to update
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
@@ -99,10 +112,25 @@ public class TodayWidgetIntentService extends IntentService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                 setRemoteContentDescription(views, description);
             }
+
+            Color backgroudImageColor = wallpaperManager.getWallpaperColors(WallpaperManager.FLAG_SYSTEM).getPrimaryColor();
+
+            int invertedRed = 255 ;
+            int invertedGreen = 255;
+            int invertedBlue = 255;
+            if(Math.round(backgroudImageColor.red()) == 1 && Math.round(backgroudImageColor.green()) == 1 && Math.round(backgroudImageColor.blue()) == 1){
+                 invertedRed = 0;
+                 invertedGreen = 0;
+                 invertedBlue = 0;
+            }
             views.setTextViewText(R.id.widget_location,location);
+            views.setInt(R.id.widget_location,"setTextColor",Color.rgb(invertedRed,invertedGreen,invertedBlue));
             views.setTextViewText(R.id.widget_description, Utility.convertToCamelCase(description));
+            views.setInt(R.id.widget_description,"setTextColor",Color.rgb(invertedRed,invertedGreen,invertedBlue));
             views.setTextViewText(R.id.widget_high_temperature, formattedMaxTemperature);
+            views.setInt(R.id.widget_high_temperature,"setTextColor",Color.rgb(invertedRed,invertedGreen,invertedBlue));
             views.setTextViewText(R.id.widget_low_temperature, formattedMinTemperature);
+            views.setInt(R.id.widget_low_temperature,"setTextColor",Color.rgb(invertedRed,invertedGreen,invertedBlue));
 
             // Create an Intent to launch MainActivity
             Intent launchIntent = new Intent(this, MainActivity.class);

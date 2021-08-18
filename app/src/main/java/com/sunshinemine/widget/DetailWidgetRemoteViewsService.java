@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
@@ -16,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.sunshinemine.R;
 import com.sunshinemine.Utility;
+import com.sunshinemine.WeatherForecast;
+import com.sunshinemine.WeatherForecastDetailsActivity;
 import com.sunshinemine.data.WeatherContract;
 
 import java.util.concurrent.ExecutionException;
@@ -23,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 public class DetailWidgetRemoteViewsService extends RemoteViewsService {
 
     public final String LOG_TAG = DetailWidgetRemoteViewsService.class.getSimpleName();
+
     private static final String[] FORECAST_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COULUMN_DATETEXT,
@@ -41,6 +45,7 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+
         return new RemoteViewsFactory() {
             private Cursor data = null;
 
@@ -86,14 +91,18 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
 
             @Override
             public RemoteViews getViewAt(int position) {
+
                 if (position == AdapterView.INVALID_POSITION ||
                         data == null || !data.moveToPosition(position)) {
                     return null;
                 }
+
                 RemoteViews views = new RemoteViews(getPackageName(),
                         R.layout.widget_detail_list_item);
+
                 int weatherId = data.getInt(INDEX_WEATHER_CONDITION_ID);
-                int weatherArtResourceId = Utility.getIconResourceForWeatherCondition(weatherId);
+                int weatherArtResourceId = Utility.getArtResourceForWeatherCondition(weatherId);
+
                 Bitmap weatherArtImage = null;
                 if ( !Utility.usingLocalGraphics(DetailWidgetRemoteViewsService.this) ) {
                     String weatherArtResourceUrl = Utility.getArtUrlForWeatherCondition(
@@ -108,15 +117,18 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
                         Log.e(LOG_TAG, "Error retrieving large icon from " + weatherArtResourceUrl, e);
                     }
                 }
+
                 String description = data.getString(INDEX_WEATHER_DESC);
                 long dateInMillis = data.getLong(INDEX_WEATHER_DATE);
-                String formattedDate = Utility.getFriendlyDayString(DetailWidgetRemoteViewsService.this, dateInMillis, false);
+                String formattedDate = WeatherForecast.getReadableDateString(dateInMillis);
                 double maxTemp = data.getDouble(INDEX_WEATHER_MAX_TEMP);
                 double minTemp = data.getDouble(INDEX_WEATHER_MIN_TEMP);
+
                 String formattedMaxTemperature =
                         Utility.formatTemperatureInCelsius(DetailWidgetRemoteViewsService.this, maxTemp);
                 String formattedMinTemperature =
                         Utility.formatTemperatureInCelsius(DetailWidgetRemoteViewsService.this, minTemp);
+
                 if (weatherArtImage != null) {
                     views.setImageViewBitmap(R.id.widget_icon, weatherArtImage);
                 } else {
@@ -125,19 +137,20 @@ public class DetailWidgetRemoteViewsService extends RemoteViewsService {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
                     setRemoteContentDescription(views, description);
                 }
+
                 views.setTextViewText(R.id.widget_date, formattedDate);
                 views.setTextViewText(R.id.widget_description, description);
                 views.setTextViewText(R.id.widget_high_temperature, formattedMaxTemperature);
                 views.setTextViewText(R.id.widget_low_temperature, formattedMinTemperature);
 
-                final Intent fillInIntent = new Intent();
-                String locationSetting =
-                        Utility.getPreferredLocation(DetailWidgetRemoteViewsService.this);
-                Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                        locationSetting,
-                        String.valueOf(dateInMillis));
-                fillInIntent.setData(weatherUri);
-                views.setOnClickFillInIntent(R.id.widget_list_item, fillInIntent);
+
+                WeatherForecast weatherForecast = new WeatherForecast();
+                weatherForecast.setDt(data.getLong(INDEX_WEATHER_DATE));
+
+                final Intent intent = new Intent(DetailWidgetRemoteViewsService.this, WeatherForecastDetailsActivity.class);
+                intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) weatherForecast);
+
+                views.setOnClickFillInIntent(R.id.widget_list_item, intent);
                 return views;
             }
 
