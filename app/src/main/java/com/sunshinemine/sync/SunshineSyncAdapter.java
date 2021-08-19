@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.WallpaperManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -27,16 +28,22 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.apps.muzei.api.Artwork;
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
 import com.sunshinemine.Utility;
 import com.sunshinemine.WeatherForecast;
 import com.sunshinemine.data.WeatherContract;
+import com.sunshinemine.muzei.WeatherMuzeiSource;
 
 import org.json.JSONException;
 
@@ -51,6 +58,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
@@ -122,6 +131,8 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result), locationId);
                 SunshineSyncAdapter.notifyWeather(getContext());
                 updateWidgets();
+               // updateMuzei();
+                updateHomeWallpaper();
             }catch (Exception e){
                 setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
             }
@@ -533,5 +544,59 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
                 .setPackage(context.getPackageName());
         context.sendBroadcast(dataUpdatedIntent);
+    }
+    private void updateMuzei() {
+        Log.v("Kaloooo","working");
+        // Muzei is only compatible with Jelly Bean MR1+ devices, so there's no need to update the
+        // Muzei background on lower API level devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Log.v("Kaloooo","calling");
+            Context context = getContext();
+            context.startService(new Intent(ACTION_DATA_UPDATED).setClass(context, WeatherMuzeiSource.class));
+        }
+    }
+
+    private void updateHomeWallpaper(){
+
+        String location = Utility.getPreferredLocation(getContext());
+        long ten_Hours_in_miliseconds = 36000000;
+        String startDate = String.valueOf(new Date(Calendar.getInstance().getTimeInMillis() - ten_Hours_in_miliseconds).getTime());
+
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                location,startDate);
+
+        Log.v("Kaloooo",weatherForLocationUri.toString());
+        Cursor cursor = getContext().getContentResolver().query(weatherForLocationUri,NOTIFY_WEATHER_PROJECTION , null,
+                null, WeatherContract.WeatherEntry.COULUMN_DATETEXT + " ASC");
+
+        if (cursor.moveToFirst()) {
+
+            Log.v("Kaloooo","move to first");
+            int weatherId = cursor.getInt(INDEX_WEATHER_ID);
+            String desc = cursor.getString(INDEX_SHORT_DESC);
+
+            String imageUrl = Utility.getImageUrlForWeatherCondition(weatherId);
+
+            Log.v("Kaloooo",imageUrl + " - "+ desc);
+            try {
+                Glide.with(getContext())
+                        .asBitmap()
+                        .load(imageUrl)
+                        .into(new SimpleTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                try {
+                                    WallpaperManager.getInstance(getContext()).setBitmap(resource);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
+            } catch (Exception e) {
+
+            }
+        }
+        cursor.close();
     }
 }

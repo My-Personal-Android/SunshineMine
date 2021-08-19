@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:debuggable="true"
     package="com.sunshinemine"
-    tools:ignore="HardcodedDebugMode">
+    >
 
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_channel_id"
         android:value="@string/default_notification_channel_id" />
+
+    <!--access permission to set the wallpaper-->
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -150,9 +151,24 @@
             android:exported="true"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
+
+        <!-- Muzei Extension -->
+        <service
+            android:name=".muzei.WeatherMuzeiSource"
+            android:description="@string/muzei_description"
+            android:icon="@drawable/ic_muzei"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+            </intent-filter>
+
+            <meta-data android:name="color" android:value="@color/primary"/>
+        </service>
+
     </application>
     <permission android:name="com.sunshinemine.LICENSE_TO_KILL"
         android:protectionLevel="dangerous"
-        android:label="Licenced to Kill"></permission>
+        android:label="Licenced to Kill">
+    </permission>
 
 </manifest>

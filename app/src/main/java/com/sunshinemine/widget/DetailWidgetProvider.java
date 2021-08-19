@@ -23,6 +23,7 @@ public class DetailWidgetProvider extends AppWidgetProvider {
 
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         String location = Utility.getPreferredLocation(context);
+        Log.v("Logooo","onupdate"+"");
         // Perform this loop procedure for each App Widget that belongs to this provider
         for (int appWidgetId : appWidgetIds) {
 
@@ -63,18 +64,12 @@ public class DetailWidgetProvider extends AppWidgetProvider {
     public void onReceive(@NonNull Context context, @NonNull Intent intent) {
         super.onReceive(context, intent);
         if (SunshineSyncAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
-
-            String location = Utility.getPreferredLocation(context);
+            Log.v("Logooo","onreceive"+"");
 
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
 
-            for (int appWidgetId : appWidgetIds) {
-                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_detail);
-                views.setTextViewText(R.id.widget_location, location);
-                appWidgetManager.updateAppWidget(appWidgetId,views);
-            }
-
+            onUpdate(context,appWidgetManager,appWidgetIds);
             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_list);
         }
     }

@@ -172,4 +172,7 @@
     <string name="condition_961" translatable="false">Violent Storm</string>
     <string name="condition_962" translatable="false">Hurricane</string>
 
+
+    <!-- Strings related to Muzei Source -->
+    <string name="muzei_description" translatable="false">Today\'s weather</string>
 </resources>
