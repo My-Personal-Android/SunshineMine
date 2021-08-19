@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sunshinemine"
     >
 
@@ -21,6 +22,8 @@
     <!-- Permissions required by the sync adapter -->
     <uses-permission
         android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission
         android:name="android.permission.WRITE_SYNC_SETTINGS"/>
     <uses-permission
@@ -150,7 +153,6 @@
             android:enabled="@bool/widget_detail_enabled"
             android:exported="true"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
-
 
         <!-- Muzei Extension -->
         <service

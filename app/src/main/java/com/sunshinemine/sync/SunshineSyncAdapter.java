@@ -2,10 +2,11 @@ package com.sunshinemine.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Notification;
+import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.WallpaperManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
@@ -24,6 +25,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -37,15 +40,12 @@ import androidx.core.app.TaskStackBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.google.android.apps.muzei.api.Artwork;
 import com.sunshinemine.MainActivity;
 import com.sunshinemine.R;
 import com.sunshinemine.Utility;
 import com.sunshinemine.WeatherForecast;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.muzei.WeatherMuzeiSource;
-
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -131,7 +131,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
                 insertBulk_AfterFilterData(WeatherForecast.getWeatherDataFromJson(result), locationId);
                 SunshineSyncAdapter.notifyWeather(getContext());
                 updateWidgets();
-               // updateMuzei();
+                //updateMuzei();
                 updateHomeWallpaper();
             }catch (Exception e){
                 setLocationStatus(getContext(),LOCATION_STATUS_SERVER_INVALID);
@@ -575,10 +575,11 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
             int weatherId = cursor.getInt(INDEX_WEATHER_ID);
             String desc = cursor.getString(INDEX_SHORT_DESC);
 
-            String imageUrl = Utility.getImageUrlForWeatherCondition(weatherId);
+            String imageUrl = Utility.getArtUrlForWeatherCondition(getContext(),weatherId);
 
             Log.v("Kaloooo",imageUrl + " - "+ desc);
             try {
+                Log.v("Kaloooo","calling service of image");
                 Glide.with(getContext())
                         .asBitmap()
                         .load(imageUrl)
@@ -593,6 +594,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
                             }
                         });
+
             } catch (Exception e) {
 
             }
