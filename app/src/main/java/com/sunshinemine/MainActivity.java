@@ -35,8 +35,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
@@ -119,7 +122,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
+        FloatingActionButton fab = findViewById(R.id.fab);
+        if(null!=fab) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar
+                            .make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                            .setAction("Action", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Toast.makeText(MainActivity.this, "Hello Toast", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setAnchorView(fab)
+                            .show();
+                }
+            });
+        }
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         Empty_Textview = findViewById(R.id.Empty_Textview);

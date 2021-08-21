@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--  General conditions/states must be at the end  -->
+<!--  State List for checkbox,button, etc  -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  pressed  -->
     <item android:state_pressed="true"
         android:drawable="@color/primary"/>
 
+    <!--  activated  -->
     <item android:state_activated="true"
         android:drawable="@color/primary"/>
 
+    <!--  selected  -->
     <item android:state_selected="true"
         android:drawable="@color/primary"/>
 
+    <!--  default  -->
     <item android:drawable="@color/primary" />
 </selector>
