@@ -96,8 +96,8 @@
     <string name="tomorrow"  translatable="false">Tomorrow</string>
 
     <!-- Strings related to Widgets -->
-    <string name="title_widget_today">Sunshine Today</string>
-    <string name="title_widget_detail">Sunshine Details</string>
+    <string name="title_widget_today"  translatable="false">Sunshine Today</string>
+    <string name="title_widget_detail"  translatable="false">Sunshine Details</string>
 
 
     <string name="pref_pics_key" translatable="false">pics-key</string>

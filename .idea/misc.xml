@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/drawable/touch_selector_white.xml" value="0.25925925925925924" />
+        <entry key="app/src/main/res/drawable/window_background.xml" value="0.109375" />
         <entry key="app/src/main/res/font/dancing_script_bold.xml" value="0.23796296296296296" />
         <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout-land/activity_weather_forecast_details.xml" value="0.29365079365079366" />

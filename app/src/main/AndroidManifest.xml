@@ -53,12 +53,19 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:rotationAnimation="seamless"
+            ></activity>
         <activity
             android:name=".WeatherForecastDetailsActivity"
             android:label=" Weather Details"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:rotationAnimation="seamless"
+            android:theme="@style/Theme.SunshineMine.Details"
+            />
+        <activity android:name=".MainActivity"
+            android:rotationAnimation="seamless"
+            android:theme="@style/Theme.SunshineMine.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

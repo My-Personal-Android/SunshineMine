@@ -13,26 +13,38 @@ import androidx.loader.content.Loader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.AutoTransition;
+import androidx.transition.Fade;
+import androidx.transition.Slide;
+import androidx.transition.TransitionManager;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.slice.Slice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +55,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,11 +126,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    @SuppressLint("ResourceAsColor")
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -132,15 +149,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                             .setAction("Action", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Toast.makeText(MainActivity.this, "Hello Toast", Toast.LENGTH_SHORT).show();
+                                    fab.animate()
+                                        .translationY(-fab.getHeight())
+                                        .setDuration(2000)
+                                        .withEndAction(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(MainActivity.this,"Hello Toast Moved",Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                  //  fab.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(255, 50, 50)));
+
+                                    ObjectAnimator.ofObject((TextView)findViewById(R.id.title_app),"textColor",new ArgbEvaluator(),Color.BLACK,Color.RED)
+                                            .setDuration(5000)
+                                            .start();
+
                                 }
                             })
                             .setAnchorView(fab)
                             .show();
+
                 }
             });
         }
-        LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
         Empty_Textview = findViewById(R.id.Empty_Textview);
 
@@ -419,6 +450,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onResume() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
