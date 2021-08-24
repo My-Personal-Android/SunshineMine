@@ -56,7 +56,8 @@
                         android:contentDescription="Locations Recyclerview"
                         android:id="@+id/recyclerview_forecast"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layoutAnimation="@anim/layout_animation"
                         />
 
                     <TextView
@@ -75,7 +76,7 @@
                 </RelativeLayout>
             </LinearLayout>
     </RelativeLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         app:fabSize="auto"
         app:elevation="6dp"
@@ -83,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_action_add"
+        app:srcCompat="@drawable/ic_tick"
         android:contentDescription="submit"
         android:layout_margin="16dp" />
 </FrameLayout>

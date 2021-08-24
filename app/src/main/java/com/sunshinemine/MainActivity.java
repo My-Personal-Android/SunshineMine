@@ -13,10 +13,12 @@ import androidx.loader.content.Loader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.transition.AutoTransition;
 import androidx.transition.Fade;
 import androidx.transition.Slide;
 import androidx.transition.TransitionManager;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -33,6 +35,9 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,7 +50,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Bundle bundle = new Bundle();
             bundle.putString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC,intent.getExtras().getString(WeatherContract.WeatherEntry.COULUMN_SHORT_DESC));
             bundle.putString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING,intent.getExtras().getString(WeatherContract.LocationEntry.COULUMN_LOCATION_SETTING));
@@ -126,14 +135,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("ResourceAsColor")
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
+
+        supportPostponeEnterTransition();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -147,23 +158,98 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Snackbar
                             .make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
                             .setAction("Action", new View.OnClickListener() {
+                                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                                 @Override
                                 public void onClick(View v) {
+                                   // button.setImageResource(R.drawable.avd_cancel_check);
+
                                     fab.animate()
                                         .translationY(-fab.getHeight())
                                         .setDuration(2000)
                                         .withEndAction(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(MainActivity.this,"Hello Toast Moved",Toast.LENGTH_SHORT).show();
+                                               // Toast.makeText(MainActivity.this,"Hello Toast Moved",Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                   //  fab.setBackgroundTintList(ColorStateList.valueOf(Color.rgb(255, 50, 50)));
 
-                                    ObjectAnimator.ofObject((TextView)findViewById(R.id.title_app),"textColor",new ArgbEvaluator(),Color.BLACK,Color.RED)
-                                            .setDuration(5000)
-                                            .start();
+                                    TextView title = findViewById(R.id.title_app);
+                                    if(title!=null) {
+                                        ObjectAnimator.ofObject(title,
+                                                "textColor",
+                                                new ArgbEvaluator(),
+                                                Color.WHITE,
+                                                Color.RED)
+                                                .setDuration(1100)
+                                                .start();
+                                        title.animate()
+                                                .setInterpolator(new BounceInterpolator())
+                                                .setStartDelay(500)
+                                                .setDuration(900)
+                                                .translationX(-450)
+                                                .withEndAction(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        ObjectAnimator.ofObject(title,
+                                                                "textColor",
+                                                                new ArgbEvaluator(),
+                                                                Color.RED,
+                                                                Color.WHITE)
+                                                                .setDuration(1100)
+                                                                .start();
+                                                        title.animate()
+                                                                .setInterpolator(new BounceInterpolator())
+                                                                .setStartDelay(500)
+                                                                .setDuration(900)
+                                                                .translationX(0)
+                                                                .withEndAction(new Runnable() {
+                                                                    @Override
+                                                                    public void run() {
+                                                                        ObjectAnimator.ofObject(title,
+                                                                                "textColor",
+                                                                                new ArgbEvaluator(),
+                                                                                Color.WHITE,
+                                                                                Color.RED)
+                                                                                .setDuration(1100)
+                                                                                .start();
+                                                                        title.animate()
+                                                                                .setInterpolator(new BounceInterpolator())
+                                                                                .setStartDelay(500)
+                                                                                .setDuration(900)
+                                                                                .translationX(+450)
+                                                                                .withEndAction(new Runnable() {
+                                                                                    @Override
+                                                                                    public void run() {
+                                                                                        ObjectAnimator.ofObject(title,
+                                                                                                "textColor",
+                                                                                                new ArgbEvaluator(),
+                                                                                                Color.RED,
+                                                                                                Color.WHITE)
+                                                                                                .setDuration(1100)
+                                                                                                .start();
+                                                                                        title.animate()
+                                                                                                .setInterpolator(new BounceInterpolator())
+                                                                                                .setStartDelay(500)
+                                                                                                .setDuration(900)
+                                                                                                .translationX(0)
+                                                                                                .withEndAction(new Runnable() {
+                                                                                                    @Override
+                                                                                                    public void run() {
 
+                                                                                                    }
+                                                                                                })
+                                                                                                .start();
+                                                                                    }
+                                                                                })
+                                                                                .start();
+                                                                    }
+                                                                })
+                                                                .start();
+                                                    }
+                                                })
+                                                .start();
+                                    }
                                 }
                             })
                             .setAnchorView(fab)
@@ -211,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         recyclerview_forecast.setAdapter(weatherAdapter);
+
         // specify an adapter (see also next example)
 
         final View parallaxView = findViewById(R.id.parallax_bar);
@@ -250,8 +337,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 //        }
 
         SunshineSyncAdapter.initializeSyncAdapter(this);
-
-        SunshineSyncAdapter.syncImmediately(this);
 
         //FC6FXVHBVKT3HABJ
 
@@ -323,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.action_refresh:
             {
                 SunshineSyncAdapter.syncImmediately(this);
+                recyclerview_forecast.scheduleLayoutAnimation();
                 return true;
             }
             case R.id.settings:
@@ -377,9 +463,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-        if(data.getCount() == 0 ){
-            supportStartPostponedEnterTransition();
-        }
+
         Log.v("Mera",data.getCount()+"");
         if(data!=null && data.moveToFirst()) {
             Log.v("Mera",data.getCount()+"");
@@ -407,9 +491,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
             while (data.moveToNext());
             weatherAdapter.swapWeatherList(arrayList);
+            recyclerview_forecast.scheduleLayoutAnimation();
+
+        }
+        else{
+            SunshineSyncAdapter.syncImmediately(this);
+            recyclerview_forecast.scheduleLayoutAnimation();
         }
         updateEmptyView();
+        supportStartPostponedEnterTransition();
     }
+
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {

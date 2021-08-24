@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -17,6 +18,9 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,11 +30,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherAdapterViewHolder> {
 
@@ -70,7 +76,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
     @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull WeatherAdapter.WeatherAdapterViewHolder holder, @SuppressLint("RecyclerView") int position) {
-
 
         if(0 == position){
 
@@ -212,11 +217,15 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherA
             mClickHandler.onClick(new Long(getAdapterPosition()),this);
             Intent intent = new Intent(context, WeatherForecastDetailsActivity.class);
             intent.putExtra(WeatherForecastDetailsActivity.DATA_KEY_EXTRA, (Parcelable) mWeatherForecast.get(getAdapterPosition()));
-            // For Transition Effect
-            ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
-                    v,context.getString(R.string.detail_icon_transition_name));
-            context.startActivity(intent, activityOptions.toBundle());
+//
+//             For Shared ELement Transition Effect of image between activities
+//
+//            Bundle activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context,
+//                    v,context.getString(R.string.detail_icon_transition_name))
+//                    .toBundle();
+//
+            Bundle activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context).toBundle();
+            context.startActivity(intent, activityOptions);
         }
     }
-
 }

@@ -5,8 +5,20 @@
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.15833333333333333" />
         <entry key="../../../../.gradle/caches/transforms-2/files-2.1/f81f7bf9e48e05bec822b5a402705e36/appcompat-1.3.0/res/drawable/abc_list_selector_holo_light.xml" value="0.32395833333333335" />
+        <entry key="app/src/main/res/2/drawable-anydpi/ic_cross.xml" value="0.30925925925925923" />
+        <entry key="app/src/main/res/2/drawable-anydpi/ic_tick.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/2/mipmap-anydpi-v26/ic_launcher.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/drawable-v21/avd_anim.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v21/avd_cancel_check.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v21/avd_check_cancel.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v21/avd_cross_to_tick.xml" value="0.30925925925925923" />
+        <entry key="app/src/main/res/drawable-v21/avd_tick_to_cross.xml" value="0.30648148148148147" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/drawable/avd_anim.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/avd_cancel_check.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/avd_check_cancel.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/avd_cross_to_tick.xml" value="0.30925925925925923" />
+        <entry key="app/src/main/res/drawable/avd_tick_to_cross.xml" value="0.30648148148148147" />
         <entry key="app/src/main/res/drawable/ic_clear_black_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_clear_opaque_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13148148148148148" />
@@ -31,9 +43,10 @@
         <entry key="app/src/main/res/layout-large-land/activity_main.xml" value="0.3076923076923077" />
         <entry key="app/src/main/res/layout-large-land/activity_weather_forecast_details.xml" value="0.15" />
         <entry key="app/src/main/res/layout-large-land/list_item_forecast.xml" value="0.13764044943820225" />
-        <entry key="app/src/main/res/layout-large-port/activity_main.xml" value="0.21550546448087432" />
+        <entry key="app/src/main/res/layout-large-port/activity_main.xml" value="0.18091451292246521" />
         <entry key="app/src/main/res/layout-large-port/activity_weather_forecast_details.xml" value="0.18" />
         <entry key="app/src/main/res/layout-large-port/list_item_forecast.xml" value="0.18032786885245902" />
+        <entry key="app/src/main/res/layout-large-port/scene_large_portrait.xml" value="0.1676912568306011" />
         <entry key="app/src/main/res/layout-normal-land/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout-normal-land/activity_weather_forecast_details.xml" value="0.24945000143889848" />
         <entry key="app/src/main/res/layout-normal-land/list_item_forecast.xml" value="0.2605820105820106" />
@@ -51,6 +64,7 @@
         <entry key="app/src/main/res/layout/activity_weather_forecast_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_list_forecast.xml" value="0.2857789855072464" />
         <entry key="app/src/main/res/layout/item_weather.xml" value="0.13451086956521738" />
+        <entry key="app/src/main/res/layout/layout_portrait_scene.xml" value="0.2223731884057971" />
         <entry key="app/src/main/res/layout/list_item_forcast.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_item_forecast.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_item_forecast_today.xml" value="0.16818642350557245" />

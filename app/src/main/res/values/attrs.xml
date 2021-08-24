@@ -3,4 +3,8 @@
     <declare-styleable name="LocationEditTextPreference">
         <attr name="android:maxLength" format="integer"/>
     </declare-styleable>
+    <declare-styleable name="CheckView">
+        <attr name="checkView_strokeWidth" format="dimension"/>
+        <attr name="checkView_strokeColor" format="color"/>
+    </declare-styleable>
 </resources>
