@@ -1,46 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sunshinemine"
-    >
+    package="com.sunshinemine">
 
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_channel_id"
-        android:value="@string/default_notification_channel_id" />
-
-    <!--access permission to set the wallpaper-->
+        android:value="@string/default_notification_channel_id" /> <!-- access permission to set the wallpaper -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
-
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- Permissions required by the sync adapter -->
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Permissions required by the sync adapter -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- Permissions required for Google Cloud Messaging -->
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Permissions required for Google Cloud Messaging -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
         android:name="com.sunshinemine.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.sunshinemine.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.sunshinemine.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="com.sunshinemine.LICENSE_TO_KILL"
+        android:label="Licenced to Kill"
+        android:protectionLevel="dangerous"></permission>
 
     <application
         android:allowBackup="true"
@@ -48,22 +41,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.SunshineMine">
+        android:theme="@style/Theme.SunshineMine"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".extracustomthings.MainActivityTest"
+            android:exported="true" >
+        </activity>
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity"
             android:label="@string/title_activity_settings"
-            android:rotationAnimation="seamless"
-            ></activity>
+            android:parentActivityName=".MainActivity"
+            android:rotationAnimation="seamless" />
         <activity
             android:name=".WeatherForecastDetailsActivity"
             android:label=" Weather Details"
             android:parentActivityName=".MainActivity"
             android:rotationAnimation="seamless"
-            android:theme="@style/Theme.SunshineMine.Details"
-            />
-        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.SunshineMine.Details" />
+        <activity
+            android:name=".MainActivity"
             android:rotationAnimation="seamless"
             android:theme="@style/Theme.SunshineMine.Main">
             <intent-filter>
@@ -71,55 +67,45 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- The Content Provider -->
+        </activity> <!-- The Content Provider -->
         <provider
-            android:authorities="com.sunshinemine"
             android:name=".data.WeatherProvider"
+            android:authorities="com.sunshinemine"
             android:enabled="true"
-            android:syncable="true"
             android:exported="false"
-            android:permission="com.sunshinemine.LICENSE_TO_KILL">
-        </provider>
-
-        <!-- The Authenticator service -->
+            android:permission="com.sunshinemine.LICENSE_TO_KILL"
+            android:syncable="true"></provider> <!-- The Authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
-        </service>
-
-        <!-- The SyncAdapter service -->
+        </service> <!-- The SyncAdapter service -->
         <service
             android:name=".sync.SunshineSyncService"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
-        </service>
-
-        <!-- The Google Cloud Messaging receiver and services -->
-        <service
-            android:name="com.sunshinemine.fcm.SunshinemineFirebaseInstanceIdService"
-            >
+        </service> <!-- The Google Cloud Messaging receiver and services -->
+        <service android:name=".fcm.SunshinemineFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name="com.sunshinemine.fcm.SunshinemineFirebaseMessageService"
-            android:exported="false"
+            android:name=".fcm.SunshinemineFirebaseMessageService"
             android:directBootAware="true"
-            >
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
@@ -131,53 +117,49 @@
             android:name=".widget.TodayWidgetProvider"
             android:label="@string/title_widget_today">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.sunshinemine.ACTION_DATA_UPDATED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.sunshinemine.ACTION_DATA_UPDATED" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/today_widget_provider_info"/>
+                android:resource="@xml/today_widget_provider_info" />
         </receiver>
 
-        <service android:name=".widget.TodayWidgetIntentService"/>
+        <service android:name=".widget.TodayWidgetIntentService" />
 
         <receiver
             android:name=".widget.DetailWidgetProvider"
             android:enabled="@bool/widget_detail_enabled"
             android:label="@string/title_widget_detail">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-                <action android:name="com.sunshinemine.ACTION_DATA_UPDATED"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.sunshinemine.ACTION_DATA_UPDATED" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info_detail"/>
+                android:resource="@xml/widget_info_detail" />
         </receiver>
 
         <service
             android:name=".widget.DetailWidgetRemoteViewsService"
             android:enabled="@bool/widget_detail_enabled"
             android:exported="true"
-            android:permission="android.permission.BIND_REMOTEVIEWS"/>
-
-        <!-- Muzei Extension -->
+            android:permission="android.permission.BIND_REMOTEVIEWS" /> <!-- Muzei Extension -->
         <service
             android:name=".muzei.WeatherMuzeiSource"
             android:description="@string/muzei_description"
             android:icon="@drawable/ic_muzei"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource"/>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
             </intent-filter>
 
-            <meta-data android:name="color" android:value="@color/primary"/>
+            <meta-data
+                android:name="color"
+                android:value="@color/primary" />
         </service>
-
     </application>
-    <permission android:name="com.sunshinemine.LICENSE_TO_KILL"
-        android:protectionLevel="dangerous"
-        android:label="Licenced to Kill">
-    </permission>
 
 </manifest>

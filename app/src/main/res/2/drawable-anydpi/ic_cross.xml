@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24"
-    android:tint="#333333"
-    android:alpha="0.6">
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportHeight="24.0"
+    android:viewportWidth="24.0">
+
   <group
-      android:name="groupTickCross"
-      android:pivotX="@integer/viewport_center_x"
-      android:pivotY="@integer/viewport_center_y">
-  <path
-      android:name="cross"
-      android:strokeLineCap="square"
-      android:strokeWidth="2"
-      android:fillColor="@android:color/white"
-      android:pathData="@string/path_cross"/>
+      android:name="@string/groupTickCross"
+      android:pivotX="12"
+      android:pivotY="12">
+
+    <path
+        android:name="@string/cross"
+        android:pathData="@string/path_cross"
+        android:strokeColor="#cc0000"
+        android:strokeLineCap="square"
+        android:strokeWidth="2" />
+
   </group>
+
 </vector>
+

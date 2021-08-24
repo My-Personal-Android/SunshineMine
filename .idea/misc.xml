@@ -9,25 +9,44 @@
         <entry key="app/src/main/res/2/drawable-anydpi/ic_tick.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/2/mipmap-anydpi-v26/ic_launcher.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable-v21/avd_anim.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v21/avd_button_rotate_right.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable-v21/avd_cancel_check.xml" value="0.25" />
         <entry key="app/src/main/res/drawable-v21/avd_check_cancel.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v21/avd_cross2tick.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v21/avd_cross_to_tick.xml" value="0.30925925925925923" />
+        <entry key="app/src/main/res/drawable-v21/avd_jd.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable-v21/avd_rotate_right_cross_to_tick.xml" value="0.109375" />
+        <entry key="app/src/main/res/drawable-v21/avd_rotate_right_tick_to_cross.xml" value="0.109375" />
+        <entry key="app/src/main/res/drawable-v21/avd_sync.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable-v21/avd_tick2cross.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable-v21/avd_tick_to_cross.xml" value="0.30648148148148147" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.13148148148148148" />
         <entry key="app/src/main/res/drawable/avd_anim.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/avd_button_rotate_right.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/avd_cancel_check.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/avd_check_cancel.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/avd_cross2tick.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/avd_cross_to_tick.xml" value="0.30925925925925923" />
+        <entry key="app/src/main/res/drawable/avd_jd.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable/avd_rotate_cross_to_tick.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable/avd_rotate_right_cross_to_tick.xml" value="0.109375" />
+        <entry key="app/src/main/res/drawable/avd_rotate_right_tick_to_cross.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable/avd_setting.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable/avd_settings.xml" value="0.18958333333333333" />
+        <entry key="app/src/main/res/drawable/avd_sync.xml" value="0.29074074074074074" />
+        <entry key="app/src/main/res/drawable/avd_tick2cross.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/avd_tick_to_cross.xml" value="0.30648148148148147" />
         <entry key="app/src/main/res/drawable/ic_clear_black_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_clear_opaque_24dp.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.13148148148148148" />
+        <entry key="app/src/main/res/drawable/ic_rotate_right_black_24dp.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/icon_message.xml" value="0.287962962962963" />
         <entry key="app/src/main/res/drawable/icon_share.xml" value="0.35743589743589743" />
         <entry key="app/src/main/res/drawable/rounded_corner_widget.xml" value="0.259375" />
         <entry key="app/src/main/res/drawable/rounded_corner_widget_blue_dark.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/drawable/rounded_corner_widget_blue_light.xml" value="0.32395833333333335" />
         <entry key="app/src/main/res/drawable/rounded_corner_widget_light.xml" value="0.18489583333333334" />
+        <entry key="app/src/main/res/drawable/s.xml" value="0.29074074074074074" />
         <entry key="app/src/main/res/drawable/scrim_gradient.xml" value="0.2814814814814815" />
         <entry key="app/src/main/res/drawable/today_touch_selector.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable/touch_selector.xml" value="0.2740740740740741" />
@@ -59,6 +78,7 @@
         <entry key="app/src/main/res/layout-sw720dp/item.xml" value="0.1" />
         <entry key="app/src/main/res/layout-w600dp-land/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main_test.xml" value="0.26856884057971014" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/activity_start_compaign_dialogue.xml" value="0.13541666666666666" />
         <entry key="app/src/main/res/layout/activity_weather_forecast_details.xml" value="0.25" />
