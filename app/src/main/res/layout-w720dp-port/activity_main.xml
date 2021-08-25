@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4f4f4"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:orientation="vertical"
+            android:elevation="0dp"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:elevation="0dp"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <TextView
+                    android:id="@+id/title_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?attr/listPreferredItemHeight"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
+                    android:contentDescription="@string/app_name"
+                    android:fontFamily="@font/dancing_script_bold"
+                    android:gravity="center_vertical"
+                    android:text="Sunshine"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                    android:textColor="@color/white"
+                    app:layout_scrollFlags="scroll|enterAlways" />
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+        <LinearLayout
+                android:layout_below="@id/appbar"
+                android:layout_marginRight="80dp"
+                android:layout_marginLeft="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:contentDescription="Locations Recyclerview"
+                        android:id="@+id/recyclerview_forecast"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layoutAnimation="@anim/layout_animation"
+                        />
+
+                    <TextView
+                        android:id="@+id/Empty_Textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:contentDescription="Empty Location Text"
+                        android:fontFamily="sans-serif"
+                        android:gravity="center"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="@string/empty_forecast_list"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/primary_dark" />
+                </RelativeLayout>
+            </LinearLayout>
+    </RelativeLayout>
+     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        app:fabSize="auto"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        app:srcCompat="@drawable/ic_tick"
+        android:contentDescription="submit"
+        android:layout_margin="16dp" />
+</FrameLayout>

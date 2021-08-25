@@ -22,7 +22,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="128dp"
                 android:elevation="0dp"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -33,7 +33,6 @@
                     android:layout_height="?attr/listPreferredItemHeight"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
-                    android:layout_marginTop="?attr/actionBarSize"
                     android:contentDescription="@string/app_name"
                     android:fontFamily="@font/dancing_script_bold"
                     android:gravity="center_vertical"

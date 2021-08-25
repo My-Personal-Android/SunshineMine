@@ -117,7 +117,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
             result = makeSynchronousRequest(url);
 
-            Log.v("Kaloo",result);
+          //  Log.v("Kaloo",result);
 
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             String location = preferences.getString(getContext().getString(R.string.pref_city_key),getContext().getString(R.string.pref_city_default));

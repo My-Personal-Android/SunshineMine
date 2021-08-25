@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/sample_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="128dp"
         android:background="@color/primary"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
         tools:ignore="MissingConstraints">
@@ -18,7 +18,6 @@
             android:layout_height="?attr/listPreferredItemHeight"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/abc_list_item_padding_horizontal_material"
-            android:layout_marginTop="?attr/actionBarSize"
             android:contentDescription="@string/app_name"
             android:fontFamily="@font/dancing_script_bold"
             android:gravity="center_vertical"
@@ -28,10 +27,10 @@
             app:layout_scrollFlags="scroll|enterAlways" />
     </androidx.appcompat.widget.Toolbar>
     <RelativeLayout
-        android:layout_marginRight="160dp"
-        android:layout_marginLeft="160dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginTop="104dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -53,13 +52,13 @@
                 android:layout_below="@id/sample_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:weightSum="5">
 
                 <RelativeLayout
                     android:id="@+id/my_relative"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="3">
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
@@ -172,9 +171,9 @@
                 <RelativeLayout
                     android:id="@+id/detail_additional_pane"
                     android:layout_below="@id/detail_grid_1"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:background="@color/detail_accent_pane_background"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="2">
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/extra"
@@ -194,8 +193,8 @@
                             android:id="@+id/detail_grid_2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/forecast_detail_horizontal_padding"
-                            android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+                            android:paddingLeft="72dp"
+                            android:paddingRight="72dp"
                             app:columnCount="2">
 
                             <TextView
