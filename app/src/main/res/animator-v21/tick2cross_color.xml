@@ -3,8 +3,8 @@
     android:duration="200"
     android:interpolator="@android:interpolator/fast_out_slow_in"
     android:propertyName="strokeColor"
-    android:startOffset="600"
-    android:valueFrom="#000"
+    android:startOffset="100"
+    android:valueFrom="#008c00"
     android:valueTo="#cc0000"
     android:valueType="colorType" />
 

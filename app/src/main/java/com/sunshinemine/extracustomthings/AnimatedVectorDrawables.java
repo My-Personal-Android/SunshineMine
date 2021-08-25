@@ -2,8 +2,6 @@ package com.sunshinemine.extracustomthings;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.annotation.SuppressLint;
@@ -20,7 +18,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sunshinemine.R;
 
-public class MainActivityTest extends AppCompatActivity implements View.OnClickListener {
+public class AnimatedVectorDrawables extends AppCompatActivity implements View.OnClickListener {
 
     private AnimatedVectorDrawableCompat tickToCross, crossToTick;
     private AnimatedVectorDrawable t,c;
@@ -31,7 +29,7 @@ public class MainActivityTest extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_test);
+        setContentView(R.layout.activity_animated_vector_drawables);
 
         FloatingActionButton fabSync = findViewById(R.id.fabSync);
         FloatingActionButton fabTickCross = findViewById(R.id.fabTickCross);

@@ -44,7 +44,7 @@
         android:theme="@style/Theme.SunshineMine"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".extracustomthings.MainActivityTest"
+            android:name=".extracustomthings.AnimatedVectorDrawables"
             android:exported="true" >
         </activity>
         <activity

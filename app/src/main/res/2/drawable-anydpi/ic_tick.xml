@@ -14,7 +14,7 @@
         android:name="@string/tick"
         android:pathData="@string/path_tick"
         android:strokeColor="#008c00"
-        android:strokeLineCap="square"
+        android:strokeLineCap="round"
         android:strokeWidth="2" />
 
   </group>

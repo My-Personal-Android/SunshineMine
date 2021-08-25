@@ -36,6 +36,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -103,6 +104,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private WeatherAdapter weatherAdapter;
     private TextView Empty_Textview;
 
+    private AnimatedVectorDrawable tickToCross,crossToTick;
+    private boolean isTick = true;
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -150,11 +154,35 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        if (Build.VERSION.SDK_INT > 21 ) {
+            tickToCross = (AnimatedVectorDrawable)getDrawable(R.drawable.avd_tick2cross);
+            crossToTick = (AnimatedVectorDrawable)getDrawable(R.drawable.avd_cross2tick);
+        }
         FloatingActionButton fab = findViewById(R.id.fab);
         if(null!=fab) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    AnimatedVectorDrawable drawable = isTick ? tickToCross : crossToTick;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        drawable.registerAnimationCallback(new Animatable2.AnimationCallback() {
+                            @Override
+                            public void onAnimationStart(Drawable drawable) {
+                                super.onAnimationStart(drawable);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Drawable drawable) {
+                                super.onAnimationEnd(drawable);
+                            }
+                        });
+                    }
+                    fab.setImageDrawable(drawable);
+                    drawable.start();
+                    isTick = !isTick;
+
                     Snackbar
                             .make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
                             .setAction("Action", new View.OnClickListener() {
