@@ -5,22 +5,48 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.internal.ConnectionCallbacks;
+import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
+import com.google.android.gms.wearable.Wearable;
 import com.sunshinemine.databinding.ActivityWearBinding;
 
-public class WearActivity extends Activity {
+import java.io.ByteArrayOutputStream;
+
+public class WearActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
     private TextView mTextView;
     private ActivityWearBinding binding;
+
+    private GoogleApiClient mGoogleApiClient;
 
     public static final int NOTIFICATION_ID = 1;
 
@@ -33,11 +59,22 @@ public class WearActivity extends Activity {
         setContentView(binding.getRoot());
 
         mTextView = binding.text;
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+        mGoogleApiClient.connect();
+
+
+
     }
 
 
     // Notification for reply by GOOGLE but does nnot work due to EMULATOR WATCH
-//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CO
+//    DES.O)
 //    public void sendNotification (View view){
 //
 //        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
@@ -163,4 +200,66 @@ public class WearActivity extends Activity {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
 
+    private static Asset createAssetFromBitmap(Bitmap bitmap){
+        final ByteArrayOutputStream byteArrayOutputStream= new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        return Asset.createFromBytes(byteArrayOutputStream.toByteArray());
+    }
+    public void sendStepCount(int steps,long timestamp){
+
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create("/step-counter");
+
+        putDataMapRequest.getDataMap().putInt("step-count",steps);
+        putDataMapRequest.getDataMap().putLong("timestamp",timestamp);
+
+        Asset asset = createAssetFromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.ic_muzei));
+        putDataMapRequest.getDataMap().putAsset("profileImage",asset);
+
+        PutDataRequest putDataRequest = putDataMapRequest.asPutDataRequest();
+        Wearable.DataApi.putDataItem(mGoogleApiClient,putDataRequest)
+                .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
+                    @Override
+                    public void onResult(@NonNull DataApi.DataItemResult dataItemResult) {
+                        if(!dataItemResult.getStatus().isSuccess()){
+
+                        }else{
+
+                        }
+                    }
+                });
+    }
+
+    public void sendMessage(){
+
+        NodeApi.GetConnectedNodesResult nodesResult = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+
+        for(Node node :nodesResult.getNodes()){
+
+            Wearable.MessageApi.sendMessage(
+                    mGoogleApiClient,node.getId(),"/path/message"
+                    ,new byte[0]).setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+                @Override
+                public void onResult(@NonNull MessageApi.SendMessageResult sendMessageResult) {
+                    if(!sendMessageResult.getStatus().isSuccess()){
+
+                    }
+                }
+            });
+        }
+
+    }
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

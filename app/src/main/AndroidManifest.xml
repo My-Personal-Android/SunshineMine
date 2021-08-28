@@ -33,7 +33,7 @@
     <permission
         android:name="com.sunshinemine.LICENSE_TO_KILL"
         android:label="Licenced to Kill"
-        android:protectionLevel="dangerous"></permission>
+        android:protectionLevel="dangerous" />
 
     <application
         android:allowBackup="true"
@@ -43,10 +43,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SunshineMine"
         android:usesCleartextTraffic="true">
+        <service
+            android:name=".wear.MyService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTENER"
+                    tools:ignore="WearableBindListener"></action>
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".extracustomthings.AnimatedVectorDrawables"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -74,7 +83,7 @@
             android:enabled="true"
             android:exported="false"
             android:permission="com.sunshinemine.LICENSE_TO_KILL"
-            android:syncable="true"></provider> <!-- The Authenticator service -->
+            android:syncable="true" /> <!-- The Authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

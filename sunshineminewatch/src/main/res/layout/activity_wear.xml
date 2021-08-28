@@ -28,5 +28,13 @@
             android:text="Press to Notify"
             android:textColor="@android:color/black"
             android:onClick="sendNotification"></Button>
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:text="Press to Notify"
+            android:textColor="@android:color/black"
+            android:onClick="openFragmentSample"></Button>
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>
