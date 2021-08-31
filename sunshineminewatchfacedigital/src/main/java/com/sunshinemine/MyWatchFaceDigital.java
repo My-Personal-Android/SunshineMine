@@ -91,7 +91,9 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
         };
         private boolean mRegisteredTimeZoneReceiver = false;
         private float mXOffset;
+        private float mXDeveloperOffset;
         private float mYOffset;
+        private float mYDeveloperOffset;
         private Paint mBackgroundPaint;
         private Paint mTextPaint;
         /**
@@ -114,6 +116,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
 
             Resources resources = MyWatchFaceDigital.this.getResources();
             mYOffset = resources.getDimension(R.dimen.digital_y_offset);
+            mYDeveloperOffset = resources.getDimension(R.dimen.developer_y_offset);
 
             // Initializes background.
             mBackgroundPaint = new Paint();
@@ -126,6 +129,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             mTextPaint.setAntiAlias(true);
             mTextPaint.setColor(
                     ContextCompat.getColor(getApplicationContext(), R.color.digital_text));
+
         }
 
         @Override
@@ -179,6 +183,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             boolean isRound = insets.isRound();
             mXOffset = resources.getDimension(isRound
                     ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
+            mXDeveloperOffset =  resources.getDimension(R.dimen.developer_x_offset);
             float textSize = resources.getDimension(isRound
                     ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
 
@@ -254,6 +259,8 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
                     : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR),
                     mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
             canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+            String developer = "Awais Mansha";
+            canvas.drawText(developer,mXDeveloperOffset,mYDeveloperOffset,mTextPaint);
         }
 
         /**
