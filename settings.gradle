@@ -1,3 +1,5 @@
 rootProject.name = "SunshineMine"
 include ':app'
 include ':sunshineminewatch'
+include ':sunshineminewatchfaceanalogue'
+include ':sunshineminewatchfacedigital'

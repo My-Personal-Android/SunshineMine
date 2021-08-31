@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/sunshineminewatch" />
+            <option value="$PROJECT_DIR$/sunshineminewatchfaceanalogue" />
+            <option value="$PROJECT_DIR$/sunshineminewatchfacedigital" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
