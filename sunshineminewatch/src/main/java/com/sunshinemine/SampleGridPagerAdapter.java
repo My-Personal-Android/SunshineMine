@@ -3,6 +3,7 @@ package com.sunshinemine;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.wearable.view.CardFragment;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.view.Gravity;
@@ -97,10 +98,10 @@ public class SampleGridPagerAdapter extends FragmentGridPagerAdapter {
         return fragment;
     }
 
-//    @Override
-//    public ImageReference getBackground(int row, int column) {
-//        return ImageReference.forDrawable(BG_IMAGES[row % BG_IMAGES.length]);
-//    }
+    @Override
+    public Drawable getBackgroundForPage(int row, int column) {
+        return mContext.getResources().getDrawable(BG_IMAGES[row % BG_IMAGES.length]);
+    }
 
     @Override
     public int getRowCount() {
