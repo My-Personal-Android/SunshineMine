@@ -39,6 +39,7 @@ dependencies {
 
     // includes support for wearable specific inputs
     implementation 'androidx.wear:wear-input:1.1.0'
-    implementation 'com.google.android.support:wearable:2.7.0'
-    compileOnly 'com.google.android.wearable:wearable:2.7.0'
+    implementation 'com.google.android.support:wearable:+' // 2.7.0 was last working version
+    compileOnly 'com.google.android.wearable:wearable:+' // 2.7.0  was last working version
+
 }

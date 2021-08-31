@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.widget.TextView;
@@ -41,7 +43,7 @@ import com.sunshinemine.databinding.ActivityWearBinding;
 
 import java.io.ByteArrayOutputStream;
 
-public class WearActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
+public class WearActivity extends WearableActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
     private TextView mTextView;
     private ActivityWearBinding binding;
@@ -55,10 +57,10 @@ public class WearActivity extends Activity implements GoogleApiClient.Connection
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityWearBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_wear);
 
-        mTextView = binding.text;
+        mTextView = findViewById(R.id.text);
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
@@ -67,10 +69,36 @@ public class WearActivity extends Activity implements GoogleApiClient.Connection
                 .build();
         mGoogleApiClient.connect();
 
+        setAmbientEnabled();
 
 
     }
 
+    @Override
+    public void onEnterAmbient(Bundle ambientDetails) {
+        super.onEnterAmbient(ambientDetails);
+        mTextView.setText("Ambient Mode");
+        mTextView.setTextColor(Color.WHITE);
+        mTextView.setTextSize(15.0f);
+    }
+
+    @Override
+    public void onUpdateAmbient() {
+        super.onUpdateAmbient();
+    }
+
+    @Override
+    public void onExitAmbient() {
+        super.onExitAmbient();
+        mTextView.setText("Interactive Mode");
+        mTextView.setTextColor(Color.RED);
+        mTextView.setTextSize(40.0f);
+    }
+
+    public void goToReplyActivity(View view){
+        Intent intent = new Intent(this,ReplyActivity.class);
+        startActivity(intent);
+    }
 
     // Notification for reply by GOOGLE but does nnot work due to EMULATOR WATCH
 //    @RequiresApi(api = Build.VERSION_CO

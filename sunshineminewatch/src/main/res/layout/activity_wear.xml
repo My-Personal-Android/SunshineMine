@@ -33,8 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
-            android:text="Press to Notify"
+            android:text="Go to ReplyActivty"
             android:textColor="@android:color/black"
-            android:onClick="openFragmentSample"></Button>
+            android:onClick="goToReplyActivity"></Button>
     </FrameLayout>
 </androidx.wear.widget.BoxInsetLayout>
