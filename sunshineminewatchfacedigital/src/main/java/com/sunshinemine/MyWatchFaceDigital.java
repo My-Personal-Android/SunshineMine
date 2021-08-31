@@ -292,6 +292,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             return isVisible() && !isInAmbientMode();
         }
 
+        // called every second to update ui by the service
         /**
          * Handle updating the time periodically in interactive mode.
          */
