@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.wearable.view.CardFragment;
+import android.support.wearable.view.DotsPageIndicator;
 import android.support.wearable.view.FragmentGridPagerAdapter;
 import android.support.wearable.view.GridViewPager;
 import android.view.View;
@@ -44,6 +45,8 @@ public class ReplyActivity extends Activity {
             }
         });
         pager.setAdapter(new SampleGridPagerAdapter(this, getFragmentManager()));
+        DotsPageIndicator dotsPageIndicator = (DotsPageIndicator) findViewById(R.id.dots_page_indicator);
+        dotsPageIndicator.setPager(pager);
     }
 
     private CharSequence getMessageText(Intent intent){

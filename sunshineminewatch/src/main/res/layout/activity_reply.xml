@@ -6,10 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ReplyActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.wearable.view.GridViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
          />
-
+    <android.support.wearable.view.DotsPageIndicator
+        android:layout_alignParentBottom="true"
+        android:id="@+id/dots_page_indicator"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="16dp"
+        android:layout_height="wrap_content"
+        ></android.support.wearable.view.DotsPageIndicator>
+    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
