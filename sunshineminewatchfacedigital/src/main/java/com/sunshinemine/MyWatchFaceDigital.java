@@ -104,6 +104,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
         private boolean mBurnInProtection;
         private boolean mAmbient;
 
+        // 1
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -174,6 +175,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             MyWatchFaceDigital.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
+        // when things get ready it will be called
         @Override
         public void onApplyWindowInsets(WindowInsets insets) {
             super.onApplyWindowInsets(insets);
@@ -190,6 +192,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             mTextPaint.setTextSize(textSize);
         }
 
+        // 4
         @Override
         public void onPropertiesChanged(Bundle properties) {
             super.onPropertiesChanged(properties);
@@ -197,12 +200,14 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             mBurnInProtection = properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false);
         }
 
+        // 2 every second it will invalidate the previous CANVOS and redraw it by method onDraw
         @Override
         public void onTimeTick() {
             super.onTimeTick();
             invalidate();
         }
 
+        // 5 when switch is made between modes
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
@@ -217,6 +222,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             updateTimer();
         }
 
+        // when user touch screen of watch
         /**
          * Captures tap event (and tap type) and toggles the background color if the user finishes
          * a tap.
@@ -240,6 +246,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             invalidate();
         }
 
+        // 3
         @Override
         public void onDraw(Canvas canvas, Rect bounds) {
             // Draw the background.
@@ -253,6 +260,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             long now = System.currentTimeMillis();
             mCalendar.setTimeInMillis(now);
 
+            // here we can change the time into ' AM ' or ' PM '
             String text = mAmbient
                     ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR),
                     mCalendar.get(Calendar.MINUTE))
@@ -263,6 +271,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             canvas.drawText(developer,mXDeveloperOffset,mYDeveloperOffset,mTextPaint);
         }
 
+        // 6
         /**
          * Starts the {@link #mUpdateTimeHandler} timer if it should be running and isn"t currently
          * or stops it if it shouldn"t be running but currently is.
@@ -274,6 +283,7 @@ public class MyWatchFaceDigital extends CanvasWatchFaceService {
             }
         }
 
+        // 7
         /**
          * Returns whether the {@link #mUpdateTimeHandler} timer should be running. The timer should
          * only run when we"re visible and in interactive mode.
