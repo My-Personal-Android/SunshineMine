@@ -61,13 +61,13 @@ public class MainFragment extends BrowseSupportFragment {
         Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
-        prepareBackgroundManager();
-
+//        prepareBackgroundManager();
+//
         setupUIElements();
 
         loadRows();
 
-        setupEventListeners();
+//        setupEventListeners();
     }
 
     @Override
@@ -79,28 +79,30 @@ public class MainFragment extends BrowseSupportFragment {
         }
     }
 
+    // 2
     private void loadRows() {
-        List<Movie> list = MovieList.setupMovies();
+//        List<Movie> list = MovieList.setupMovies();
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-        CardPresenter cardPresenter = new CardPresenter();
+//        CardPresenter cardPresenter = new CardPresenter();
+//
+//        int i;
+//        for (i = 0; i < NUM_ROWS; i++) {
+//            if (i != 0) {
+//                Collections.shuffle(list);
+//            }
+//            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
+//            for (int j = 0; j < NUM_COLS; j++) {
+//                listRowAdapter.add(list.get(j % 5));
+//            }
+//            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
+//            rowsAdapter.add(new ListRow(header, listRowAdapter));
+//        }
 
-        int i;
-        for (i = 0; i < NUM_ROWS; i++) {
-            if (i != 0) {
-                Collections.shuffle(list);
-            }
-            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-            for (int j = 0; j < NUM_COLS; j++) {
-                listRowAdapter.add(list.get(j % 5));
-            }
-            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
-            rowsAdapter.add(new ListRow(header, listRowAdapter));
-        }
-
-        HeaderItem gridHeader = new HeaderItem(i, "PREFERENCES");
+        HeaderItem gridHeader = new HeaderItem(0, "PREFERENCES");
 
         GridItemPresenter mGridPresenter = new GridItemPresenter();
+        // it connects MODEL with the VIEW
         ArrayObjectAdapter gridRowAdapter = new ArrayObjectAdapter(mGridPresenter);
         gridRowAdapter.add(getResources().getString(R.string.grid_view));
         gridRowAdapter.add(getString(R.string.error_fragment));
@@ -120,18 +122,18 @@ public class MainFragment extends BrowseSupportFragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(mMetrics);
     }
 
+    // 1
     private void setupUIElements() {
-        // setBadgeDrawable(getActivity().getResources().getDrawable(
-        // R.drawable.videos_by_google_banner));
-        setTitle(getString(R.string.browse_title)); // Badge, when set, takes precedent
+      //  setTitle(getString(R.string.browse_title)); // Badge, when set, takes precedent
+        setBadgeDrawable(getActivity().getResources().getDrawable(R.drawable.ic_logo));
         // over title
         setHeadersState(HEADERS_ENABLED);
         setHeadersTransitionOnBackEnabled(true);
 
         // set fastLane (or headers) background color
-        setBrandColor(ContextCompat.getColor(getActivity(), R.color.fastlane_background));
+        setBrandColor(ContextCompat.getColor(getActivity(), R.color.primary_dark));
         // set search icon color
-        setSearchAffordanceColor(ContextCompat.getColor(getActivity(), R.color.search_opaque));
+        setSearchAffordanceColor(ContextCompat.getColor(getActivity(), R.color.accent));
     }
 
     private void setupEventListeners() {
@@ -228,6 +230,7 @@ public class MainFragment extends BrowseSupportFragment {
         }
     }
 
+    // 2 helps to create CARD by ObjectAdapter
     private class GridItemPresenter extends Presenter {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent) {
@@ -235,10 +238,11 @@ public class MainFragment extends BrowseSupportFragment {
             view.setLayoutParams(new ViewGroup.LayoutParams(GRID_ITEM_WIDTH, GRID_ITEM_HEIGHT));
             view.setFocusable(true);
             view.setFocusableInTouchMode(true);
-            view.setBackgroundColor(
-                    ContextCompat.getColor(getActivity(), R.color.default_background));
+//            view.setBackgroundColor(
+//                    ContextCompat.getColor(getActivity(), R.color.detail_accent_pane_background));
             view.setTextColor(Color.WHITE);
             view.setGravity(Gravity.CENTER);
+            view.setBackgroundResource(R.drawable.rounded_corners);
             return new ViewHolder(view);
         }
 
