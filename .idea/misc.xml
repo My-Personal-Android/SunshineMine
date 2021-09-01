@@ -91,6 +91,7 @@
         <entry key="app/src/main/res/layout-w720dp-land/activity_weather_forecast_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout-w720dp-port/activity_main.xml" value="0.27852564102564104" />
         <entry key="app/src/main/res/layout-w720dp-port/activity_weather_forecast_details.xml" value="0.27852564102564104" />
+        <entry key="app/src/main/res/layout/activity_cast.xml" value="0.15172101449275363" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.67" />
         <entry key="app/src/main/res/layout/activity_main_test.xml" value="0.26856884057971014" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.13055555555555556" />
@@ -103,6 +104,7 @@
         <entry key="app/src/main/res/layout/list_item_forecast.xml" value="0.25" />
         <entry key="app/src/main/res/layout/list_item_forecast_today.xml" value="0.16818642350557245" />
         <entry key="app/src/main/res/layout/rounded_corner_for_widget.xml" value="0.24322916666666666" />
+        <entry key="app/src/main/res/layout/sample_presentation.xml" value="0.232837528604119" />
         <entry key="app/src/main/res/layout/today_widget_provider.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/today_widget_provider_large.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/layout/today_widget_provider_small.xml" value="0.24322916666666666" />

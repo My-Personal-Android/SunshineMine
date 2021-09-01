@@ -6,36 +6,30 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.ViewCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.media.MediaControlIntent;
+import androidx.mediarouter.media.MediaRouteSelector;
+import androidx.mediarouter.media.MediaRouter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.transition.AutoTransition;
-import androidx.transition.Fade;
-import androidx.transition.Slide;
-import androidx.transition.TransitionManager;
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.slice.Slice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Animatable2;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -45,35 +39,28 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.Interpolator;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.sunshinemine.cast.WeatherForecastDetailsPresentation;
 import com.sunshinemine.data.WeatherContract;
 import com.sunshinemine.sync.SunshineSyncAdapter;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String LOG_TAG = "MainActivity";
@@ -107,6 +94,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private AnimatedVectorDrawable tickToCross,crossToTick;
     private boolean isTick = true;
 
+    private MediaRouter mMediaRouter;
+
+    // Active Presentation, set to null if no secondary screen is enabled
+    private WeatherForecastDetailsPresentation mPresentation;
+
+    // background colors
+    public int mBackgroundColor;
+
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -129,7 +124,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
-
+        // BEGIN_INCLUDE(onStop)
+        // Dismiss the presentation when the activity is not visible.
+        if (mPresentation != null) {
+            mPresentation.dismiss();
+            mPresentation = null;
+        }
+        // BEGIN_INCLUDE(onStop)
     }
 
     @Nullable
@@ -145,6 +146,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // get the list of background colors
+        mBackgroundColor = getResources().getColor(R.color.primary);
+
+        // BEGIN_INCLUDE(getMediaRouter)
+        // Get the MediaRouter service
+        mMediaRouter = MediaRouter.getInstance(this);
+        // END_INCLUDE(getMediaRouter)
 
         LoaderManager.getInstance(this).initLoader(FORECAST_LOADER,null,this);
 
@@ -391,6 +400,96 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    private final MediaRouter.Callback mMediaRouterCallback =
+            new MediaRouter.Callback() {
+
+                // BEGIN_INCLUDE(SimpleCallback)
+
+                /**
+                 * A new route has been selected as active. Disable the current
+                 * route and enable the new one.
+                 */
+                @Override
+                public void onRouteSelected(MediaRouter router, MediaRouter.RouteInfo route) {
+                    updatePresentation();
+                }
+
+                /**
+                 * The route has been unselected.
+                 */
+                @Override
+                public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
+                    updatePresentation();
+                }
+
+                /**
+                 * The route's presentation display has changed. This callback
+                 * is called when the presentation has been activated, removed
+                 * or its properties have changed.
+                 */
+                @Override
+                public void onRoutePresentationDisplayChanged(MediaRouter router, MediaRouter.RouteInfo route) {
+                    updatePresentation();
+                }
+                // END_INCLUDE(SimpleCallback)
+            };
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void updatePresentation() {
+
+        // BEGIN_INCLUDE(updatePresentationInit)
+        // Get the selected route for live video
+        MediaRouter.RouteInfo selectedRoute = mMediaRouter.getSelectedRoute();
+
+        // Get its Display if a valid route has been selected
+        Display selectedDisplay = selectedRoute.getPresentationDisplay();
+        // END_INCLUDE(updatePresentationInit)
+
+        // BEGIN_INCLUDE(updatePresentationDismiss)
+        /*
+         * Dismiss the current presentation if the display has changed or no new
+         * route has been selected
+         */
+        if (mPresentation != null && mPresentation.getDisplay() != selectedDisplay) {
+            mPresentation.dismiss();
+            mPresentation = null;
+        }
+        // END_INCLUDE(updatePresentationDismiss)
+
+        // BEGIN_INCLUDE(updatePresentationNew)
+        /*
+         * Show a new presentation if the previous one has been dismissed and a
+         * route has been selected.
+         */
+        if (mPresentation == null && selectedDisplay != null) {
+
+            // Initialise a new Presentation for the Display
+            mPresentation = new WeatherForecastDetailsPresentation(this, selectedDisplay);
+            mPresentation.setOnDismissListener(mOnDismissListener);
+
+            // Try to show the presentation, this might fail if the display has
+            // gone away in the mean time
+            try {
+                mPresentation.show();
+            } catch (WindowManager.InvalidDisplayException ex) {
+                // Couldn't show presentation - display was already removed
+                mPresentation = null;
+            }
+        }
+        // END_INCLUDE(updatePresentationNew)
+
+    }
+
+    private final DialogInterface.OnDismissListener mOnDismissListener =
+            new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (dialog == mPresentation) {
+                        mPresentation = null;
+                    }
+                }
+            };
+
     public void showDialogtoAlert(Bundle bundle){
         new AlertDialog.Builder(this)
                 .setTitle(" Weather Alert")
@@ -409,6 +508,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.forecastmenu, menu);
+        // BEGIN_INCLUDE(MediaRouteActionProvider)
+        // Configure the media router action provider
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.menu_media_route);
+
+        MediaRouteActionProvider mediaRouteActionProvider =
+                (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
+        mediaRouteActionProvider.setRouteSelector(
+                new MediaRouteSelector.Builder()
+                        .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
+                        .build());
+        // BEGIN_INCLUDE(MediaRouteActionProvider)
         return true;
     }
 
@@ -573,16 +683,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onResume() {
+        super.onResume();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        super.onResume();
+
+        // BEGIN_INCLUDE(addCallback)
+        // Register a callback for all events related to live video devices
+        mMediaRouter.addCallback(
+                new MediaRouteSelector.Builder()
+                        .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
+                        .build(),
+                mMediaRouterCallback
+        );
+        // END_INCLUDE(addCallback)
+
+        // Update the displays based on the currently active routes
+        updatePresentation();
     }
 
     @Override
     protected void onPause() {
+        super.onPause();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
-        super.onPause();
+        // BEGIN_INCLUDE(onPause)
+        // Stop listening for changes to media routes.
+        mMediaRouter.removeCallback(mMediaRouterCallback);
+        // END_INCLUDE(onPause)
     }
 
     @Override

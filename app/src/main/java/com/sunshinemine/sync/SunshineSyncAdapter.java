@@ -45,7 +45,7 @@ import com.sunshinemine.R;
 import com.sunshinemine.Utility;
 import com.sunshinemine.WeatherForecast;
 import com.sunshinemine.data.WeatherContract;
-import com.sunshinemine.muzei.WeatherMuzeiSource;
+//import com.sunshinemine.muzei.WeatherMuzeiSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -552,7 +552,7 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Log.v("Kaloooo","calling");
             Context context = getContext();
-            context.startService(new Intent(ACTION_DATA_UPDATED).setClass(context, WeatherMuzeiSource.class));
+//            context.startService(new Intent(ACTION_DATA_UPDATED).setClass(context, WeatherMuzeiSource.class));
         }
     }
 
