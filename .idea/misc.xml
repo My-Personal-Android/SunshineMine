@@ -122,6 +122,9 @@
         <entry key="app/src/main/res/xml/syncadapter.xml" value="0.16869300911854104" />
         <entry key="app/src/main/res/xml/widget_info_detail.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/xml/widget_info_today.xml" value="0.23369565217391305" />
+        <entry key="sunshineminetv/src/main/res/drawable/default_background.xml" value="0.16302083333333334" />
+        <entry key="sunshineminetv/src/main/res/layout/activity_details.xml" value="0.16927083333333334" />
+        <entry key="sunshineminetv/src/main/res/layout/activity_main.xml" value="0.16927083333333334" />
         <entry key="sunshineminewatch/src/main/res/layout/activity_reply.xml" value="0.23875" />
         <entry key="sunshineminewatch/src/main/res/layout/activity_wear.xml" value="0.25390625" />
       </map>
