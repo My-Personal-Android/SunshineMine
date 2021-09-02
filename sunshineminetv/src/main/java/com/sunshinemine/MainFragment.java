@@ -72,6 +72,15 @@ public class MainFragment extends BrowseSupportFragment {
         loadRows();
 
         setupEventListeners();
+
+        setOnSearchClickedListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getContext(), SearchActivity.class);
+//                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
