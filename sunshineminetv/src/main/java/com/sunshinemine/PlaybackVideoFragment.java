@@ -1,8 +1,12 @@
 package com.sunshinemine;
 
+import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.leanback.app.VideoSupportFragment;
 import androidx.leanback.app.VideoSupportFragmentGlueHost;
 import androidx.leanback.media.MediaPlayerAdapter;
@@ -15,6 +19,8 @@ import androidx.leanback.widget.PlaybackControlsRow;
 public class PlaybackVideoFragment extends VideoSupportFragment {
 
     private PlaybackTransportControlGlue<MediaPlayerAdapter> mTransportControlGlue;
+
+    private MediaSession mediaSession;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,4 +51,5 @@ public class PlaybackVideoFragment extends VideoSupportFragment {
             mTransportControlGlue.pause();
         }
     }
+
 }
