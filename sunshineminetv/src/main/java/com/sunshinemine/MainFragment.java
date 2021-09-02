@@ -2,6 +2,7 @@ package com.sunshinemine;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,9 @@ import androidx.leanback.widget.RowPresenter;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,8 +50,8 @@ public class MainFragment extends BrowseSupportFragment {
     private static final int BACKGROUND_UPDATE_DELAY = 300;
     private static final int GRID_ITEM_WIDTH = 200;
     private static final int GRID_ITEM_HEIGHT = 200;
-    private static final int NUM_ROWS = 6;
-    private static final int NUM_COLS = 15;
+    private static final int NUM_ROWS = 5;
+    private static final int NUM_COLS = 5;
 
     private final Handler mHandler = new Handler();
     private Drawable mDefaultBackground;
@@ -61,13 +65,13 @@ public class MainFragment extends BrowseSupportFragment {
         Log.i(TAG, "onCreate");
         super.onActivityCreated(savedInstanceState);
 
-//        prepareBackgroundManager();
-//
+        prepareBackgroundManager();
+
         setupUIElements();
 
         loadRows();
 
-//        setupEventListeners();
+        setupEventListeners();
     }
 
     @Override
@@ -81,25 +85,25 @@ public class MainFragment extends BrowseSupportFragment {
 
     // 2
     private void loadRows() {
-//        List<Movie> list = MovieList.setupMovies();
+        List<Movie> list = MovieList.setupMovies();
 
         ArrayObjectAdapter rowsAdapter = new ArrayObjectAdapter(new ListRowPresenter());
-//        CardPresenter cardPresenter = new CardPresenter();
-//
-//        int i;
-//        for (i = 0; i < NUM_ROWS; i++) {
-//            if (i != 0) {
-//                Collections.shuffle(list);
-//            }
-//            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
-//            for (int j = 0; j < NUM_COLS; j++) {
-//                listRowAdapter.add(list.get(j % 5));
-//            }
-//            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
-//            rowsAdapter.add(new ListRow(header, listRowAdapter));
-//        }
+        CardPresenter cardPresenter = new CardPresenter();
 
-        HeaderItem gridHeader = new HeaderItem(0, "PREFERENCES");
+        int i;
+        for (i = 0; i < NUM_ROWS; i++) {
+            if (i != 0) {
+                Collections.shuffle(list);
+            }
+            ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter(cardPresenter);
+            for (int j = 0; j < NUM_COLS; j++) {
+                listRowAdapter.add(list.get(j % 5));
+            }
+            HeaderItem header = new HeaderItem(i, MovieList.MOVIE_CATEGORY[i]);
+            rowsAdapter.add(new ListRow(header, listRowAdapter));
+        }
+
+        HeaderItem gridHeader = new HeaderItem(i, "PREFERENCES");
 
         GridItemPresenter mGridPresenter = new GridItemPresenter();
         // it connects MODEL with the VIEW
@@ -111,6 +115,7 @@ public class MainFragment extends BrowseSupportFragment {
 
         setAdapter(rowsAdapter);
     }
+
 
     private void prepareBackgroundManager() {
 
@@ -136,6 +141,7 @@ public class MainFragment extends BrowseSupportFragment {
         setSearchAffordanceColor(ContextCompat.getColor(getActivity(), R.color.accent));
     }
 
+    // 3
     private void setupEventListeners() {
         setOnSearchClickedListener(new View.OnClickListener() {
 
@@ -149,6 +155,7 @@ public class MainFragment extends BrowseSupportFragment {
         setOnItemViewClickedListener(new ItemViewClickedListener());
         setOnItemViewSelectedListener(new ItemViewSelectedListener());
     }
+
 
     private void updateBackground(String uri) {
         int width = mMetrics.widthPixels;
@@ -167,6 +174,7 @@ public class MainFragment extends BrowseSupportFragment {
         mBackgroundTimer.cancel();
     }
 
+
     private void startBackgroundTimer() {
         if (null != mBackgroundTimer) {
             mBackgroundTimer.cancel();
@@ -175,6 +183,7 @@ public class MainFragment extends BrowseSupportFragment {
         mBackgroundTimer.schedule(new UpdateBackgroundTask(), BACKGROUND_UPDATE_DELAY);
     }
 
+    // 3 -> 1
     private final class ItemViewClickedListener implements OnItemViewClickedListener {
         @Override
         public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item,
@@ -187,8 +196,7 @@ public class MainFragment extends BrowseSupportFragment {
                 intent.putExtra(DetailsActivity.MOVIE, movie);
 
                 Bundle bundle = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        getActivity(),
-                        ((ImageCardView) itemViewHolder.view).getMainImageView(),
+                        getActivity(), ((ImageCardView) itemViewHolder.view).getMainImageView(),
                         DetailsActivity.SHARED_ELEMENT_NAME)
                         .toBundle();
                 getActivity().startActivity(intent, bundle);
@@ -203,6 +211,7 @@ public class MainFragment extends BrowseSupportFragment {
         }
     }
 
+    // 3 -> 2
     private final class ItemViewSelectedListener implements OnItemViewSelectedListener {
         @Override
         public void onItemSelected(
@@ -216,6 +225,7 @@ public class MainFragment extends BrowseSupportFragment {
             }
         }
     }
+
 
     private class UpdateBackgroundTask extends TimerTask {
 
@@ -234,6 +244,7 @@ public class MainFragment extends BrowseSupportFragment {
     private class GridItemPresenter extends Presenter {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent) {
+
             TextView view = new TextView(parent.getContext());
             view.setLayoutParams(new ViewGroup.LayoutParams(GRID_ITEM_WIDTH, GRID_ITEM_HEIGHT));
             view.setFocusable(true);

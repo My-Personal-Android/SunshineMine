@@ -23,7 +23,7 @@ public class ErrorFragment extends ErrorSupportFragment {
 
     void setErrorContent() {
         setImageDrawable(ContextCompat.getDrawable(getActivity(), androidx.leanback.R.drawable.lb_ic_sad_cloud));
-        setMessage(getResources().getString(R.string.error_fragment_message));
+        setMessage("Oops "+getResources().getString(R.string.error_fragment_message)+ " ! ");
         setDefaultBackground(TRANSLUCENT);
 
         setButtonText(getResources().getString(R.string.dismiss_error));

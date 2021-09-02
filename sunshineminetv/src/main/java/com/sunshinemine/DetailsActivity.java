@@ -24,5 +24,4 @@ public class DetailsActivity extends FragmentActivity {
                     .commitNow();
         }
     }
-
 }

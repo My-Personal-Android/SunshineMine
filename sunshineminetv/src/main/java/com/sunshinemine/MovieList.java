@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class MovieList {
+
     public static final String MOVIE_CATEGORY[] = {
             "Category Zero",
             "Category One",

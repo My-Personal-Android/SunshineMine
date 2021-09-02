@@ -52,7 +52,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
     private static final int DETAIL_THUMB_WIDTH = 274;
     private static final int DETAIL_THUMB_HEIGHT = 274;
 
-    private static final int NUM_COLS = 10;
+    private static final int NUM_COLS = 5;
 
     private Movie mSelectedMovie;
 
@@ -73,11 +73,11 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         if (mSelectedMovie != null) {
             mPresenterSelector = new ClassPresenterSelector();
             mAdapter = new ArrayObjectAdapter(mPresenterSelector);
-            setupDetailsOverviewRow();
-            setupDetailsOverviewRowPresenter();
+            setupDetailsOverviewRow(); // done
+            setupDetailsOverviewRowPresenter(); // done
             setupRelatedMovieListRow();
-            setAdapter(mAdapter);
-            initializeBackground(mSelectedMovie);
+            setAdapter(mAdapter); // done
+            initializeBackground(mSelectedMovie); // done
             setOnItemViewClickedListener(new ItemViewClickedListener());
         } else {
             Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -85,6 +85,7 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
         }
     }
 
+    // for changing background picture of a MOVIE
     private void initializeBackground(Movie data) {
         mDetailsBackground.enableParallax();
         Glide.with(getActivity())
@@ -104,11 +105,13 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
 
     private void setupDetailsOverviewRow() {
         Log.d(TAG, "doInBackground: " + mSelectedMovie.toString());
+
         final DetailsOverviewRow row = new DetailsOverviewRow(mSelectedMovie);
-        row.setImageDrawable(
-                ContextCompat.getDrawable(getActivity(), R.drawable.default_background));
+        row.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.default_background));
+
         int width = convertDpToPixel(getActivity().getApplicationContext(), DETAIL_THUMB_WIDTH);
         int height = convertDpToPixel(getActivity().getApplicationContext(), DETAIL_THUMB_HEIGHT);
+
         Glide.with(getActivity())
                 .load(mSelectedMovie.getCardImageUrl())
                 .centerCrop()
@@ -124,33 +127,22 @@ public class VideoDetailsFragment extends DetailsSupportFragment {
                 });
 
         ArrayObjectAdapter actionAdapter = new ArrayObjectAdapter();
+        actionAdapter.add(new Action(ACTION_WATCH_TRAILER, getResources().getString(R.string.watch_trailer_1), getResources().getString(R.string.watch_trailer_2)));
+        actionAdapter.add(new Action(ACTION_RENT, getResources().getString(R.string.rent_1), getResources().getString(R.string.rent_2)));
+        actionAdapter.add(new Action(ACTION_BUY, getResources().getString(R.string.buy_1), getResources().getString(R.string.buy_2)));
 
-        actionAdapter.add(
-                new Action(
-                        ACTION_WATCH_TRAILER,
-                        getResources().getString(R.string.watch_trailer_1),
-                        getResources().getString(R.string.watch_trailer_2)));
-        actionAdapter.add(
-                new Action(
-                        ACTION_RENT,
-                        getResources().getString(R.string.rent_1),
-                        getResources().getString(R.string.rent_2)));
-        actionAdapter.add(
-                new Action(
-                        ACTION_BUY,
-                        getResources().getString(R.string.buy_1),
-                        getResources().getString(R.string.buy_2)));
         row.setActionsAdapter(actionAdapter);
 
         mAdapter.add(row);
     }
 
     private void setupDetailsOverviewRowPresenter() {
+
         // Set detail background.
         FullWidthDetailsOverviewRowPresenter detailsPresenter =
-                new FullWidthDetailsOverviewRowPresenter(new DetailsDescriptionPresenter());
+                new FullWidthDetailsOverviewRowPresenter(new DetailsDescriptionPresenter(getContext()));
         detailsPresenter.setBackgroundColor(
-                ContextCompat.getColor(getActivity(), R.color.selected_background));
+                ContextCompat.getColor(getActivity(), R.color.accent));
 
         // Hook up transition element.
         FullWidthDetailsOverviewSharedElementHelper sharedElementHelper =

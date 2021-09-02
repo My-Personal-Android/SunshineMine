@@ -1,13 +1,22 @@
 package com.sunshinemine;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 
 import androidx.leanback.widget.ImageCardView;
+import androidx.leanback.widget.OnItemViewClickedListener;
+import androidx.leanback.widget.OnItemViewSelectedListener;
 import androidx.leanback.widget.Presenter;
 import androidx.core.content.ContextCompat;
+import androidx.leanback.widget.Row;
+import androidx.leanback.widget.RowPresenter;
 
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -24,6 +33,7 @@ public class CardPresenter extends Presenter {
     private static int sDefaultBackgroundColor;
     private Drawable mDefaultCardImage;
 
+    @SuppressLint("ResourceAsColor")
     private static void updateCardBackgroundColor(ImageCardView view, boolean selected) {
         int color = selected ? sSelectedBackgroundColor : sDefaultBackgroundColor;
         // Both background colors should be set because the view"s background is temporarily visible
@@ -37,9 +47,9 @@ public class CardPresenter extends Presenter {
         Log.d(TAG, "onCreateViewHolder");
 
         sDefaultBackgroundColor =
-                ContextCompat.getColor(parent.getContext(), R.color.default_background);
+                ContextCompat.getColor(parent.getContext(), R.color.detail_accent_pane_background);
         sSelectedBackgroundColor =
-                ContextCompat.getColor(parent.getContext(), R.color.selected_background);
+                ContextCompat.getColor(parent.getContext(), R.color.accent);
         /*
          * This template uses a default image in res/drawable, but the general case for Android TV
          * will require your resources in xhdpi. For more information, see
@@ -55,13 +65,25 @@ public class CardPresenter extends Presenter {
                         super.setSelected(selected);
                     }
                 };
-
         cardView.setFocusable(true);
         cardView.setFocusableInTouchMode(true);
         updateCardBackgroundColor(cardView, false);
+        cardView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b) {
+                    ((TextView) view.findViewById(R.id.title_text)).setTextColor(parent.getContext().getResources().getColor(R.color.black)); // Title text
+                    ((TextView) view.findViewById(R.id.content_text)).setTextColor(parent.getContext().getResources().getColor(R.color.black)); // Description text
+                }else{
+                    ((TextView) view.findViewById(R.id.title_text)).setTextColor(parent.getContext().getResources().getColor(R.color.white)); // Title text
+                    ((TextView) view.findViewById(R.id.content_text)).setTextColor(parent.getContext().getResources().getColor(R.color.white)); // Description text
+                }
+            }
+        });
         return new ViewHolder(cardView);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
         Movie movie = (Movie) item;
@@ -77,6 +99,7 @@ public class CardPresenter extends Presenter {
                     .centerCrop()
                     .error(mDefaultCardImage)
                     .into(cardView.getMainImageView());
+
         }
     }
 

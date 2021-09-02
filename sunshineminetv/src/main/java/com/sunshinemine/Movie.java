@@ -6,7 +6,9 @@ import java.io.Serializable;
  * Movie class represents video entity with title, description, image thumbs and video url.
  */
 public class Movie implements Serializable {
+
     static final long serialVersionUID = 727566175075960653L;
+
     private long id;
     private String title;
     private String description;

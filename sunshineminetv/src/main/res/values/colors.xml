@@ -19,6 +19,7 @@
     <color name="accent">#FFD740</color>
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
+    <color name="back">#959d9e</color>
 
     <!-- our detail accent colors -->
     <color name="detail_accent_pane_background">#455A64</color>
