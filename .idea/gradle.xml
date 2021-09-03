@@ -12,6 +12,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/sunshinemineautomotive" />
+            <option value="$PROJECT_DIR$/sunshinemineautomotivemedia" />
             <option value="$PROJECT_DIR$/sunshineminetv" />
             <option value="$PROJECT_DIR$/sunshineminewatch" />
             <option value="$PROJECT_DIR$/sunshineminewatchfaceanalogue" />

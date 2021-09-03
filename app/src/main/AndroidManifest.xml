@@ -43,12 +43,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SunshineMine"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".extracustomthings.CastActivity"
-            android:exported="true" >
-
-        </activity>
-
         <service
             android:name=".wear.MyService"
             android:enabled="true"

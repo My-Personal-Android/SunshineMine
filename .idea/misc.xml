@@ -118,10 +118,13 @@
         <entry key="app/src/main/res/menu/forecastmenu.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2564814814814815" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.20885416666666667" />
+        <entry key="app/src/main/res/xml/automotive_app_desc.xml" value="0.16822916666666668" />
         <entry key="app/src/main/res/xml/pref_general.xml" value="0.1" />
         <entry key="app/src/main/res/xml/syncadapter.xml" value="0.16869300911854104" />
         <entry key="app/src/main/res/xml/widget_info_detail.xml" value="0.23369565217391305" />
         <entry key="app/src/main/res/xml/widget_info_today.xml" value="0.23369565217391305" />
+        <entry key="sunshinemineautomotive/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="sunshinemineautomotivemedia/src/main/res/layout/activity_main.xml" value="0.15052083333333333" />
         <entry key="sunshineminetv/src/main/res/drawable/default_background.xml" value="0.16302083333333334" />
         <entry key="sunshineminetv/src/main/res/drawable/rounded_corners.xml" value="0.16302083333333334" />
         <entry key="sunshineminetv/src/main/res/layout/activity_details.xml" value="0.16927083333333334" />
